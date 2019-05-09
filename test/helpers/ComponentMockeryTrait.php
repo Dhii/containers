@@ -174,6 +174,15 @@ EOL;
                 return $services[$key];
             });
 
+        $mock->method('has')
+            ->willReturnCallback(function ($key) use ($services, $mock) {
+                if (!isset($services[$key])) {
+                    return false;
+                }
+
+                return true;
+            });
+
         return $mock;
     }
 
