@@ -1,0 +1,12 @@
+/vendor/
+/nbproject/private/
+/test/coverage/
+/test/log/
+/build/
+/.idea/dictionaries/
+/.idea/workspace.xml
+/.idea/tasks.xml
+/.idea/deployment.xml
+/.idea/vagrant.xml
+/.idea/misc.xml
+.phpunit.result.cache

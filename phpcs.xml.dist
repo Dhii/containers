@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<ruleset name="wp-jobadder">
+    <file>./main.php</file>
+    <file>./src</file>
+    <file>./includes</file>
+
+    <rule ref="vendor/consistence/coding-standard/Consistence/ruleset.xml">
+        <!-- Use 4 spaces per indent -->
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
+        <rule ref="Generic.WhiteSpace.DisallowTabIndent" />
+        <rule ref="Generic.WhiteSpace.ScopeIndent">
+            <properties>
+                <property name="indent" value="4"/>
+                <property name="tabIndent" value="false"/>
+            </properties>
+        </rule>
+
+        <!-- We can use double quotes as templates -->
+        <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar" />
+    </rule>
+
+    <rule ref="vendor/slevomat/coding-standard/SlevomatCodingStandard/ruleset.xml">
+        <!-- PSR-4 mapping already in Composer -->
+        <exclude name="SlevomatCodingStandard.Files.TypeNameMatchesFileName" />
+
+        <!-- There's no reason to have to specify FQNs everywhere if they can be imported -->
+        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword"/>
+        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName" />
+        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions.NonFullyQualifiedException" />
+        <exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces" />
+        <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
+        <!-- The fallback mechanism is safe enough, and can be good for mocking -->
+        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants" />
+        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions" />
+
+        <!-- Sometimes it's fine to work with a list of anything -->
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
+
+        <!-- Doc can be a work in progress -->
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment" />
+    </rule>
+</ruleset>

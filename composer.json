@@ -1,0 +1,43 @@
+{
+    "name": "dhii/containers",
+    "description": "A selection of PSR-11 containers for utility, simplicity, and ease.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "container",
+        "psr-11"
+    ],
+    "authors": [
+        {
+            "name": "Dhii Team",
+            "email": "development@dhii.co"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.0 | ^8.0"
+    },
+    "require-dev": {
+        "slevomat/coding-standard": "~4.0",
+        "phpunit/phpunit": "^6",
+        "gmazzap/andrew": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dhii\\Container\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dhii\\Container\\UnitTest\\": "test/unit",
+            "Dhii\\Container\\FuncTest\\": "test/functional",
+            "Dhii\\Container\\TestHelpers\\": "test/helpers"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.1.x-dev"
+        }
+    }
+}
