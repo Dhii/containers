@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Dhii\Containers\Util;
+namespace Dhii\Container\Util;
 
 /**
  * Methods for classes which can translate.
