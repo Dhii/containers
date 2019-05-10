@@ -1,9 +1,9 @@
 <?php
 
-namespace Dhii\Di\FuncTest;
+namespace Dhii\Container\FuncTest;
 
-use Dhii\Di\DelegatingContainer as TestSubject;
-use Dhii\Di\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\DelegatingContainer as TestSubject;
+use Dhii\Container\TestHelpers\ComponentMockeryTrait;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

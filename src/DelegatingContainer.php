@@ -1,10 +1,10 @@
 <?php
 
-namespace Dhii\Di;
+namespace Dhii\Container;
 
-use Dhii\Di\Exception\ContainerException;
-use Dhii\Di\Exception\NotFoundException;
-use Dhii\Di\Util\StringTranslatingTrait;
+use Dhii\Container\Exception\ContainerException;
+use Dhii\Container\Exception\NotFoundException;
+use Dhii\Container\Util\StringTranslatingTrait;
 use Interop\Container\ServiceProviderInterface;
 use Dhii\Data\Container\ContainerInterface;
 use Psr\Container\ContainerInterface as BaseContainerInterface;

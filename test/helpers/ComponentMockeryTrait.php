@@ -5,8 +5,8 @@ namespace Dhii\Container\TestHelpers;
 
 use Andrew\Proxy;
 use Dhii\Data\Container\Exception\NotFoundExceptionInterface;
-use Dhii\Data\Container\WritableContainerInterface;
 use Exception;
+use Interop\Container\ServiceProviderInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
@@ -186,37 +186,36 @@ EOL;
         return $mock;
     }
 
-    /**
-     * Creates a new mock writable container.
-     *
-     * @param array $services The map of service name to service value.
-     *
-     * @return WritableContainerInterface|MockObject
-     *
-     * @throws Exception If problem creating.
-     */
-    protected function createWritableContainer(array $services = []): WritableContainerInterface
+    protected function createServiceProvider(array $factories, array $extensions): ServiceProviderInterface
     {
-        $mock = $this->getMockBuilder(WritableContainerInterface::class)
-            ->setMethods(['has', 'get', 'set', 'delete'])
-            ->getMock();
-        assert($mock instanceof WritableContainerInterface);
+        $provider = new class($factories, $extensions) implements ServiceProviderInterface {
+            /**
+             * @var array
+             */
+            protected $factories;
+            /**
+             * @var array
+             */
+            protected $extensions;
 
-        $mock->method('get')
-            ->willReturnCallback(function ($key) use ($services, $mock) {
-                if (!isset($services[$key])) {
-                    throw $this->createNotFoundException(
-                        sprintf('No entry found for key "%1$s"', $key),
-                        null,
-                        $mock,
-                        $key
-                    );
-                }
+            public function __construct(array $factories, array $extensions)
+            {
+                $this->factories = $factories;
+                $this->extensions = $extensions;
+            }
 
-                return $services[$key];
-            });
+            public function getFactories()
+            {
+                return $this->factories;
+            }
 
-        return $mock;
+            public function getExtensions()
+            {
+                return $this->extensions;
+            }
+        };
+
+        return $provider;
     }
 
     /**

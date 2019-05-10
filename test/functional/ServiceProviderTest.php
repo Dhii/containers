@@ -1,16 +1,16 @@
 <?php
 
-namespace Dhii\Di\FuncTest;
+namespace Dhii\Container\FuncTest;
 
-use Dhii\Di\ServiceProvider as TestSubject;
-use Dhii\Di\TestHelpers\ComponentMockery;
+use Dhii\Container\ServiceProvider as TestSubject;
+use Dhii\Container\TestHelpers\ComponentMockeryTrait;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 class ServiceProviderTest extends TestCase
 {
-    use ComponentMockery;
+    use ComponentMockeryTrait;
 
     /**
      * Creates a new instance of the test subject.
@@ -43,10 +43,13 @@ class ServiceProviderTest extends TestCase
         ];
         $subject = $this->createSubject([[], $extensions]);
 
-        $this->assertEqualsCanonicalizing(
+        $this->assertEquals(
             $extensions,
             $subject->getExtensions(),
-            'Wrong extensions retrieved'
+            'Wrong extensions retrieved',
+            0.0,
+            10,
+            true
         );
     }
 
@@ -63,10 +66,13 @@ class ServiceProviderTest extends TestCase
         ];
         $subject = $this->createSubject([$factories, []]);
 
-        $this->assertEqualsCanonicalizing(
+        $this->assertEquals(
             $factories,
             $subject->getFactories(),
-            'Wrong factories retrieved'
+            'Wrong factories retrieved',
+            0.0,
+            10,
+            true
         );
     }
 }

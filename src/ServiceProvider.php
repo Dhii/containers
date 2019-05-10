@@ -1,6 +1,6 @@
 <?php
 
-namespace Dhii\Di;
+namespace Dhii\Container;
 
 use Interop\Container\ServiceProviderInterface;
 
