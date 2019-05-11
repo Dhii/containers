@@ -14,16 +14,22 @@ use Psr\Container\NotFoundExceptionInterface;
 class DeprefixingContainer implements ContainerInterface
 {
     /**
+     * @since [*next-version*]
+     *
      * @var ContainerInterface
      */
     protected $inner;
 
     /**
+     * @since [*next-version*]
+     *
      * @var string
      */
     protected $prefix;
 
     /**
+     * @since [*next-version*]
+     *
      * @var bool
      */
     protected $strict;
