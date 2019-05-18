@@ -9,6 +9,8 @@ use function call_user_func_array;
 /**
  * A container implementation that decorates another container, invoking a callback for possible modifications to the
  * decorated container's values.
+ *
+ * @since [*next-version*]
  */
 class CallbackContainer implements ContainerInterface
 {
