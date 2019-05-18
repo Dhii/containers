@@ -6,8 +6,8 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
- * A container implementation that wraps around an inner container and removes prefixes from its keys, allowing
- * consumers to omit them when fetching or looking up data.
+ * A container implementation that wraps around an inner container to automatically add prefixes to keys during
+ * fetching and look up, allowing consumers to omit them.
  *
  * @since [*next-version*]
  */
