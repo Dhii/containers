@@ -112,7 +112,7 @@ PHP;
      *
      * @throws Exception If problem creating.
      */
-    protected function createCallable(callable $callable): callable
+    protected function createCallable(callable $callable)
     {
         static $className = null;
 
@@ -167,8 +167,6 @@ EOL;
                         $mock,
                         $key
                     );
-
-                    throw $e;
                 }
 
                 return $services[$key];
@@ -176,11 +174,7 @@ EOL;
 
         $mock->method('has')
             ->willReturnCallback(function ($key) use ($services, $mock) {
-                if (!isset($services[$key])) {
-                    return false;
-                }
-
-                return true;
+                return isset($services[$key]);
             });
 
         return $mock;
