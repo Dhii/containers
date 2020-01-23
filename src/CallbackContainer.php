@@ -55,7 +55,7 @@ class CallbackContainer implements ContainerInterface
      */
     public function get($key)
     {
-        return call_user_func_array($this->callback, [$this->inner->get($key), $key, $this]);
+        return ($this->callback)($this->inner->get($key), $key, $this);
     }
 
     /**
