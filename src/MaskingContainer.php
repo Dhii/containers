@@ -37,16 +37,18 @@ class MaskingContainer implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param ContainerInterface $inner   The container whose entries to mask.
-     * @param bool[]             $mask    A mapping of keys to booleans, such that `true` exposes the mapped key and
-     *                                    `false` hides the mapped key.
-     * @param bool               $default The default mask value to use for keys that are not included in the mask.
+     * @param ContainerInterface $inner       The container whose entries to mask.
+     * @param bool[]             $mask        A mapping of keys to booleans, such that `true` exposes the mapped key and
+     *                                        `false` hides the mapped key.
+     * @param bool               $defaultMask The default mask. If true, all inner keys are exposed. If false, all
+     *                                        inner keys are hidden. Any keys specified in the $mask parameter will
+     *                                        naturally override this setting.
      */
-    public function __construct(ContainerInterface $inner, array $mask, $default = true)
+    public function __construct(ContainerInterface $inner, array $mask, $defaultMask = true)
     {
         $this->inner = $inner;
         $this->mask = $mask;
-        $this->defMask = $default;
+        $this->defMask = $defaultMask;
     }
 
     /**
