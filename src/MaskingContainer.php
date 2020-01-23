@@ -60,7 +60,7 @@ class MaskingContainer implements ContainerInterface
     {
         if (!$this->isExposed($key)) {
             throw new NotFoundException(
-                $this->__('Key "%1$s" was not found in the inner container or is not exposed', [$key]),
+                $this->__('Inner key "%1$s" is not exposed', [$key]),
                 0,
                 null,
                 $this,
