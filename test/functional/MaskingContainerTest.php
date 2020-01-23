@@ -44,7 +44,7 @@ class MaskingContainerTest extends TestCase
         $mask = [
             $serviceKey => true
         ];
-        $subject = $this->createSubject([$inner, $mask, false]);
+        $subject = $this->createSubject([$inner, false, $mask]);
 
         $result = $subject->get($serviceKey);
 
@@ -67,7 +67,7 @@ class MaskingContainerTest extends TestCase
         $mask = [
             $serviceKey => false
         ];
-        $subject = $this->createSubject([$inner, $mask, true]);
+        $subject = $this->createSubject([$inner, true, $mask]);
 
         try {
             $subject->get($serviceKey);
@@ -93,7 +93,7 @@ class MaskingContainerTest extends TestCase
         ]);
 
         $mask = [];
-        $subject = $this->createSubject([$inner, $mask, true]);
+        $subject = $this->createSubject([$inner, true, $mask]);
 
         $result = $subject->get($serviceKey);
 
@@ -117,7 +117,7 @@ class MaskingContainerTest extends TestCase
         $mask = [
             $serviceKey => false
         ];
-        $subject = $this->createSubject([$inner, $mask, true]);
+        $subject = $this->createSubject([$inner, true, $mask]);
 
         try {
             $subject->get($serviceKey);
@@ -144,7 +144,7 @@ class MaskingContainerTest extends TestCase
         $mask = [
             $serviceKey => true
         ];
-        $subject = $this->createSubject([$inner, $mask, false]);
+        $subject = $this->createSubject([$inner, false, $mask]);
 
         $result = $subject->has($serviceKey);
 
@@ -167,7 +167,7 @@ class MaskingContainerTest extends TestCase
         $mask = [
             $serviceKey => false
         ];
-        $subject = $this->createSubject([$inner, $mask, true]);
+        $subject = $this->createSubject([$inner, true, $mask]);
 
         $result = $subject->has($serviceKey);
 
@@ -187,7 +187,7 @@ class MaskingContainerTest extends TestCase
         $mask = [
             $serviceKey => true
         ];
-        $subject = $this->createSubject([$inner, $mask, false]);
+        $subject = $this->createSubject([$inner, false, $mask]);
 
         $result = $subject->has($serviceKey);
 
@@ -207,7 +207,7 @@ class MaskingContainerTest extends TestCase
         $mask = [
             $serviceKey => false
         ];
-        $subject = $this->createSubject([$inner, $mask, true]);
+        $subject = $this->createSubject([$inner, true, $mask]);
 
         $result = $subject->has($serviceKey);
 
