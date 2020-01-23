@@ -2,14 +2,14 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\PathContainer as TestSubject;
+use Dhii\Container\SegmentingContainer as TestSubject;
 use Dhii\Container\TestHelpers\ComponentMockeryTrait;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use function uniqid;
 
-class PathContainerTest extends TestCase
+class SegmentingContainerTest extends TestCase
 {
     use ComponentMockeryTrait;
 
