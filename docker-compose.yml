@@ -1,8 +1,9 @@
-version: '3.3'
+version: '3.2'
 services:
   php:
+    container_name: "${PROJECT_NAME}_php"
     build:
-      dockerfile: "Dockerfile_php"
-      context: ./
+      context: docker
+      dockerfile: Dockerfile_php
     volumes:
-      - /opt/projects/dhii/containers:/opt/project
+      - ${BASE_PATH}:/srv/
