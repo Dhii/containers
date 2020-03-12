@@ -41,10 +41,8 @@ class NotFoundExceptionTest extends TestCase
             $message = uniqid('message');
             $code = rand(1, 99);
             $prev = new Exception(uniqid('inner-message'));
-            $container = $this->createContainer([]);
-            $dataKey = uniqid('data-key');
 
-            $subject = $this->createSubject([$message, $code, $prev, $container, $dataKey], null);
+            $subject = $this->createSubject([$message, $code, $prev], null);
         }
 
         {
@@ -54,8 +52,6 @@ class NotFoundExceptionTest extends TestCase
                 $this->assertSame($message, $e->getMessage(), 'Wrong message');
                 $this->assertSame($code, $e->getCode(), 'Wrong code');
                 $this->assertSame($prev, $e->getPrevious(), 'Wrong previous exception');
-                $this->assertSame($container, $e->getContainer(), 'Wrong container');
-                $this->assertSame($dataKey, $e->getDataKey(), 'Wrong data key');
             }
         }
     }

@@ -43,9 +43,8 @@ class ContainerExceptionTest extends TestCase
             $message = uniqid('message');
             $code = rand(1, 99);
             $prev = new Exception(uniqid('inner-message'));
-            $container = $this->createContainer([]);
 
-            $subject = $this->createSubject([$message, $code, $prev, $container], null);
+            $subject = $this->createSubject([$message, $code, $prev], null);
         }
 
         {
@@ -55,7 +54,6 @@ class ContainerExceptionTest extends TestCase
                 $this->assertSame($message, $e->getMessage(), 'Wrong message');
                 $this->assertSame($code, $e->getCode(), 'Wrong code');
                 $this->assertSame($prev, $e->getPrevious(), 'Wrong previous exception');
-                $this->assertSame($container, $e->getContainer(), 'Wrong container');
             }
         }
     }
