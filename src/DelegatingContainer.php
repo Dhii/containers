@@ -6,7 +6,7 @@ use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
 use Interop\Container\ServiceProviderInterface;
-use Dhii\Data\Container\ContainerInterface;
+use Dhii\Collection\ContainerInterface;
 use Psr\Container\ContainerInterface as BaseContainerInterface;
 use UnexpectedValueException;
 
