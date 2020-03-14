@@ -10,3 +10,4 @@
 /.idea/vagrant.xml
 /.idea/misc.xml
 .phpunit.result.cache
+/.env
