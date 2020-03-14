@@ -94,7 +94,7 @@ class PathContainer implements ContainerInterface
         while (!empty($path)) {
             if (!($current instanceof ContainerInterface)) {
                 $tail = implode($this->delimiter, $path);
-                throw new NotFoundException("Key '{$head}' does not exist at path '{$tail}'", 0, null, $this);
+                throw new NotFoundException("Key '{$head}' does not exist at path '{$tail}'", 0, null, $this, $head);
             }
 
             $head = array_shift($path);
