@@ -2,6 +2,7 @@
 
 namespace Dhii\Container;
 
+use Dhii\Container\Exception\NotFoundException;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -58,8 +59,12 @@ class PrefixingContainer implements ContainerInterface
      */
     public function get($key)
     {
+        if (!$this->isPrefixed($key) && $this->strict) {
+            throw new NotFoundException("Key '{$key}' does not exist", 0, null, $this, $key);
+        }
+
         try {
-            return $this->inner->get($this->getInnerKey($key));
+            return $this->inner->get($this->unprefix($key));
         } catch (NotFoundExceptionInterface $nfException) {
             if ($this->strict) {
                 throw $nfException;
@@ -76,7 +81,11 @@ class PrefixingContainer implements ContainerInterface
      */
     public function has($key)
     {
-        return $this->inner->has($this->getInnerKey($key)) || (!$this->strict && $this->inner->has($key));
+        if (!$this->isPrefixed($key) && $this->strict) {
+            return false;
+        }
+
+        return $this->inner->has($this->unprefix($key)) || (!$this->strict && $this->inner->has($key));
     }
 
     /**
@@ -88,12 +97,24 @@ class PrefixingContainer implements ContainerInterface
      *
      * @return string The inner key.
      */
-    protected function getInnerKey($key)
+    protected function unprefix($key)
     {
-        $prefixLength = strlen($this->prefix);
-
-        return ($prefixLength > 0 && strpos($key, $this->prefix) === 0)
-            ? substr($key, $prefixLength)
+        return $this->isPrefixed($key)
+            ? substr($key, strlen($this->prefix))
             : $key;
+    }
+
+    /**
+     * Checks if the key is prefixed.
+     *
+     * @since [*next-version*]
+     *
+     * @param string $key The key to check.
+     *
+     * @return bool True if the key is prefixed, false if not.
+     */
+    protected function isPrefixed($key)
+    {
+        return strlen($this->prefix) > 0 && strpos($key, $this->prefix) === 0;
     }
 }
