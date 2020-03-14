@@ -47,6 +47,7 @@ use function ltrim;
  * ```
  *
  * @since [*next-version*]
+ * @see   PathContainer For an implementation that achieves the opposite effect.
  */
 class SegmentingContainer implements ContainerInterface
 {
