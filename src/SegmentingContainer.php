@@ -7,40 +7,44 @@ use function array_filter;
 use function ltrim;
 
 /**
- * A container implementation that wraps around another to allow the container to be segmented into sub-containers.
+ * This container implementation decorates another to provide nested container access even when the decorated
+ * container's internal data is flat.
  *
- * Segmenting containers are intended to be used with hierarchical keys, i.e. keys that use a delimiter to indicate
- * segments in the key, such as "some/test/key" or "some.deep.config.value".
+ * Segmenting containers are intended to be used with keys that contain segments, i.e. keys that use a delimiter to
+ * indicate hierarchy. For example: "some/test/key" or "some.deep.config.value". The delimiter can be configured during
+ * construction of a segmenting container.
  *
- * A segmenting container can yield 2 different kinds of results:
- * * values
- * * "segments"
+ * A segmenting container can yield 2 different kinds of results when {@link SegmentingContainer::get()} is called:
  *
- * When `get()` is called, the key is split into segments according to the delimiter, and those segments are appended
- * to an internal segment list (more on this further below) to obtain the full key.
+ * **Values**
  *
- * If the full key corresponds to a value in the inner container, the value for that key is returned.
+ * If the inner container has a value for the given key, that value is returned.
  *
- * Otherwise, a new segmenting container is created and returned. This segmenting container will store the full key
- * that resulted in its creation as an internal segment list, which will be automatically prepended to all keys that
- * are requested through its `get()` method.
+ * **Segments**
  *
- * Example usage:
- *      Consider the hierarchy:
- *          [
- *              "config" => [
- *                  "db" => [
- *                      "host" => "localhost",
- *                      "port" => 3306
- *                  ]
- *              ]
- *          ]
+ * If the inner container has no value for the given key, a new {@link SegmentingContainer} instance is returned. This
+ * segmenting container will be aware of the key that resulted in its creation, and will automatically prepend that key
+ * to parameter keys given in `get()`.
  *
- *      The segmenting container can create a container that directly provides the "host" and "port":
- *          $config = new SegmentingContainer($c, '.');
- *          $dbConfig = $config->get('config.db');
- *          $dbConfig->get("host"); // "localhost"
- *          $dbConfig->get("port"); // 3306
+ * **Example usage:**
+ *
+ * Consider the below data and a regular `$container` that provides access to it:
+ *
+ * ```php
+ * $data = [
+ *     'config.db.host' => 'localhost',
+ *     'config.db.post' => '3306',
+ * ];
+ * ```
+ *
+ * A segmenting container can be created that provides access to the "host" and "port":
+ *
+ * ```php
+ * $segmented = new SegmentingContainer($container, '.');
+ * $dbConfig = $config->get('config')->get('db');
+ * $dbConfig->get("host"); // "localhost"
+ * $dbConfig->get("port"); // 3306
+ * ```
  *
  * @since [*next-version*]
  */
