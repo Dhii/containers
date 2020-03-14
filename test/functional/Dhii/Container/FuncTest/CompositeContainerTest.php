@@ -2,31 +2,13 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\CompositeContainer as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\CompositeContainer;
+use Dhii\Container\TestHelpers\ContainerMock;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CompositeContainerTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-
-    /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array $dependencies A list of constructor args.
-     * @param array|null $methods The names of methods to mock in the subject.
-     * @return MockObject|TestSubject The new instance.
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies, array $methods = null)
-    {
-        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-            ->getMock();
-    }
-
     /**
      * Tests if subject can correctly retrieve a value by key from a list of containers.
      *
@@ -36,21 +18,21 @@ class CompositeContainerTest extends TestCase
     {
         {
             $key = uniqid('key');
-            $value = uniqid('value');
-            $containers = [
-                $this->createContainer([
+            $value1 = uniqid('value1');
+            $value2 = uniqid('value2');
+        }
 
-                ]),
-                $this->createContainer([
-                    uniqid('service1')  => uniqid('value'),
-                ]),
-                $this->createContainer([
-                    uniqid('service2')  => uniqid('value'),
-                    $key  => $value,
-                    uniqid('service3')  => uniqid('value'),
-                ]),
-            ];
-            $subject = $this->createSubject([$containers]);
+        {
+            $c1 = ContainerMock::create($this);
+            $c1->expectNotHasService($key);
+
+            $c2 = ContainerMock::create($this);
+            $c2->expectHasService($key, $value1);
+
+            $c3 = ContainerMock::create($this);
+            $c3->expectHasService($key, $value2);
+
+            $subject = new CompositeContainer([$c1, $c2, $c3]);
         }
 
         {
@@ -58,7 +40,7 @@ class CompositeContainerTest extends TestCase
         }
 
         {
-            $this->assertEquals($value, $result, 'Wrong value retrieved');
+            $this->assertEquals($value1, $result, 'Wrong value retrieved');
         }
     }
 
@@ -71,20 +53,21 @@ class CompositeContainerTest extends TestCase
     {
         {
             $key = uniqid('key');
-            $containers = [
-                $this->createContainer([
+            $value1 = uniqid('value1');
+            $value2 = uniqid('value2');
+        }
 
-                ]),
-                $this->createContainer([
-                    uniqid('service1')  => uniqid('value'),
-                ]),
-                $this->createContainer([
-                    uniqid('service2')  => uniqid('value'),
-                    $key  => uniqid('value'),
-                    uniqid('service3')  => uniqid('value'),
-                ]),
-            ];
-            $subject = $this->createSubject([$containers]);
+        {
+            $c1 = ContainerMock::create($this);
+            $c1->expectNotHasService($key);
+
+            $c2 = ContainerMock::create($this);
+            $c2->expectHasService($key, $value1);
+
+            $c3 = ContainerMock::create($this);
+            $c3->expectHasService($key, $value2);
+
+            $subject = new CompositeContainer([$c1, $c2, $c3]);
         }
 
         {
@@ -92,7 +75,7 @@ class CompositeContainerTest extends TestCase
         }
 
         {
-            $this->assertTrue($result, 'Incorrectly determined having');
+            $this->assertTrue($result, 'Wrong value retrieved');
         }
     }
 
@@ -103,24 +86,23 @@ class CompositeContainerTest extends TestCase
      */
     public function testHasFalse()
     {
-        {
-            $containers = [
-                $this->createContainer([
+        $key = uniqid('key');
 
-                ]),
-                $this->createContainer([
-                    uniqid('service1')  => uniqid('value'),
-                ]),
-                $this->createContainer([
-                    uniqid('service2')  => uniqid('value'),
-                    uniqid('service3')  => uniqid('value'),
-                ]),
-            ];
-            $subject = $this->createSubject([$containers]);
+        {
+            $c1 = ContainerMock::create($this);
+            $c1->expectNotHasService($key);
+
+            $c2 = ContainerMock::create($this);
+            $c2->expectNotHasService($key);
+
+            $c3 = ContainerMock::create($this);
+            $c3->expectNotHasService($key);
+
+            $subject = new CompositeContainer([$c1, $c2, $c3]);
         }
 
         {
-            $result = $subject->has(uniqid('non-existing-service'));
+            $result = $subject->has($key);
         }
 
         {

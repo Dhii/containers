@@ -2,33 +2,15 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\AliasingContainer as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\AliasingContainer;
+use Dhii\Container\TestHelpers\ContainerMock;
 use Dhii\Data\Container\Exception\NotFoundExceptionInterface;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use function uniqid;
 
 class AliasingContainerTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-    /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array      $dependencies A list of constructor args.
-     * @param array|null $methods      The names of methods to mock in the subject.
-     *
-     * @return MockObject|TestSubject The new instance.
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies = [], array $methods = null)
-    {
-        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-                    ->getMock();
-    }
-
     /**
      * Tests that the subject is able to fetch aliased data from the inner container, using the original key.
      *
@@ -42,13 +24,12 @@ class AliasingContainerTest extends TestCase
         $aliasKey = uniqid('alias');
         $service = uniqid('service');
 
-        $inner = $this->createContainer([
-            $serviceKey => $service,
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($serviceKey, $service);
+
         $aliases = [
             $aliasKey => $serviceKey,
         ];
-        $subject = $this->createSubject([$inner, $aliases]);
+        $subject = new AliasingContainer($inner, $aliases);
 
         $this->assertSame($service, $subject->get($aliasKey), 'Wrong result retrieved');
     }
@@ -65,11 +46,10 @@ class AliasingContainerTest extends TestCase
         $serviceKey = uniqid('key');
         $service = uniqid('service');
 
-        $inner = $this->createContainer([
-            $serviceKey => $service,
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($serviceKey, $service);
+
         $aliases = [];
-        $subject = $this->createSubject([$inner, $aliases]);
+        $subject = new AliasingContainer($inner, $aliases);
 
         $result = $subject->get($serviceKey);
 
@@ -85,13 +65,11 @@ class AliasingContainerTest extends TestCase
      */
     public function testGetNotFound()
     {
-        $key = uniqid('service-key');
+        $key = uniqid('not-exists');
+        $inner = ContainerMock::create($this)->expectNotHasService($key);
 
-        $inner = $this->createContainer([
-            uniqid('another-key') => uniqid('service'),
-        ]);
         $aliases = [];
-        $subject = $this->createSubject([$inner, $aliases]);
+        $subject = new AliasingContainer($inner, $aliases);
 
         try {
             $subject->get($key);
@@ -115,13 +93,12 @@ class AliasingContainerTest extends TestCase
         $aliasKey = uniqid('alias');
         $service = uniqid('service');
 
-        $inner = $this->createContainer([
-            $serviceKey => $service,
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($serviceKey, $service);
+
         $aliases = [
             $aliasKey => $serviceKey,
         ];
-        $subject = $this->createSubject([$inner, $aliases]);
+        $subject = new AliasingContainer($inner, $aliases);
 
         $this->assertTrue($subject->has($aliasKey));
     }
@@ -138,11 +115,10 @@ class AliasingContainerTest extends TestCase
         $serviceKey = uniqid('key');
         $service = uniqid('service');
 
-        $inner = $this->createContainer([
-            $serviceKey => $service,
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($serviceKey, $service);
+
         $aliases = [];
-        $subject = $this->createSubject([$inner, $aliases]);
+        $subject = new AliasingContainer($inner, $aliases);
 
         $this->assertTrue($subject->has($serviceKey));
     }
@@ -157,12 +133,10 @@ class AliasingContainerTest extends TestCase
     public function testHasNotFound()
     {
         $key = uniqid('service-key');
+        $inner = ContainerMock::create($this)->expectNotHasService($key);
 
-        $inner = $this->createContainer([
-            uniqid('another-key') => uniqid('service'),
-        ]);
         $aliases = [];
-        $subject = $this->createSubject([$inner, $aliases]);
+        $subject = new AliasingContainer($inner, $aliases);
 
         $this->assertFalse($subject->has($key));
     }

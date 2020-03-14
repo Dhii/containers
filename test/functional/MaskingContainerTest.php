@@ -3,31 +3,14 @@
 namespace Dhii\Container\FuncTest;
 
 use Dhii\Container\Exception\NotFoundException;
-use Dhii\Container\MaskingContainer as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\MaskingContainer;
+use Dhii\Container\TestHelpers\ContainerMock;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use function uniqid;
 
 class MaskingContainerTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-    /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array $dependencies A list of constructor args.
-     * @param array|null $methods The names of methods to mock in the subject.
-     * @return MockObject|TestSubject The new instance.
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies = [], array $methods = null)
-    {
-        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-                    ->getMock();
-    }
-
     /**
      * Tests that the subject is able to retrieve an exposed entry from the inner container.
      *
@@ -37,14 +20,12 @@ class MaskingContainerTest extends TestCase
     {
         $serviceKey = uniqid('service-key');
         $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            $serviceKey => $serviceVal
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($serviceKey, $serviceVal);
 
         $mask = [
             $serviceKey => true
         ];
-        $subject = $this->createSubject([$inner, false, $mask]);
+        $subject = new MaskingContainer($inner, false, $mask);
 
         $result = $subject->get($serviceKey);
 
@@ -60,14 +41,12 @@ class MaskingContainerTest extends TestCase
     {
         $serviceKey = uniqid('service-key');
         $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            $serviceKey => $serviceVal
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($serviceKey, $serviceVal);
 
         $mask = [
             $serviceKey => false
         ];
-        $subject = $this->createSubject([$inner, true, $mask]);
+        $subject = new MaskingContainer($inner, true, $mask);
 
         try {
             $subject->get($serviceKey);
@@ -88,12 +67,10 @@ class MaskingContainerTest extends TestCase
     {
         $serviceKey = uniqid('service-key');
         $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            $serviceKey => $serviceVal
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($serviceKey, $serviceVal);
 
         $mask = [];
-        $subject = $this->createSubject([$inner, true, $mask]);
+        $subject = new MaskingContainer($inner, true, $mask);
 
         $result = $subject->get($serviceKey);
 
@@ -110,14 +87,12 @@ class MaskingContainerTest extends TestCase
     {
         $serviceKey = uniqid('service-key');
         $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            $serviceKey => $serviceVal
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($serviceKey, $serviceVal);
 
         $mask = [
             $serviceKey => false
         ];
-        $subject = $this->createSubject([$inner, true, $mask]);
+        $subject = new MaskingContainer($inner, true, $mask);
 
         try {
             $subject->get($serviceKey);
@@ -137,14 +112,12 @@ class MaskingContainerTest extends TestCase
     {
         $serviceKey = uniqid('service-key');
         $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            $serviceKey => $serviceVal
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($serviceKey, $serviceVal);
 
         $mask = [
             $serviceKey => true
         ];
-        $subject = $this->createSubject([$inner, false, $mask]);
+        $subject = new MaskingContainer($inner, false, $mask);
 
         $result = $subject->has($serviceKey);
 
@@ -160,14 +133,12 @@ class MaskingContainerTest extends TestCase
     {
         $serviceKey = uniqid('service-key');
         $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            $serviceKey => $serviceVal
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($serviceKey, $serviceVal);
 
         $mask = [
             $serviceKey => false
         ];
-        $subject = $this->createSubject([$inner, true, $mask]);
+        $subject = new MaskingContainer($inner, true, $mask);
 
         $result = $subject->has($serviceKey);
 
@@ -182,12 +153,12 @@ class MaskingContainerTest extends TestCase
     public function testHasExposedFalse()
     {
         $serviceKey = uniqid('service-key');
-        $inner = $this->createContainer([]);
+        $inner = ContainerMock::create($this)->expectNotHasService($serviceKey);
 
         $mask = [
             $serviceKey => true
         ];
-        $subject = $this->createSubject([$inner, false, $mask]);
+        $subject = new MaskingContainer($inner, false, $mask);
 
         $result = $subject->has($serviceKey);
 
@@ -202,12 +173,12 @@ class MaskingContainerTest extends TestCase
     public function testHasMaskedFalse()
     {
         $serviceKey = uniqid('service-key');
-        $inner = $this->createContainer([]);
+        $inner = ContainerMock::create($this)->expectNotHasService($serviceKey);
 
         $mask = [
             $serviceKey => false
         ];
-        $subject = $this->createSubject([$inner, true, $mask]);
+        $subject = new MaskingContainer($inner, true, $mask);
 
         $result = $subject->has($serviceKey);
 

@@ -2,34 +2,12 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\ServiceProvider as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\ServiceProvider;
 use Exception;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 
 class ServiceProviderTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-    /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array $dependencies
-     *
-     * @return TestSubject The new instance.
-     *
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies)
-    {
-        $reflection = new ReflectionClass(TestSubject::class);
-        $subject = $reflection->newInstanceArgs($dependencies);
-        /* @var $subject TestSubject */
-
-        return $subject;
-    }
-
     /**
      * Tests that the extensions passed are correctly retrieved.
      *
@@ -38,10 +16,10 @@ class ServiceProviderTest extends TestCase
     public function testGetExtensions()
     {
         $extensions = [
-            'one'           => function () {},
-            'two'           => function () {},
+            'one' => function () {},
+            'two' => function () {},
         ];
-        $subject = $this->createSubject([[], $extensions]);
+        $subject = new ServiceProvider([], $extensions);
 
         $this->assertEquals(
             $extensions,
@@ -61,10 +39,10 @@ class ServiceProviderTest extends TestCase
     public function testGetFactories()
     {
         $factories = [
-            'three'           => function () {},
-            'four'           => function () {},
+            'three' => function () {},
+            'four'  => function () {},
         ];
-        $subject = $this->createSubject([$factories, []]);
+        $subject = new ServiceProvider($factories, []);
 
         $this->assertEquals(
             $factories,

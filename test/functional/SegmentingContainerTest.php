@@ -2,32 +2,15 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\SegmentingContainer as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\SegmentingContainer;
+use Dhii\Container\TestHelpers\ContainerMock;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use function uniqid;
 
 class SegmentingContainerTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-    /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array      $dependencies A list of constructor args.
-     * @param array|null $methods      The names of methods to mock in the subject.
-     *
-     * @return MockObject|TestSubject The new instance.
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies = [], array $methods = null)
-    {
-        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-                    ->getMock();
-    }
-
     /**
      * Tests that the subject correctly returns intermediate containers when fetching non-existent keys.
      *
@@ -37,23 +20,103 @@ class SegmentingContainerTest extends TestCase
      */
     public function testGet()
     {
-        $key = 'foo/bar/lorem/ipsum';
+        $key = 'foo';
         $value = uniqid('value');
-        $inner = $this->createContainer([
-            $key => $value,
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($key, $value);
 
         $delimiter = '/';
-        $subject = $this->createSubject([$inner, $delimiter]);
+        $subject = new SegmentingContainer($inner, $delimiter);
 
-        $result1 = $subject->get('foo');
-        $this->assertInstanceOf('Psr\Container\ContainerInterface', $result1, 'First result in not a container');
+        $result = $subject->get('foo');
+        $this->assertEquals($value, $result);
+    }
 
-        $result2 = $result1->get('bar/lorem');
-        $this->assertInstanceOf('Psr\Container\ContainerInterface', $result2, 'Second result in not a container');
+    /**
+     * Tests that the subject's results are containers that can themselves also return more containers.
+     *
+     * @since [*next-version*]
+     *
+     * @throws Exception
+     */
+    public function testGetDeep()
+    {
+        {
+            $delimiter = '/';
+            $path = [
+                'lorem',
+                'ipsum',
+                'dolor',
+            ];
+        }
+        {
+            $key1 = $path[0];
+            $key2 = $key1 . $delimiter . $path[1];
+            $key3 = $key2 . $delimiter . $path[2];
+            $value = uniqid('value');
+        }
 
-        $result3 = $result2->get('ipsum');
+        {
+            $inner = ContainerMock::create($this);
+            // Container only returns true for full path
+            $inner->method('has')
+                  ->withConsecutive([$key1], [$key2], [$key3])
+                  ->willReturnOnConsecutiveCalls(false, false, true);
+            // Container returns value for full path
+            $inner->method('get')->with($key3)->willReturn($value);
+        }
+
+        $subject = new SegmentingContainer($inner, $delimiter);
+
+        $c1 = $subject->get('lorem');
+        $this->assertInstanceOf(ContainerInterface::class, $c1);
+
+        $c2 = $c1->get('ipsum');
+        $this->assertInstanceOf(ContainerInterface::class, $c2);
+
+        $result3 = $c2->get('dolor');
         $this->assertEquals($value, $result3, 'Wrong result value retrieved');
+    }
+
+    /**
+     * Tests that the subject can accept path-like keys to return deeper container.
+     *
+     * @since [*next-version*]
+     *
+     * @throws Exception
+     */
+    public function testGetPath()
+    {
+        {
+            $delimiter = '/';
+            $path = [
+                'lorem',
+                'ipsum',
+                'dolor',
+            ];
+        }
+        {
+            $key1 = $path[0] . $delimiter . $path[1];
+            $key2 = $key1 . $delimiter . $path[2];
+            $value = uniqid('value');
+        }
+        {
+            $inner = ContainerMock::create($this);
+            // Container only returns true for full path
+            $inner->method('has')
+                  ->withConsecutive([$key1], [$key2])
+                  ->willReturnOnConsecutiveCalls(false, true);
+            // Container returns value for full path
+            $inner->method('get')->with($key2)->willReturn($value);
+        }
+
+        $delimiter = '/';
+        $subject = new SegmentingContainer($inner, $delimiter);
+
+        $c1 = $subject->get('lorem/ipsum');
+        $this->assertInstanceOf(ContainerInterface::class, $c1);
+
+        $result = $c1->get('dolor');
+        $this->assertEquals($value, $result, 'Wrong result value retrieved');
     }
 
     /**
@@ -67,10 +130,9 @@ class SegmentingContainerTest extends TestCase
     {
         $key = uniqid('key');
         $value = uniqid('value');
-        $inner = $this->createContainer([
-            $key => $value,
-        ]);
-        $subject = $this->createSubject([$inner]);
+        $inner = ContainerMock::create($this)->expectHasService($key, $value);
+
+        $subject = new SegmentingContainer($inner);
 
         $expected = $inner->has($key);
         $result = $subject->has($key);
@@ -88,15 +150,12 @@ class SegmentingContainerTest extends TestCase
     public function testHasFalse()
     {
         $key = uniqid('key');
-        $value = uniqid('value');
-        $inner = $this->createContainer([
-            $key => $value,
-        ]);
-        $subject = $this->createSubject([$inner]);
+        $inner = ContainerMock::create($this)->expectNotHasService($key);
 
-        $key2 = uniqid('key2');
-        $expected = $inner->has($key2);
-        $result = $subject->has($key2);
+        $subject = new SegmentingContainer($inner);
+
+        $expected = $inner->has($key);
+        $result = $subject->has($key);
 
         $this->assertEquals($expected, $result, 'Wrong result retrieved');
     }

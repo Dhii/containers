@@ -2,26 +2,14 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\CompositeCachingServiceProvider as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\CompositeCachingServiceProvider;
+use Dhii\Container\TestHelpers\ContainerMock;
+use Dhii\Container\TestHelpers\ServiceProviderMock;
 use Exception;
-use Interop\Container\ServiceProviderInterface;
 use PHPUnit\Framework\TestCase;
 
 class CompositeCachingServiceProviderTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-    /**
-     * @param ServiceProviderInterface[] $providers
-     *
-     * @return TestSubject
-     */
-    public function createSubject(array $providers)
-    {
-        return new TestSubject($providers);
-    }
-
     /**
      * Tests that `getFactories()` returns factories correctly overridden.
      *
@@ -39,16 +27,17 @@ class CompositeCachingServiceProviderTest extends TestCase
             $srv4 = uniqid('srv4');
             $f4 = function () use ($srv4) { return $srv4; };
 
-            $provider1 = $this->createServiceProvider([
+            $provider1 = ServiceProviderMock::create($this, [
                 'one'       => $f1,
                 'two'       => $f2,
-            ],[]);
-            $provider2 = $this->createServiceProvider([
+            ]);
+
+            $provider2 = ServiceProviderMock::create($this, [
                 'two'       => $f3,
                 'three'     => $f4,
             ],[]);
 
-            $subject = $this->createSubject([$provider1, $provider2]);
+            $subject = new CompositeCachingServiceProvider([$provider1, $provider2]);
         }
 
         {
@@ -87,18 +76,18 @@ class CompositeCachingServiceProviderTest extends TestCase
             $srv4 = uniqid('srv4');
             $f4 = function () use ($srv4) { return $srv4; };
 
-            $provider1 = $this->createServiceProvider([], [
+            $provider1 = ServiceProviderMock::create($this, [], [
                 'one'       => $f1,
                 'two'       => $f2,
             ]);
-            $provider2 = $this->createServiceProvider([], [
+            $provider2 = ServiceProviderMock::create($this, [], [
                 'two'       => $f3,
                 'three'     => $f4,
             ]);
 
-            $container = $this->createContainer([]);
+            $container = ContainerMock::create($this);
 
-            $subject = $this->createSubject([$provider1, $provider2]);
+            $subject = new CompositeCachingServiceProvider([$provider1, $provider2]);
         }
 
         {

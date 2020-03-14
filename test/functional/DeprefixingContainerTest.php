@@ -2,31 +2,15 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\DeprefixingContainer as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\DeprefixingContainer;
+use Dhii\Container\Exception\NotFoundException;
+use Dhii\Container\TestHelpers\ContainerMock;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use function uniqid;
 
 class DeprefixingContainerTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-    /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array $dependencies A list of constructor args.
-     * @param array|null $methods The names of methods to mock in the subject.
-     * @return MockObject|TestSubject The new instance.
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies = [], array $methods = null)
-    {
-        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-                    ->getMock();
-    }
-
     /**
      * Tests that the subject is able to delegate retrieval to the inner container with a prefixed key.
      *
@@ -40,12 +24,10 @@ class DeprefixingContainerTest extends TestCase
         $serviceKey = uniqid('service-key');
         $serviceVal = uniqid('service-val');
 
-        $inner = $this->createContainer([
-            $prefix . $serviceKey => $serviceVal
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($prefix . $serviceKey, $serviceVal);
 
         $strict = true;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
+        $subject = new DeprefixingContainer($inner, $prefix, $strict);
 
         $result = $subject->get($serviceKey);
 
@@ -62,13 +44,26 @@ class DeprefixingContainerTest extends TestCase
     {
         $serviceKey = uniqid('service-key');
         $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            $serviceKey => $serviceVal
-        ]);
-
         $prefix = uniqid('prefix');
+
+        $inner = ContainerMock::create($this);
+        $inner->method('get')
+              ->withConsecutive([$prefix . $serviceKey], [$serviceKey])
+              ->willReturnCallback(function () use ($serviceVal) {
+                  static $count = 1;
+
+                  // Throw the first time
+                  if ($count === 1) {
+                      $count++;
+                      throw new NotFoundException();
+                  }
+
+                  // Return service the second time
+                  return $serviceVal;
+              });
+
         $strict = false;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
+        $subject = new DeprefixingContainer($inner, $prefix, $strict);
 
         $result = $subject->get($serviceKey);
 
@@ -86,12 +81,11 @@ class DeprefixingContainerTest extends TestCase
         $prefix = uniqid('prefix');
         $serviceKey = uniqid('service-key');
         $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            $prefix . $serviceKey => $serviceVal
-        ]);
+
+        $inner = ContainerMock::create($this)->expectHasService($prefix . $serviceKey, $serviceVal);
 
         $strict = true;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
+        $subject = new DeprefixingContainer($inner, $prefix, $strict);
 
         $result = $subject->has($serviceKey);
 
@@ -105,15 +99,13 @@ class DeprefixingContainerTest extends TestCase
      */
     public function testHasStrictFalse()
     {
-        $serviceKey = uniqid('service-key');
-        $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            $serviceKey => $serviceVal
-        ]);
-
         $prefix = uniqid('prefix');
+        $serviceKey = uniqid('service-key');
+
+        $inner = ContainerMock::create($this)->expectNotHasService($prefix . $serviceKey);
+
         $strict = true;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
+        $subject = new DeprefixingContainer($inner, $prefix, $strict);
 
         $result = $subject->has($serviceKey);
 
@@ -129,14 +121,20 @@ class DeprefixingContainerTest extends TestCase
     public function testHasNonStrict()
     {
         $serviceKey = uniqid('service-key');
-        $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            $serviceKey => $serviceVal
-        ]);
-
         $prefix = uniqid('prefix');
+
+        $inner = ContainerMock::create($this);
+        $inner->method('has')
+              ->withConsecutive([$prefix . $serviceKey], [$serviceKey])
+              ->willReturnCallback(function () {
+                  static $count = 1;
+
+                  // Return true on second run
+                  return ($count++) === 2;
+              });
+
         $strict = false;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
+        $subject = new DeprefixingContainer($inner, $prefix, $strict);
 
         $result = $subject->has($serviceKey);
 
@@ -151,14 +149,13 @@ class DeprefixingContainerTest extends TestCase
     public function testHasFalse()
     {
         $serviceKey = uniqid('service-key');
-        $serviceVal = uniqid('service-val');
-        $inner = $this->createContainer([
-            uniqid('another-key') => $serviceVal
-        ]);
+
+        $inner = ContainerMock::create($this);
+        $inner->method('has')->willReturn(false);
 
         $prefix = uniqid('prefix');
         $strict = false;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
+        $subject = new DeprefixingContainer($inner, $prefix, $strict);
 
         $result = $subject->has($serviceKey);
 

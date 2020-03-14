@@ -2,33 +2,15 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\MappingContainer as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\MappingContainer;
+use Dhii\Container\TestHelpers\ContainerMock;
 use Dhii\Data\Container\Exception\NotFoundExceptionInterface;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use function uniqid;
 
 class MappingContainerTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-    /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array      $dependencies A list of constructor args.
-     * @param array|null $methods      The names of methods to mock in the subject.
-     *
-     * @return MockObject|TestSubject The new instance.
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies = [], array $methods = null)
-    {
-        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-                    ->getMock();
-    }
-
     /**
      * Tests that the subject correctly invokes the callback with the inner container's result, and returns the
      * callback's result.
@@ -41,9 +23,7 @@ class MappingContainerTest extends TestCase
     {
         $key = uniqid('key');
         $value = uniqid('value');
-        $inner = $this->createContainer([
-            $key => $value,
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($key, $value);
 
         $newValue = uniqid('new-value');
         $cc = null; // This will record the container that was given as the $c arg in the callback
@@ -56,7 +36,7 @@ class MappingContainerTest extends TestCase
             return $newValue;
         };
 
-        $subject = $this->createSubject([$inner, $callback]);
+        $subject = new MappingContainer($inner, $callback);
 
         $result = $subject->get($key);
 
@@ -74,13 +54,14 @@ class MappingContainerTest extends TestCase
      */
     public function testGetNotFound()
     {
-        $inner = $this->createContainer([]);
+        $key = uniqid('key');
+        $inner = ContainerMock::create($this)->expectNotHasService($key);
+
         $callback = function () {
             $this->fail('Callback should not have been invoked');
         };
 
-        $subject = $this->createSubject([$inner, $callback]);
-        $key = uniqid('key');
+        $subject = new MappingContainer($inner, $callback);
 
         try {
             $subject->get($key);
@@ -103,14 +84,12 @@ class MappingContainerTest extends TestCase
     {
         $key = uniqid('key');
         $value = uniqid('value');
-        $inner = $this->createContainer([
-            $key => $value,
-        ]);
+        $inner = ContainerMock::create($this)->expectHasService($key, $value);
 
-        $callback = function ($v) {
+        $callback = function () {
             $this->fail('Callback should not have been invoked');
         };
-        $subject = $this->createSubject([$inner, $callback]);
+        $subject = new MappingContainer($inner, $callback);
 
         $expected = $inner->has($key);
         $result = $subject->has($key);
@@ -128,19 +107,15 @@ class MappingContainerTest extends TestCase
     public function testHasFalse()
     {
         $key = uniqid('key');
-        $value = uniqid('value');
-        $inner = $this->createContainer([
-            $key => $value,
-        ]);
+        $inner = ContainerMock::create($this)->expectNotHasService($key);
 
         $callback = function ($v) {
             $this->fail('Callback should not have been invoked');
         };
-        $subject = $this->createSubject([$inner, $callback]);
+        $subject = new MappingContainer($inner, $callback);
 
-        $key2 = uniqid('key2');
-        $expected = $inner->has($key2);
-        $result = $subject->has($key2);
+        $expected = $inner->has($key);
+        $result = $subject->has($key);
 
         $this->assertEquals($expected, $result, 'Wrong result retrieved');
     }

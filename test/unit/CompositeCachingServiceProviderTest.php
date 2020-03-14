@@ -2,36 +2,15 @@
 
 namespace Dhii\Container\UnitTest;
 
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
-use Dhii\Container\CompositeCachingServiceProvider as TestSubject;
+use Andrew\Proxy;
+use Dhii\Container\CompositeCachingServiceProvider;
+use Dhii\Container\TestHelpers\ContainerMock;
+use Dhii\Container\TestHelpers\InvocableMock;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CompositeCachingServiceProviderTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-    /**
-     * Creates a new instance of the test subject mock.
-     *
-     * @param array|null $methods The methods to mock.
-     * Use `null` to not mock anything. Use empty array to mock everything.
-     * @param array|null $dependencies The parameters for the subject constructor.
-     * Use `null` to disable the original constructor.
-     *
-     * @return MockObject|TestSubject
-     *
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject($methods = [], $dependencies = null)
-    {
-        $mock = $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-            ->getMock();
-
-        return $mock;
-    }
-
     /**
      * Tests whether extensions get correctly merged.
      *
@@ -45,21 +24,21 @@ class CompositeCachingServiceProviderTest extends TestCase
     public function testMergeExtensions()
     {
         {
-            $container = $this->createContainer([]);
+            $container = ContainerMock::create($this);
             $prev1 = uniqid('prev1');
             $prev2 = uniqid('prev2');
             $prev3 = uniqid('prev3');
             $prev4 = uniqid('prev3');
-            $func1 = $this->createCallable(function () use ($prev1) {
+            $func1 = InvocableMock::create($this, function () use ($prev1) {
                 return $prev1;
             });
-            $func2 = $this->createCallable(function () use ($prev2) {
+            $func2 = InvocableMock::create($this, function () use ($prev2) {
                 return $prev2;
             });
-            $func3 = $this->createCallable(function () use ($prev3) {
+            $func3 = InvocableMock::create($this, function () use ($prev3) {
                 return $prev3;
             });
-            $func4 = $this->createCallable(function () use ($prev4) {
+            $func4 = InvocableMock::create($this, function () use ($prev4) {
                 return $prev4;
             });
 
@@ -73,28 +52,13 @@ class CompositeCachingServiceProviderTest extends TestCase
                 'three' => $func4,
             ];
 
-            $subject = $this->createSubject(['_mergeFactories']);
-            $_subject = $this->proxy($subject);
+            $subject = new CompositeCachingServiceProvider(['_mergeFactories']);
+            $_subject = new Proxy($subject);
 
-            $subject->expects($this->exactly(1))
-                ->method('_mergeFactories')
-                ->willReturnCallback(function ($a, $b) {
-                    return array_merge($a, $b);
-                });
-
-            $func1->expects($this->exactly(1))
-                ->method('__invoke')
-                ->with($container, $prev1);
-            $func2->expects($this->exactly(1))
-                ->method('__invoke')
-                ->with($container, $prev2);
-            $func3->expects($this->exactly(1))
-                ->method('__invoke')
-                ->with($container, $prev2);
-            $func4->expects($this->exactly(1))
-                ->method('__invoke')
-                ->with($container, $prev4);
-
+            $func1->expectCalled(static::once())->with($container, $prev1);
+            $func2->expectCalled(static::once())->with($container, $prev2);
+            $func3->expectCalled(static::once())->with($container, $prev2);
+            $func4->expectCalled(static::once())->with($container, $prev4);
         }
 
         {

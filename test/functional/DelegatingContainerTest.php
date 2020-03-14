@@ -2,31 +2,16 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\DelegatingContainer as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\DelegatingContainer;
+use Dhii\Container\TestHelpers\ContainerMock;
+use Dhii\Container\TestHelpers\InvocableMock;
+use Dhii\Container\TestHelpers\ServiceProviderMock;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
 class DelegatingContainerTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-    /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array $dependencies A list of constructor args.
-     * @param array|null $methods The names of methods to mock in the subject.
-     * @return MockObject|TestSubject The new instance.
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies = [], array $methods = null)
-    {
-        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-            ->getMock();
-    }
-
     /**
      * Tests that the subject is able to retrieve an extended service.
      *
@@ -38,27 +23,23 @@ class DelegatingContainerTest extends TestCase
     {
         {
             $serviceName = uniqid('service');
-            $parent = $this->createContainer([]);
+            $parent = ContainerMock::create($this);
             $service = 1;
-            $definition = $this->createCallable(function (ContainerInterface $container) use ($service) {
+            $definition = InvocableMock::create($this, function (ContainerInterface $container) use ($service) {
                 return $service;
             });
-            $extension = $this->createCallable(function (ContainerInterface $container, $previous) {
+            $extension = InvocableMock::create($this, function (ContainerInterface $container, $previous) {
                 return $previous + 1;
             });
-            $provider = $this->createServiceProvider([
+            $provider = ServiceProviderMock::create($this, [
                 $serviceName            => $definition,
             ], [
                 $serviceName            => $extension,
             ]);
-            $subject = $this->createSubject([$provider, $parent]);
+            $subject = new DelegatingContainer($provider, $parent);
 
-            $definition->expects($this->exactly(1))
-                ->method('__invoke')
-                ->with($parent);
-            $extension->expects($this->exactly(1))
-                ->method('__invoke')
-                ->with($parent, $service);
+            $definition->expectCalled(static::once())->with($parent);
+            $extension->expectCalled(static::once())->with($parent, $service);
         }
 
         {
@@ -74,12 +55,12 @@ class DelegatingContainerTest extends TestCase
     {
         {
             $serviceName = uniqid('service');
-            $provider = $this->createServiceProvider([
+            $provider = ServiceProviderMock::create($this, [
                 $serviceName            => function (ContainerInterface $container) {
                     return 1;
                 }
             ], []);
-            $subject = $this->createSubject([$provider]);
+            $subject = new DelegatingContainer($provider);
         }
 
         {
@@ -94,8 +75,8 @@ class DelegatingContainerTest extends TestCase
     public function testHasFalse()
     {
         {
-            $provider = $this->createServiceProvider([], []);
-            $subject = $this->createSubject([$provider]);
+            $provider = ServiceProviderMock::create($this, [], []);
+            $subject = new DelegatingContainer($provider);
         }
 
         {

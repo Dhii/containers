@@ -2,10 +2,10 @@
 
 namespace Dhii\Di\FuncTest\Exception;
 
+use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\ContainerException as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\TestHelpers\ContainerMock;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,23 +15,6 @@ use PHPUnit\Framework\TestCase;
  */
 class ContainerExceptionTest extends TestCase
 {
-
-    use ComponentMockeryTrait;
-
-    /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array $dependencies A list of constructor args.
-     * @param array|null $methods The names of methods to mock in the subject.
-     * @return MockObject|TestSubject The new instance.
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies, $methods = null)
-    {
-        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-            ->getMock();
-    }
-
     /**
      * Tests that the instance is created correctly, and getters work as expected.`
      *
@@ -43,9 +26,9 @@ class ContainerExceptionTest extends TestCase
             $message = uniqid('message');
             $code = rand(1, 99);
             $prev = new Exception(uniqid('inner-message'));
-            $container = $this->createContainer([]);
+            $container = ContainerMock::create($this);
 
-            $subject = $this->createSubject([$message, $code, $prev, $container], null);
+            $subject = new ContainerException($message, $code, $prev, $container);
         }
 
         {

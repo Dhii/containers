@@ -2,13 +2,10 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\PathContainer;
-use PHPUnit\Framework\MockObject\MockObject;
+use Dhii\Container\TestHelpers\ContainerMock;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use ReflectionException;
 
 /**
  * @since [*next-version*]
@@ -17,17 +14,6 @@ class PathContainerTest extends TestCase
 {
     /**
      * @since [*next-version*]
-     * @return MockObject|ContainerInterface
-     * @throws ReflectionException
-     */
-    protected function createMockContainer()
-    {
-        return $this->getMockForAbstractClass(ContainerInterface::class);
-    }
-
-    /**
-     * @since [*next-version*]
-     * @throws ReflectionException
      */
     public function testGet()
     {
@@ -37,11 +23,8 @@ class PathContainerTest extends TestCase
             $expected = 'dolor';
         }
         {
-            $inner2 = $this->createMockContainer();
-            $inner2->expects(static::once())->method('get')->with($key2)->willReturn($expected);
-
-            $inner1 = $this->createMockContainer();
-            $inner1->expects(static::once())->method('get')->with($key1)->willReturn($inner2);
+            $inner2 = ContainerMock::create($this)->expectHasService($key2, $expected);
+            $inner1 = ContainerMock::create($this)->expectHasService($key1, $inner2);
         }
         {
             $delimiter = '/';
@@ -56,19 +39,13 @@ class PathContainerTest extends TestCase
 
     /**
      * @since [*next-version*]
-     * @throws ReflectionException
      */
     public function testNotFound()
     {
         $this->expectException(NotFoundExceptionInterface::class);
 
-        {
-            $key = 'lorem';
-        }
-        {
-            $inner = $this->createMockContainer();
-            $inner->expects(static::once())->method('get')->with($key)->willThrowException(new NotFoundException());
-        }
+        $key = 'lorem';
+        $inner = ContainerMock::create($this)->expectNotHasService($key);
 
         $container = new PathContainer($inner);
         $container->get($key);
@@ -76,7 +53,6 @@ class PathContainerTest extends TestCase
 
     /**
      * @since [*next-version*]
-     * @throws ReflectionException
      */
     public function testDeepNotFound()
     {
@@ -87,11 +63,8 @@ class PathContainerTest extends TestCase
             $key2 = 'ipsum';
         }
         {
-            $inner2 = $this->createMockContainer();
-            $inner2->expects(static::once())->method('get')->with($key2)->willThrowException(new NotFoundException());
-
-            $inner1 = $this->createMockContainer();
-            $inner1->expects(static::once())->method('get')->with($key1)->willReturn($inner2);
+            $inner2 = ContainerMock::create($this)->expectNotHasService($key2);
+            $inner1 = ContainerMock::create($this)->expectHasService($key1, $inner2);
         }
         {
             $delimiter = '/';
@@ -104,7 +77,6 @@ class PathContainerTest extends TestCase
 
     /**
      * @since [*next-version*]
-     * @throws ReflectionException
      */
     public function testHasTrue()
     {
@@ -113,8 +85,7 @@ class PathContainerTest extends TestCase
             $value = 'ipsum';
         }
         {
-            $inner = $this->createMockContainer();
-            $inner->expects(static::once())->method('get')->with($key)->willReturn($value);
+            $inner = ContainerMock::create($this)->expectHasService($key, $value);
         }
 
         $container = new PathContainer($inner);
@@ -125,17 +96,11 @@ class PathContainerTest extends TestCase
 
     /**
      * @since [*next-version*]
-     * @throws ReflectionException
      */
     public function testHasFalse()
     {
-        {
-            $key = 'lorem';
-        }
-        {
-            $inner = $this->createMockContainer();
-            $inner->expects(static::once())->method('get')->with($key)->willThrowException(new NotFoundException());
-        }
+        $key = 'lorem';
+        $inner = ContainerMock::create($this)->expectNotHasService($key);
 
         $container = new PathContainer($inner);
         $result = $container->has($key);
@@ -145,7 +110,6 @@ class PathContainerTest extends TestCase
 
     /**
      * @since [*next-version*]
-     * @throws ReflectionException
      */
     public function testDeepHasTrue()
     {
@@ -155,11 +119,8 @@ class PathContainerTest extends TestCase
             $value = 'dolor';
         }
         {
-            $inner2 = $this->createMockContainer();
-            $inner2->expects(static::once())->method('get')->with($key2)->willReturn($value);
-
-            $inner1 = $this->createMockContainer();
-            $inner1->expects(static::once())->method('get')->with($key1)->willReturn($inner2);
+            $inner2 = ContainerMock::create($this)->expectHasService($key2, $value);
+            $inner1 = ContainerMock::create($this)->expectHasService($key1, $inner2);
         }
         {
             $delimiter = '/';
@@ -174,7 +135,6 @@ class PathContainerTest extends TestCase
 
     /**
      * @since [*next-version*]
-     * @throws ReflectionException
      */
     public function testDeepHasFalse()
     {
@@ -183,11 +143,8 @@ class PathContainerTest extends TestCase
             $key2 = 'ipsum';
         }
         {
-            $inner2 = $this->createMockContainer();
-            $inner2->expects(static::once())->method('get')->with($key2)->willThrowException(new NotFoundException());
-
-            $inner1 = $this->createMockContainer();
-            $inner1->expects(static::once())->method('get')->with($key1)->willReturn($inner2);
+            $inner2 = ContainerMock::create($this)->expectNotHasService($key2);
+            $inner1 = ContainerMock::create($this)->expectHasService($key1, $inner2);
         }
         {
             $delimiter = '/';

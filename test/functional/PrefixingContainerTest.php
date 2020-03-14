@@ -2,188 +2,334 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\PrefixingContainer as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
-use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
+use Dhii\Container\Exception\NotFoundException;
+use Dhii\Container\PrefixingContainer;
+use Dhii\Container\TestHelpers\ContainerMock;
 use PHPUnit\Framework\TestCase;
 use function uniqid;
 
+/**
+ * Tests the prefixing container implementation.
+ *
+ * Tests with "Strict" in the method name test strict prefixing containers, while tests "Permissive" in the name test
+ * prefixing containers in non-strict mode.
+ *
+ * Tests with "NotExists" in the method name test scenarios where the key does not exist in the inner container.
+ *
+ * Tests with "NoPrefix" in the method name test scenarios where the inner container has the key but the callee does
+ * not prefix the key that is passed to the outer container.
+ *
+ * @since [*next-version*]
+ */
 class PrefixingContainerTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
     /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array $dependencies A list of constructor args.
-     * @param array|null $methods The names of methods to mock in the subject.
-     * @return MockObject|TestSubject The new instance.
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies = [], array $methods = null)
-    {
-        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-                    ->getMock();
-    }
-
-    /**
-     * Tests that the subject is able to delegate retrieval to the inner container with the un-prefixed key when
-     * strict mode is enabled.
-     *
-     * @throws Exception If problem testing.
+     * @since [*next-version*]
      */
     public function testGetStrict()
     {
-        $serviceKey = uniqid('service-key');
-        $serviceVal = uniqid('service-val');
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+            $outerKey = $prefix . $innerKey;
+        }
+        {
+            $value = uniqid('value');
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => $value
+            ]);
+        }
+        {
+            $strict = true;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
 
-        $prefix = uniqid('prefix');
-        $innerKey = $serviceKey;
-        $outerKey = $prefix . $serviceKey;
-
-        $inner = $this->createContainer([
-            $innerKey => $serviceVal
-        ]);
-
-        $strict = true;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
-
+        // Fetching the prefixed key should return the value of the un-prefixed key from the inner container
         $result = $subject->get($outerKey);
 
-        $this->assertSame($serviceVal, $result, 'Wrong result retrieved');
+        $this->assertSame($value, $result);
     }
 
     /**
-     * Tests that the subject is able to delegate retrieval to the inner container with the un-prefixed key when
-     * strict mode is disabled.
-     *
-     * @throws Exception If problem testing.
+     * @since [*next-version*]
      */
-    public function testGetNonStrict()
+    public function testGetPermissive()
     {
-        $serviceKey = uniqid('service-key');
-        $serviceVal = uniqid('service-val');
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+            $outerKey = $prefix . $innerKey;
+        }
+        {
+            $value = uniqid('value');
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => $value
+            ]);
+        }
+        {
+            $strict = false;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
 
-        $prefix = uniqid('prefix');
-        $innerKey = $prefix . $serviceKey;
-        $outerKey = $prefix . $serviceKey;
-
-        $inner = $this->createContainer([
-            $innerKey => $serviceVal
-        ]);
-
-        $strict = false;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
-
+        // Fetching the prefixed key should return the value of the un-prefixed key from the inner container
         $result = $subject->get($outerKey);
 
-        $this->assertSame($serviceVal, $result, 'Wrong result retrieved');
+        $this->assertSame($value, $result);
     }
 
     /**
-     * Tests that the subject is able to delegate checking for the un-prefixed service key to the inner container
-     * when strict mode is enabled.
-     *
-     * @throws Exception If problem testing.
+     * @since [*next-version*]
      */
-    public function testHasStrict()
+    public function testGetNotExistsStrict()
     {
-        $serviceKey = uniqid('service-key');
-        $serviceVal = uniqid('service-val');
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+            $outerKey = $prefix . $innerKey;
+        }
+        {
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => new NotFoundException()
+            ]);
+        }
+        {
+            $strict = true;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
 
-        $prefix = uniqid('prefix');
-        $innerKey = $serviceKey;
-        $outerKey = $prefix . $serviceKey;
+        // Fetching the prefixed key should throw an exception
+        $this->expectException(NotFoundException::class);
 
-        $inner = $this->createContainer([
-            $innerKey => $serviceVal
-        ]);
-
-        $strict = true;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
-
-        $result = $subject->has($outerKey);
-
-        $this->assertEquals(true, $result, 'Wrong result retrieved');
+        $subject->get($outerKey);
     }
 
     /**
-     * Tests that the subject is unable to find a prefixed entry when strict mode is enabled.
-     *
-     * @throws Exception If problem testing.
+     * @since [*next-version*]
      */
-    public function testHasStrictFalse()
+    public function testGetNotExistsPermissive()
     {
-        $serviceKey = uniqid('service-key');
-        $serviceVal = uniqid('service-val');
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+            $outerKey = $prefix . $innerKey;
+        }
+        {
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => new NotFoundException(),
+                $outerKey => new NotFoundException(),
+            ]);
+        }
+        {
+            $strict = false;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
 
-        $prefix = uniqid('prefix');
-        $innerKey = $prefix . $serviceKey;
-        $outerKey = $prefix . $serviceKey;
+        // Fetching the prefixed key should throw an exception
+        $this->expectException(NotFoundException::class);
 
-        $inner = $this->createContainer([
-            $innerKey => $serviceVal
-        ]);
-
-        $strict = true;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
-
-        $result = $subject->has($outerKey);
-
-        $this->assertEquals(false, $result, 'Wrong result retrieved');
+        $subject->get($outerKey);
     }
 
     /**
-     * Tests that the subject is able to delegate lookup to the inner container for the prefixed key when strict mode
-     * is disabled.
-     *
-     * @throws Exception If problem testing.
+     * @since [*next-version*]
      */
-    public function testHasNonStrict()
+    public function testGetNoPrefixStrict()
     {
-        $serviceKey = uniqid('service-key');
-        $serviceVal = uniqid('service-val');
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+        }
+        {
+            $inner = ContainerMock::create($this);
+        }
+        {
+            $strict = true;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
 
-        $prefix = uniqid('prefix');
-        $innerKey = $prefix . $serviceKey;
-        $outerKey = $prefix . $serviceKey;
+        // Fetching the un-prefixed key should throw an exception without querying the inner container
+        $this->expectException(NotFoundException::class);
 
-        $inner = $this->createContainer([
-            $innerKey => $serviceVal
-        ]);
-
-        $strict = false;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
-
-        $result = $subject->has($outerKey);
-
-        $this->assertEquals(true, $result, 'Wrong result retrieved');
+        $subject->get($innerKey);
     }
 
     /**
-     * Tests that the subject is unable to find a non-existing service, regardless of prefix and strict mode.
-     *
-     * @throws Exception If problem testing.
+     * @since [*next-version*]
      */
-    public function testHasFalse()
+    public function testGetNoPrefixPermissive()
     {
-        $serviceKey = uniqid('service-key');
-        $serviceVal = uniqid('service-val');
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+        }
+        {
+            $value = uniqid('value');
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => $value,
+            ]);
+        }
+        {
+            // The outer container is a non-strict prefixing container
+            $strict = false;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
 
-        $prefix = uniqid('prefix');
-        $innerKey = uniqid('another-key');
-        $outerKey = $prefix . $serviceKey;
+        // Fetching the un-prefixed key should return the inner container's value for that key
+        $result = $subject->get($innerKey);
 
-        $inner = $this->createContainer([
-            $innerKey => $serviceVal
-        ]);
+        $this->assertSame($value, $result);
+    }
 
-        $strict = false;
-        $subject = $this->createSubject([$inner, $prefix, $strict]);
+    /**
+     * @since [*next-version*]
+     */
+    public function testHasTrueStrict()
+    {
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+            $outerKey = $prefix . $innerKey;
+        }
+        {
+            $value = uniqid('value');
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => $value,
+            ]);
+        }
+        {
+            $strict = true;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
 
         $result = $subject->has($outerKey);
 
-        $this->assertEquals(false, $result, 'Wrong result retrieved');
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @since [*next-version*]
+     */
+    public function testHasTruePermissive()
+    {
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+            $outerKey = $prefix . $innerKey;
+        }
+        {
+            $value = uniqid('value');
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => $value,
+            ]);
+        }
+        {
+            $strict = false;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
+
+        $result = $subject->has($outerKey);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @since [*next-version*]
+     */
+    public function testHasFalseStrict()
+    {
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+            $outerKey = $prefix . $innerKey;
+        }
+        {
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => new NotFoundException(),
+            ]);
+        }
+        {
+            $strict = true;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
+
+        $result = $subject->has($outerKey);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since [*next-version*]
+     */
+    public function testHasFalsePermissive()
+    {
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+            $outerKey = $prefix . $innerKey;
+        }
+        {
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => new NotFoundException(),
+                $outerKey => new NotFoundException(),
+            ]);
+        }
+        {
+            $strict = false;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
+
+        $result = $subject->has($outerKey);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since [*next-version*]
+     */
+    public function testHasNoPrefixStrict()
+    {
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+        }
+        {
+            $value = uniqid('value');
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => $value,
+            ]);
+        }
+        {
+            $strict = true;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
+
+        $result = $subject->has($innerKey);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @since [*next-version*]
+     */
+    public function testHasNoPrefixPermissive()
+    {
+        {
+            $prefix = uniqid('prefix');
+            $innerKey = uniqid('key');
+        }
+        {
+            $value = uniqid('value');
+            $inner = ContainerMock::create($this)->expectGet([
+                $innerKey => $value,
+            ]);
+        }
+        {
+            $strict = false;
+            $subject = new PrefixingContainer($inner, $prefix, $strict);
+        }
+
+        $result = $subject->has($innerKey);
+
+        $this->assertTrue($result);
     }
 }

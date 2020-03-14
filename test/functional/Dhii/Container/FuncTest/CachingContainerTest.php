@@ -2,30 +2,13 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\CachingContainer as TestSubject;
-use Dhii\Container\TestHelpers\ComponentMockeryTrait;
+use Dhii\Container\CachingContainer;
+use Dhii\Container\TestHelpers\ContainerMock;
 use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CachingContainerTest extends TestCase
 {
-    use ComponentMockeryTrait;
-
-    /**
-     * Creates a new instance of the test subject.
-     *
-     * @param array $dependencies A list of constructor args.
-     * @param array|null $methods The names of methods to mock in the subject.
-     * @return MockObject|TestSubject The new instance.
-     * @throws Exception If problem creating.
-     */
-    protected function createSubject(array $dependencies, array $methods = null)
-    {
-        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
-            ->getMock();
-    }
-
     /**
      * Tests that the subject can correctly retrieve a value from the inner container.
      *
@@ -39,10 +22,8 @@ class CachingContainerTest extends TestCase
         {
             $key = uniqid('key');
             $value = (object) [];
-            $container = $this->createContainer([
-                $key       => $value,
-            ]);
-            $subject = $this->createSubject([$container]);
+            $container = ContainerMock::create($this)->expectHasService($key, $value);
+            $subject = new CachingContainer($container);
 
             $container->expects($this->exactly(1))
                 ->method('get')
@@ -73,16 +54,18 @@ class CachingContainerTest extends TestCase
     public function testHas()
     {
         {
-            $key = uniqid('key');
-            $container = $this->createContainer([
-                $key       => uniqid('value'),
-            ]);
-            $subject = $this->createSubject([$container]);
+            $key1 = uniqid('key');
+            $key2 = uniqid('not-exists');
+
+            $container = ContainerMock::create($this);
+            $container->method('has')->withConsecutive([$key1], [$key2])->willReturnOnConsecutiveCalls(true, false);
+
+            $subject = new CachingContainer($container);
         }
 
         {
-            $this->assertTrue($subject->has($key), 'Wrong determined having');
-            $this->assertFalse($subject->has(uniqid('non-existing-key')), 'Wrong determined not having');
+            $this->assertTrue($subject->has($key1), 'Wrong determined having');
+            $this->assertFalse($subject->has($key2), 'Wrong determined not having');
         }
     }
 }
