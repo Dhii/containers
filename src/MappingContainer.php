@@ -4,15 +4,32 @@ namespace Dhii\Container;
 
 use Dhii\Container\Util\StringTranslatingTrait;
 use Psr\Container\ContainerInterface;
-use function call_user_func_array;
 
 /**
- * A container implementation that decorates another container, invoking a callback for possible modifications to the
- * decorated container's values.
+ * A container implementation that can map results from another container using a callback.
+ *
+ * **Example usage**:
+ *
+ * ```php
+ * $container = new Container([
+ *      'first' => 'Paul',
+ *      'second' => 'JC',
+ *      'third' => 'Alex',
+ * ]);
+ *
+ * $mContainer = new MappingContainer($container, function ($name) {
+ *      return $name . ' Denton';
+ * });
+ *
+ * $mContainer->get('first');  // "Paul Denton"
+ * $mContainer->get('second'); // "JC Denton"
+ *
+ * // We don't talk about Alex
+ * ```
  *
  * @since [*next-version*]
  */
-class CallbackContainer implements ContainerInterface
+class MappingContainer implements ContainerInterface
 {
     /* @since [*next-version*] */
     use StringTranslatingTrait;

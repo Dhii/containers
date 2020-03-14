@@ -2,7 +2,7 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\CallbackContainer as TestSubject;
+use Dhii\Container\MappingContainer as TestSubject;
 use Dhii\Container\TestHelpers\ComponentMockeryTrait;
 use Dhii\Data\Container\Exception\NotFoundExceptionInterface;
 use Exception;
@@ -10,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use function uniqid;
 
-class CallbackContainerTest extends TestCase
+class MappingContainerTest extends TestCase
 {
     use ComponentMockeryTrait;
 
