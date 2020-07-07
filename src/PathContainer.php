@@ -82,7 +82,9 @@ class PathContainer implements ContainerInterface
      */
     public function get($key)
     {
-        $tKey = ltrim($key, $this->delimiter);
+        $tKey = (strpos($key, $this->delimiter) === 0)
+            ? substr($key, strlen($this->delimiter))
+            : $key;
         $path = array_filter(explode($this->delimiter, $tKey));
 
         if (empty($path)) {
