@@ -62,7 +62,7 @@ class DeprefixingContainer implements ContainerInterface
         try {
             return $this->inner->get($this->getInnerKey($key));
         } catch (NotFoundExceptionInterface $nfException) {
-            if ($this->strict) {
+            if ($this->strict || !$this->inner->has($key)) {
                 throw $nfException;
             }
         }

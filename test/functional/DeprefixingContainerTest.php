@@ -61,6 +61,9 @@ class DeprefixingContainerTest extends TestCase
                   // Return service the second time
                   return $serviceVal;
               });
+        $inner->method('has')
+              ->with($serviceKey)
+              ->willReturn(true);
 
         $strict = false;
         $subject = new DeprefixingContainer($inner, $prefix, $strict);
