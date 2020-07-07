@@ -61,7 +61,7 @@ class PrefixingContainer implements ContainerInterface
     public function get($key)
     {
         if (!$this->isPrefixed($key) && $this->strict) {
-            throw new NotFoundException("Key '{$key}' does not exist", 0, null, $this, $key);
+            throw new NotFoundException(sprintf('Key "%s" does not exist', $key), 0, null, $this, $key);
         }
 
         try {
