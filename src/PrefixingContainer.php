@@ -3,7 +3,8 @@
 namespace Dhii\Container;
 
 use Dhii\Container\Exception\NotFoundException;
-use Psr\Container\ContainerInterface;
+use Dhii\Data\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
@@ -17,7 +18,7 @@ class PrefixingContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var ContainerInterface
+     * @var PsrContainerInterface
      */
     protected $inner;
 
@@ -40,12 +41,12 @@ class PrefixingContainer implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param ContainerInterface $container The container whose keys to prefix.
-     * @param string             $prefix    The prefix to apply to the container's keys.
-     * @param bool               $strict    Whether or not to fallback to un-prefixed keys if a prefixed key does not
-     *                                      exist in the inner container.
+     * @param PsrContainerInterface $container The container whose keys to prefix.
+     * @param string                $prefix    The prefix to apply to the container's keys.
+     * @param bool                  $strict    Whether or not to fallback to un-prefixed keys if a prefixed key does not
+     *                                         exist in the inner container.
      */
-    public function __construct(ContainerInterface $container, string $prefix, bool $strict = true)
+    public function __construct(PsrContainerInterface $container, string $prefix, bool $strict = true)
     {
         $this->inner = $container;
         $this->prefix = $prefix;

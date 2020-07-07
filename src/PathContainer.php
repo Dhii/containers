@@ -3,11 +3,12 @@
 namespace Dhii\Container;
 
 use Dhii\Container\Exception\NotFoundException;
-use Psr\Container\ContainerInterface;
+use Dhii\Data\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
- * A container implementation that decorates a hierarchy of {@link ContainerInterface} instances to allow path-like
+ * A container implementation that decorates a hierarchy of {@link PsrContainerInterface} instances to allow path-like
  * access to deep containers or data.
  *
  * **Example usage**
@@ -39,7 +40,7 @@ use Psr\Container\NotFoundExceptionInterface;
  * ```
  *
  * Note that this implementation DOES NOT create containers for hierarchical _values_. Each segment in a given path
- * must correspond to a child {@link ContainerInterface} instance.
+ * must correspond to a child {@link PsrContainerInterface} instance.
  *
  * @since [*next-version*]
  * @see   SegmentingContainer For an implementation that achieves the opposite effect.
@@ -49,7 +50,7 @@ class PathContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var ContainerInterface
+     * @var PsrContainerInterface
      */
     protected $inner;
 
@@ -65,10 +66,10 @@ class PathContainer implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param ContainerInterface $inner     The container instance to decorate.
-     * @param string             $delimiter The path delimiter to use.
+     * @param PsrContainerInterface $inner     The container instance to decorate.
+     * @param string                $delimiter The path delimiter to use.
      */
-    public function __construct(ContainerInterface $inner, string $delimiter = '/')
+    public function __construct(PsrContainerInterface $inner, string $delimiter = '/')
     {
         $this->inner = $inner;
         $this->delimiter = $delimiter;
@@ -92,7 +93,7 @@ class PathContainer implements ContainerInterface
         $head = $path[0];
 
         while (!empty($path)) {
-            if (!($current instanceof ContainerInterface)) {
+            if (!($current instanceof PsrContainerInterface)) {
                 $tail = implode($this->delimiter, $path);
                 throw new NotFoundException("Key '{$head}' does not exist at path '{$tail}'", 0, null, $this, $head);
             }
