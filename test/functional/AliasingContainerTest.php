@@ -3,8 +3,9 @@
 namespace Dhii\Container\FuncTest;
 
 use Dhii\Container\AliasingContainer;
+use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\TestHelpers\ContainerMock;
-use Dhii\Data\Container\Exception\NotFoundExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use function uniqid;
@@ -75,8 +76,12 @@ class AliasingContainerTest extends TestCase
             $subject->get($key);
 
             $this->fail('Subject did not throw an exception');
-        } catch (NotFoundExceptionInterface $exception) {
-            $this->assertSame($key, $exception->getDataKey());
+        } catch (Exception $exception) {
+            $this->assertInstanceOf(
+                NotFoundExceptionInterface::class,
+                $exception,
+                'Exception does not implement correct interface'
+            );
         }
     }
 

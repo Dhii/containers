@@ -3,7 +3,7 @@
 namespace Dhii\Container\FuncTest;
 
 use Dhii\Container\HierarchyContainer;
-use Dhii\Data\Container\Exception\NotFoundExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use PHPUnit\Framework\TestCase;
 
 /**

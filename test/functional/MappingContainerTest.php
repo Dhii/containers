@@ -4,7 +4,7 @@ namespace Dhii\Container\FuncTest;
 
 use Dhii\Container\MappingContainer;
 use Dhii\Container\TestHelpers\ContainerMock;
-use Dhii\Data\Container\Exception\NotFoundExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use function uniqid;
@@ -67,9 +67,12 @@ class MappingContainerTest extends TestCase
             $subject->get($key);
 
             $this->fail('Container did not throw a NotFoundExceptionInterface');
-        } catch (NotFoundExceptionInterface $exception) {
-            $this->assertEquals($key, $exception->getDataKey(), 'Wrong exception data key');
-            $this->assertSame($inner, $exception->getContainer(), 'Wrong exception container');
+        } catch (Exception $exception) {
+            $this->assertInstanceOf(
+                NotFoundExceptionInterface::class,
+                $exception,
+                'Exception does not implement correct interface'
+            );
         }
     }
 

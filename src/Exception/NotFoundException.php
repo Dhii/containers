@@ -2,8 +2,8 @@
 
 namespace Dhii\Container\Exception;
 
-use Dhii\Data\Container\Exception\NotFoundExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 
 class NotFoundException extends ContainerException implements NotFoundExceptionInterface
@@ -24,12 +24,4 @@ class NotFoundException extends ContainerException implements NotFoundExceptionI
         $this->dataKey = $dataKey;
     }
 
-
-    /**
-     * {@inheritdoc
-     */
-    public function getDataKey()
-    {
-        return $this->dataKey;
-    }
 }

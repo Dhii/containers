@@ -38,7 +38,6 @@ class ContainerExceptionTest extends TestCase
                 $this->assertSame($message, $e->getMessage(), 'Wrong message');
                 $this->assertSame($code, $e->getCode(), 'Wrong code');
                 $this->assertSame($prev, $e->getPrevious(), 'Wrong previous exception');
-                $this->assertSame($container, $e->getContainer(), 'Wrong container');
             }
         }
     }

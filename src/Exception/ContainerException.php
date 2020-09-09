@@ -2,8 +2,8 @@
 
 namespace Dhii\Container\Exception;
 
-use Dhii\Data\Container\Exception\ContainerExceptionInterface;
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Throwable;
 
@@ -34,14 +34,6 @@ class ContainerException extends Exception implements ContainerExceptionInterfac
     ) {
         parent::__construct($message, $code, $previous);
         $this->container = $container;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getContainer()
-    {
-        return $this->container;
     }
 
 }
