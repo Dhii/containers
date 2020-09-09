@@ -21,7 +21,6 @@
         "container-interop/service-provider": "^0.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0 || ^7.0",
         "slevomat/coding-standard": "~4.0",
         "phpunit/phpunit": "^7.0",
         "gmazzap/andrew": "^1.1",
