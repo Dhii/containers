@@ -17,7 +17,6 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.0 | ^8.0",
-        "dhii/data-container-interface": "^0.2",
         "container-interop/service-provider": "^0.4"
     },
     "require-dev": {
