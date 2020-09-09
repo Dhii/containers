@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "538913e69183170a8c68d6428f2e3f07",
+    "content-hash": "81a7b0ea80c33e23d8a447ab6d5fd605",
     "packages": [
         {
             "name": "container-interop/service-provider",
@@ -39,16 +39,16 @@
         },
         {
             "name": "dhii/collections-interface",
-            "version": "dev-task/23-add-container-interfaces",
+            "version": "v0.3.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dhii/collections-interface.git",
-                "reference": "24c8ab7b685baf3de0dce763ad36e24373d20a57"
+                "reference": "3102d70fe415d0796bf24231171dfc8a5343b706"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dhii/collections-interface/zipball/24c8ab7b685baf3de0dce763ad36e24373d20a57",
-                "reference": "24c8ab7b685baf3de0dce763ad36e24373d20a57",
+                "url": "https://api.github.com/repos/Dhii/collections-interface/zipball/3102d70fe415d0796bf24231171dfc8a5343b706",
+                "reference": "3102d70fe415d0796bf24231171dfc8a5343b706",
                 "shasum": ""
             },
             "require": {
@@ -56,7 +56,9 @@
                 "psr/container": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.0"
+                "phpunit/phpunit": "^7.0 | ^8.0",
+                "slevomat/coding-standard": "^6.0",
+                "vimeo/psalm": "^3.0"
             },
             "type": "library",
             "extra": {
@@ -80,7 +82,7 @@
                 }
             ],
             "description": "A highly ISP-compliant collection of interfaces that represent maps and lists.",
-            "time": "2020-03-12T22:14:41+00:00"
+            "time": "2020-09-09T06:50:59+00:00"
         },
         {
             "name": "psr/container",
@@ -871,6 +873,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {
@@ -1781,9 +1784,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "dhii/collections-interface": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -17,7 +17,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1 | ^8.0",
-        "dhii/collections-interface": "dev-task/23-add-container-interfaces",
+        "dhii/collections-interface": "^0.3.0-alpha1",
         "container-interop/service-provider": "^0.4"
     },
     "require-dev": {
