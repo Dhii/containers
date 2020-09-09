@@ -5,10 +5,9 @@ namespace Dhii\Container;
 use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
-use Dhii\Data\Container\ContainerInterface;
-use Dhii\Data\Container\Exception\NotFoundExceptionInterface;
 use Exception;
-use Psr\Container\ContainerInterface as BaseContainerInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Traversable;
 use UnexpectedValueException;
 
@@ -17,12 +16,12 @@ class CompositeContainer implements ContainerInterface
     use StringTranslatingTrait;
 
     /**
-     * @var array|BaseContainerInterface[]|Traversable
+     * @var array|ContainerInterface[]|Traversable
      */
     protected $containers;
 
     /**
-     * @param BaseContainerInterface[]|Traversable $containers The list of containers.
+     * @param ContainerInterface[]|Traversable $containers The list of containers.
      */
     public function __construct($containers)
     {

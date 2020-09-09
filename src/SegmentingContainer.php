@@ -2,8 +2,7 @@
 
 namespace Dhii\Container;
 
-use Dhii\Data\Container\ContainerInterface;
-use Psr\Container\ContainerInterface as PsrContainerInterface;
+use Psr\Container\ContainerInterface;
 use function array_filter;
 use function ltrim;
 
@@ -53,7 +52,7 @@ use function ltrim;
 class SegmentingContainer implements ContainerInterface
 {
     /**
-     * @var PsrContainerInterface
+     * @var ContainerInterface
      */
     protected $inner;
 
@@ -72,8 +71,8 @@ class SegmentingContainer implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param PsrContainerInterface $inner     The container to decorate.
-     * @param string                $delimiter The path delimiter.
+     * @param ContainerInterface $inner     The container to decorate.
+     * @param string             $delimiter The path delimiter.
      */
     public function __construct($inner, $delimiter = '/')
     {

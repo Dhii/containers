@@ -3,7 +3,7 @@
 namespace Dhii\Container;
 
 use Dhii\Container\Exception\NotFoundException;
-use Dhii\Data\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use stdClass;
 
 /**
