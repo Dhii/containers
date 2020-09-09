@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace Dhii\Di\FuncTest\Exception;
+namespace Dhii\Container\FuncTest\Exception;
 
-use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\ContainerException as TestSubject;
+use Dhii\Container\TestHelpers\ComponentMockeryTrait;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -11,10 +11,12 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests {@see TestSubject}.
  *
- * @package Dhii\Wp\Containers
+ * @package Dhii\Containers
  */
 class ContainerExceptionTest extends TestCase
 {
+    use ComponentMockeryTrait;
+
     /**
      * Creates a new instance of the test subject.
      *

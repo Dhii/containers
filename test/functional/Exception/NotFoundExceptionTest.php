@@ -1,10 +1,12 @@
 <?php declare(strict_types = 1);
 
-namespace Dhii\Di\FuncTest\Exception;
+namespace Dhii\Container\FuncTest\Exception;
 
 use Dhii\Container\Exception\NotFoundException as TestSubject;
+use Dhii\Container\TestHelpers\ComponentMockeryTrait;
 use Exception;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Tests {@see TestSubject}.
@@ -13,6 +15,8 @@ use PHPUnit\Framework\TestCase;
  */
 class NotFoundExceptionTest extends TestCase
 {
+    use ComponentMockeryTrait;
+
     /**
      * Creates a new instance of the test subject.
      *
