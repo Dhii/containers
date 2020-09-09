@@ -4,7 +4,7 @@
 namespace Dhii\Container\TestHelpers;
 
 use Andrew\Proxy;
-use Dhii\Data\Container\Exception\NotFoundExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Exception;
 use Interop\Container\ServiceProviderInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
@@ -263,5 +263,5 @@ EOL;
      *
      * @return MockBuilder The mock builder.
      */
-    abstract function getMockBuilder($className);
+    abstract function getMockBuilder($className): MockBuilder;
 }

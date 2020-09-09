@@ -4,7 +4,6 @@ namespace Dhii\Container\UnitTest;
 
 use Dhii\Container\ProxyContainer as TestSubject;
 use Dhii\Container\TestHelpers\ComponentMockeryTrait;
-use Dhii\Data\Container\ContainerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -25,33 +24,6 @@ class ProxyContainerTest extends TestCase
 
         return $mock;
     }
-
-    /**
-     * @param array $services
-     *
-     * @return ContainerInterface
-     */
-//    protected function createContainer(array $services): ContainerInterface
-//    {
-//        $mock = $this->getMockBuilder(ContainerInterface::class)
-//            ->setMethods(['get', 'has'])
-//            ->getMock();
-//
-//        $mock->method('has')
-//            ->will($this->returnCallback(function ($key) use ($services) {
-//                return array_key_exists($key, $services);
-//            }));
-//        $mock->method('get')
-//            ->will($this->returnCallback(function ($key) use ($services) {
-//                if (!array_key_exists($key, $services)) {
-//                    throw new NotFoundException();
-//                }
-//
-//                return $services[$key];
-//            }));
-//
-//        return $mock;
-//    }
 
     /**
      * Tests that calls and return values are being proxied correctly.
