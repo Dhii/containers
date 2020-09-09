@@ -3,6 +3,7 @@
 namespace Dhii\Container;
 
 use ArrayIterator;
+use Dhii\Collection\WritableContainerInterface;
 use Dhii\Collection\WritableMapInterface;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
@@ -66,7 +67,7 @@ class Dictionary implements
     /**
      * @inheritDoc
      */
-    public function withMappings(array $mappings)
+    public function withMappings(array $mappings): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();
         $dictionary->data = $mappings;
@@ -77,7 +78,7 @@ class Dictionary implements
     /**
      * @inheritDoc
      */
-    public function withAddedMappings(array $mappings)
+    public function withAddedMappings(array $mappings): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();
         $dictionary->data = $mappings + $this->data;
@@ -88,7 +89,7 @@ class Dictionary implements
     /**
      * @inheritDoc
      */
-    public function withoutKeys(array $keys)
+    public function withoutKeys(array $keys): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();
 
