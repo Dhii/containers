@@ -6,7 +6,8 @@ use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
 use Interop\Container\ServiceProviderInterface;
-use Psr\Container\ContainerInterface;
+use Dhii\Collection\ContainerInterface;
+use Psr\Container\ContainerInterface as BaseContainerInterface;
 use UnexpectedValueException;
 
 class DelegatingContainer implements ContainerInterface
@@ -24,9 +25,9 @@ class DelegatingContainer implements ContainerInterface
 
     /**
      * @param ServiceProviderInterface $provider
-     * @param ContainerInterface|null $parent
+     * @param BaseContainerInterface|null $parent
      */
-    public function __construct(ServiceProviderInterface $provider, ContainerInterface $parent = null)
+    public function __construct(ServiceProviderInterface $provider, BaseContainerInterface $parent = null)
     {
         $this->provider = $provider;
         $this->parent = $parent;
@@ -149,12 +150,12 @@ class DelegatingContainer implements ContainerInterface
     /**
      * Retrieves the container to be used for definitions and extensions.
      *
-     * @return ContainerInterface The parent container, if set.
+     * @return BaseContainerInterface The parent container, if set.
      * Otherwise, this instance.
      */
-    protected function _getBaseContainer(): ContainerInterface
+    protected function _getBaseContainer(): BaseContainerInterface
     {
-        return $this->parent instanceof ContainerInterface
+        return $this->parent instanceof BaseContainerInterface
             ? $this->parent
             : $this;
     }

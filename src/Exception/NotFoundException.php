@@ -16,12 +16,8 @@ class NotFoundException extends ContainerException implements NotFoundExceptionI
     public function __construct(
         $message = '',
         $code = 0,
-        Throwable $previous = null,
-        ContainerInterface $container = null,
-        string $dataKey = null
+        Throwable $previous = null
     ) {
-        parent::__construct($message, $code, $previous, $container);
-        $this->dataKey = $dataKey;
+        parent::__construct($message, $code, $previous);
     }
-
 }

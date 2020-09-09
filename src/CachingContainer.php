@@ -5,8 +5,8 @@ namespace Dhii\Container;
 use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
+use Dhii\Collection\ContainerInterface;
 use Exception;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
