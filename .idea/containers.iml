@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/test/unit" isTestSource="true" packagePrefix="Dhii\Container\UnitTest\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/container-interop/service-provider" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/dhii/collections-interface" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/gmazzap/andrew" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />
