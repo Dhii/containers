@@ -6,7 +6,7 @@ use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
 use Exception;
-use Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
@@ -14,7 +14,7 @@ use Psr\Container\NotFoundExceptionInterface;
  *
  * @package Dhii\Container1
  */
-class CachingContainer implements ContainerInterface
+class CachingContainer implements PsrContainerInterface
 {
     use StringTranslatingTrait;
 
@@ -23,14 +23,14 @@ class CachingContainer implements ContainerInterface
      */
     protected $cache;
     /**
-     * @var ContainerInterface
+     * @var PsrContainerInterface
      */
     protected $container;
 
     /**
-     * @param ContainerInterface $container The container to cache entries from.
+     * @param PsrContainerInterface $container The container to cache entries from.
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(PsrContainerInterface $container)
     {
         $this->container = $container;
         $this->cache = [];

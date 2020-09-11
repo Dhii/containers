@@ -2,9 +2,10 @@
 
 namespace Dhii\Container;
 
+use Dhii\Collection\ContainerInterface;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
-use Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use function array_key_exists;
 
 /**
@@ -18,7 +19,7 @@ class MaskingContainer implements ContainerInterface
     use StringTranslatingTrait;
 
     /**
-     * @var ContainerInterface
+     * @var PsrContainerInterface
      */
     protected $inner;
 
@@ -37,14 +38,14 @@ class MaskingContainer implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param ContainerInterface $inner       The container whose entries to mask.
-     * @param bool               $defaultMask The default mask. If true, all inner keys are exposed. If false, all
-     *                                        inner keys are hidden. Any keys specified in the $mask parameter will
-     *                                        naturally override this setting.
-     * @param bool[]             $mask        A mapping of keys to booleans, such that `true` exposes the mapped key
-     *                                        and `false` hides the mapped key.
+     * @param PsrContainerInterface $inner       The container whose entries to mask.
+     * @param bool                  $defaultMask The default mask. If true, all inner keys are exposed. If false, all
+     *                                           inner keys are hidden. Any keys specified in the $mask parameter will
+     *                                           naturally override this setting.
+     * @param bool[]                $mask        A mapping of keys to booleans, such that `true` exposes the mapped key
+     *                                           and `false` hides the mapped key.
      */
-    public function __construct(ContainerInterface $inner, $defaultMask, array $mask)
+    public function __construct(PsrContainerInterface $inner, $defaultMask, array $mask)
     {
         $this->inner = $inner;
         $this->defMask = $defaultMask;

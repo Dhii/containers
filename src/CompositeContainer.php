@@ -6,22 +6,22 @@ use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
 use Exception;
-use Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Traversable;
 use UnexpectedValueException;
 
-class CompositeContainer implements ContainerInterface
+class CompositeContainer implements PsrContainerInterface
 {
     use StringTranslatingTrait;
 
     /**
-     * @var array|ContainerInterface[]|Traversable
+     * @var array|PsrContainerInterface[]|Traversable
      */
     protected $containers;
 
     /**
-     * @param ContainerInterface[]|Traversable $containers The list of containers.
+     * @param PsrContainerInterface[]|Traversable $containers The list of containers.
      */
     public function __construct($containers)
     {

@@ -2,8 +2,9 @@
 
 namespace Dhii\Container;
 
+use Dhii\Collection\ContainerInterface;
 use Dhii\Container\Util\StringTranslatingTrait;
-use Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use function array_key_exists;
 
 /**
@@ -18,7 +19,7 @@ class AliasingContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var ContainerInterface
+     * @var PsrContainerInterface
      */
     protected $inner;
 
@@ -34,10 +35,10 @@ class AliasingContainer implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param ContainerInterface $inner   The container whose keys to alias.
+     * @param PsrContainerInterface $inner   The container whose keys to alias.
      * @param array                 $aliases A mapping of aliases to their original container key counterparts.
      */
-    public function __construct(ContainerInterface $inner, array $aliases)
+    public function __construct(PsrContainerInterface $inner, array $aliases)
     {
         $this->inner = $inner;
         $this->aliases = $aliases;

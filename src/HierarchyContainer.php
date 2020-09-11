@@ -2,8 +2,8 @@
 
 namespace Dhii\Container;
 
+use Dhii\Collection\ContainerInterface;
 use Dhii\Container\Exception\NotFoundException;
-use Psr\Container\ContainerInterface;
 use stdClass;
 
 /**

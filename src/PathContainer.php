@@ -2,8 +2,9 @@
 
 namespace Dhii\Container;
 
+use Dhii\Collection\ContainerInterface;
 use Dhii\Container\Exception\NotFoundException;
-use Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
@@ -49,7 +50,7 @@ class PathContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var ContainerInterface
+     * @var PsrContainerInterface
      */
     protected $inner;
 
@@ -65,10 +66,10 @@ class PathContainer implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param ContainerInterface $inner     The container instance to decorate.
+     * @param PsrContainerInterface $inner     The container instance to decorate.
      * @param string                $delimiter The path delimiter to use.
      */
-    public function __construct(ContainerInterface $inner, string $delimiter = '/')
+    public function __construct(PsrContainerInterface $inner, string $delimiter = '/')
     {
         $this->inner = $inner;
         $this->delimiter = $delimiter;
@@ -94,7 +95,7 @@ class PathContainer implements ContainerInterface
         $head = $path[0];
 
         while (!empty($path)) {
-            if (!($current instanceof ContainerInterface)) {
+            if (!($current instanceof PsrContainerInterface)) {
                 $tail = implode($this->delimiter, $path);
                 throw new NotFoundException("Key '{$head}' does not exist at path '{$tail}'", 0, null, $this, $head);
             }
