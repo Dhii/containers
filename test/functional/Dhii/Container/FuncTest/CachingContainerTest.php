@@ -2,13 +2,31 @@
 
 namespace Dhii\Container\FuncTest;
 
-use Dhii\Container\CachingContainer;
-use Dhii\Container\TestHelpers\ContainerMock;
+use Dhii\Container\CachingContainer as TestSubject;
+use Dhii\Container\TestHelpers\ComponentMockeryTrait;
 use Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CachingContainerTest extends TestCase
 {
+    use ComponentMockeryTrait;
+
+    /**
+     * Creates a new instance of the test subject.
+     *
+     * @param array $dependencies A list of constructor args.
+     * @param array|null $methods The names of methods to mock in the subject.
+     * @return MockObject|TestSubject The new instance.
+     * @throws Exception If problem creating.
+     */
+    protected function createSubject(array $dependencies, array $methods = null)
+    {
+        return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
+            ->setConstructorArgs($dependencies)
+            ->getMock();
+    }
+
     /**
      * Tests that the subject can correctly retrieve a value from the inner container.
      *
@@ -22,8 +40,10 @@ class CachingContainerTest extends TestCase
         {
             $key = uniqid('key');
             $value = (object) [];
-            $container = ContainerMock::create($this)->expectHasService($key, $value);
-            $subject = new CachingContainer($container);
+            $container = $this->createContainer([
+                $key       => $value,
+            ]);
+            $subject = $this->createSubject([$container]);
 
             $container->expects($this->exactly(1))
                 ->method('get')
@@ -57,10 +77,12 @@ class CachingContainerTest extends TestCase
             $key1 = uniqid('key');
             $key2 = uniqid('not-exists');
 
-            $container = ContainerMock::create($this);
+            $container = $this->createContainer([
+                $key1       => uniqid('value'),
+            ]);
             $container->method('has')->withConsecutive([$key1], [$key2])->willReturnOnConsecutiveCalls(true, false);
 
-            $subject = new CachingContainer($container);
+            $subject = $this->createSubject([$container]);
         }
 
         {

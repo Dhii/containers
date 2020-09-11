@@ -2,6 +2,7 @@
 
 namespace Dhii\Container;
 
+use Dhii\Collection\ContainerInterface;
 use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
@@ -14,7 +15,7 @@ use Psr\Container\NotFoundExceptionInterface;
  *
  * @package Dhii\Container1
  */
-class CachingContainer implements PsrContainerInterface
+class CachingContainer implements ContainerInterface
 {
     use StringTranslatingTrait;
 
@@ -51,16 +52,13 @@ class CachingContainer implements PsrContainerInterface
             throw new NotFoundException(
                 $this->__('Key "%1$s" not found in inner container', [$key]),
                 0,
-                $e,
-                $this,
-                $key
+                $e
             );
         } catch (Exception $e) {
             throw new ContainerException(
                 $this->__('Could not retrieve value for key "%1$s from inner container', [$key]),
                 0,
-                $e,
-                $this
+                $e
             );
         }
 
@@ -82,8 +80,7 @@ class CachingContainer implements PsrContainerInterface
             throw new ContainerException(
                 $this->__('Could not check cache for key "%1$s"', [$key]),
                 0,
-                $e,
-                $this
+                $e
             );
         }
 
@@ -95,8 +92,7 @@ class CachingContainer implements PsrContainerInterface
             throw new ContainerException(
                 $this->__('Could not check inner container for key "%1$s"', [$key]),
                 0,
-                $e,
-                $this
+                $e
             );
         }
 

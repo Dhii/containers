@@ -16,13 +16,13 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.0 | ^8.0",
-        "container-interop/service-provider": "^0.4",
-        "dhii/collections-interface": "^0.3.0-alpha1"
+        "php": "^7.1 | ^8.0",
+        "dhii/collections-interface": "^0.3.0-alpha1",
+        "container-interop/service-provider": "^0.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0 || ^7.0",
         "slevomat/coding-standard": "~4.0",
+        "phpunit/phpunit": "^7.0",
         "gmazzap/andrew": "^1.1",
         "psr/container": "^1.0"
     },

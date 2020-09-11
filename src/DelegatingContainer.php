@@ -46,9 +46,7 @@ class DelegatingContainer implements ContainerInterface
             throw new NotFoundException(
                 $this->__('Service not found for key "%1$s"', [$id]),
                 0,
-                null,
-                $this,
-                $id
+                null
             );
         }
 
@@ -60,8 +58,7 @@ class DelegatingContainer implements ContainerInterface
             throw new ContainerException(
                 $this->__('Could not create service "%1$s"', [$id]),
                 0,
-                $e,
-                $this
+                $e
             );
         }
 
@@ -79,8 +76,7 @@ class DelegatingContainer implements ContainerInterface
             throw new ContainerException(
                 $this->__('Could not extend service "%1$s"', [$id]),
                 0,
-                $e,
-                $this
+                $e
             );
         }
 
@@ -151,8 +147,7 @@ class DelegatingContainer implements ContainerInterface
     /**
      * Retrieves the container to be used for definitions and extensions.
      *
-     * @return PsrContainerInterface The parent container, if set.
-     * Otherwise, this instance.
+     * @return PsrContainerInterface The parent container, if set. Otherwise, this instance.
      */
     protected function _getBaseContainer() : PsrContainerInterface
     {
