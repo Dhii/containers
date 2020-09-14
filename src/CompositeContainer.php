@@ -2,13 +2,13 @@
 
 namespace Dhii\Container;
 
+use Dhii\Collection\ContainerInterface;
 use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
-use Dhii\Collection\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Exception;
-use Psr\Container\ContainerInterface as BaseContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Traversable;
 use UnexpectedValueException;
 
@@ -17,12 +17,12 @@ class CompositeContainer implements ContainerInterface
     use StringTranslatingTrait;
 
     /**
-     * @var array|BaseContainerInterface[]|Traversable
+     * @var array|PsrContainerInterface[]|Traversable
      */
     protected $containers;
 
     /**
-     * @param BaseContainerInterface[]|Traversable $containers The list of containers.
+     * @param PsrContainerInterface[]|Traversable $containers The list of containers.
      */
     public function __construct($containers)
     {
@@ -50,16 +50,13 @@ class CompositeContainer implements ContainerInterface
                 throw new NotFoundException(
                     $this->__('Failed to retrieve value for key "%1$s" from container at index "%2$s"', [$key, $index]),
                     0,
-                    $e,
-                    $this,
-                    $key
+                    $e
                 );
             } catch (Exception $e) {
                 throw new ContainerException(
                     $this->__('Failed check for key "%1$s" on container at index "%2$s"', [$key, $index]),
                     0,
-                    $e,
-                    $this
+                    $e
                 );
             }
         }
@@ -67,9 +64,7 @@ class CompositeContainer implements ContainerInterface
         throw new NotFoundException(
             $this->__('Key "%1$s" not found in any of the containers', [$key]),
             0,
-            null,
-            $this,
-            $key
+            null
         );
     }
 
@@ -89,8 +84,7 @@ class CompositeContainer implements ContainerInterface
                 throw new ContainerException(
                     $this->__('Failed check for key "%1$s" on container at index "%2$s"', [$key, $index]),
                     0,
-                    $e,
-                    $this
+                    $e
                 );
             }
         }

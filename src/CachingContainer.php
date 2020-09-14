@@ -2,12 +2,12 @@
 
 namespace Dhii\Container;
 
+use Dhii\Collection\ContainerInterface;
 use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
-use Dhii\Collection\ContainerInterface;
 use Exception;
-use Psr\Container\ContainerInterface as BaseContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
@@ -24,14 +24,14 @@ class CachingContainer implements ContainerInterface
      */
     protected $cache;
     /**
-     * @var BaseContainerInterface
+     * @var PsrContainerInterface
      */
     protected $container;
 
     /**
-     * @param BaseContainerInterface $container The container to cache entries from.
+     * @param PsrContainerInterface $container The container to cache entries from.
      */
-    public function __construct(BaseContainerInterface $container)
+    public function __construct(PsrContainerInterface $container)
     {
         $this->container = $container;
         $this->cache = [];
@@ -52,16 +52,13 @@ class CachingContainer implements ContainerInterface
             throw new NotFoundException(
                 $this->__('Key "%1$s" not found in inner container', [$key]),
                 0,
-                $e,
-                $this,
-                $key
+                $e
             );
         } catch (Exception $e) {
             throw new ContainerException(
                 $this->__('Could not retrieve value for key "%1$s from inner container', [$key]),
                 0,
-                $e,
-                $this
+                $e
             );
         }
 
@@ -83,8 +80,7 @@ class CachingContainer implements ContainerInterface
             throw new ContainerException(
                 $this->__('Could not check cache for key "%1$s"', [$key]),
                 0,
-                $e,
-                $this
+                $e
             );
         }
 
@@ -96,8 +92,7 @@ class CachingContainer implements ContainerInterface
             throw new ContainerException(
                 $this->__('Could not check inner container for key "%1$s"', [$key]),
                 0,
-                $e,
-                $this
+                $e
             );
         }
 

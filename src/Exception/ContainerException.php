@@ -2,8 +2,8 @@
 
 namespace Dhii\Container\Exception;
 
-use Psr\Container\ContainerExceptionInterface;
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Throwable;
 

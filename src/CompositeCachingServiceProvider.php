@@ -3,7 +3,7 @@
 namespace Dhii\Container;
 
 use Interop\Container\ServiceProviderInterface;
-use Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 
 /**
  * A service provider that aggregates service definitions from other providers.
@@ -108,7 +108,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
 
             if (isset($defaults[$key])) {
                 $default = $defaults[$key];
-                $merged[$key] = function (ContainerInterface $c, $previous = null) use ($default, $extension) {
+                $merged[$key] = function (PsrContainerInterface $c, $previous = null) use ($default, $extension) {
                     assert(is_callable($default));
 
                     $result = $default($c, $previous);

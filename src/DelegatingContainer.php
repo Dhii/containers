@@ -2,12 +2,12 @@
 
 namespace Dhii\Container;
 
+use Dhii\Collection\ContainerInterface;
 use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
 use Interop\Container\ServiceProviderInterface;
-use Dhii\Collection\ContainerInterface;
-use Psr\Container\ContainerInterface as BaseContainerInterface;
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use UnexpectedValueException;
 
 class DelegatingContainer implements ContainerInterface
@@ -18,16 +18,17 @@ class DelegatingContainer implements ContainerInterface
      * @var ServiceProviderInterface
      */
     protected $provider;
+
     /**
-     * @var ContainerInterface|null
+     * @var PsrContainerInterface|null
      */
     protected $parent;
 
     /**
-     * @param ServiceProviderInterface $provider
-     * @param BaseContainerInterface|null $parent
+     * @param ServiceProviderInterface   $provider
+     * @param PsrContainerInterface|null $parent
      */
-    public function __construct(ServiceProviderInterface $provider, BaseContainerInterface $parent = null)
+    public function __construct(ServiceProviderInterface $provider, PsrContainerInterface $parent = null)
     {
         $this->provider = $provider;
         $this->parent = $parent;
@@ -45,9 +46,7 @@ class DelegatingContainer implements ContainerInterface
             throw new NotFoundException(
                 $this->__('Service not found for key "%1$s"', [$id]),
                 0,
-                null,
-                $this,
-                $id
+                null
             );
         }
 
@@ -59,8 +58,7 @@ class DelegatingContainer implements ContainerInterface
             throw new ContainerException(
                 $this->__('Could not create service "%1$s"', [$id]),
                 0,
-                $e,
-                $this
+                $e
             );
         }
 
@@ -78,8 +76,7 @@ class DelegatingContainer implements ContainerInterface
             throw new ContainerException(
                 $this->__('Could not extend service "%1$s"', [$id]),
                 0,
-                $e,
-                $this
+                $e
             );
         }
 
@@ -150,12 +147,11 @@ class DelegatingContainer implements ContainerInterface
     /**
      * Retrieves the container to be used for definitions and extensions.
      *
-     * @return BaseContainerInterface The parent container, if set.
-     * Otherwise, this instance.
+     * @return PsrContainerInterface The parent container, if set. Otherwise, this instance.
      */
-    protected function _getBaseContainer(): BaseContainerInterface
+    protected function _getBaseContainer() : PsrContainerInterface
     {
-        return $this->parent instanceof BaseContainerInterface
+        return $this->parent instanceof PsrContainerInterface
             ? $this->parent
             : $this;
     }

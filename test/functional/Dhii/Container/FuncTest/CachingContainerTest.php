@@ -23,6 +23,7 @@ class CachingContainerTest extends TestCase
     protected function createSubject(array $dependencies, array $methods = null)
     {
         return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
+            ->setConstructorArgs($dependencies)
             ->getMock();
     }
 
@@ -73,16 +74,20 @@ class CachingContainerTest extends TestCase
     public function testHas()
     {
         {
-            $key = uniqid('key');
+            $key1 = uniqid('key');
+            $key2 = uniqid('not-exists');
+
             $container = $this->createContainer([
-                $key       => uniqid('value'),
+                $key1       => uniqid('value'),
             ]);
+            $container->method('has')->withConsecutive([$key1], [$key2])->willReturnOnConsecutiveCalls(true, false);
+
             $subject = $this->createSubject([$container]);
         }
 
         {
-            $this->assertTrue($subject->has($key), 'Wrong determined having');
-            $this->assertFalse($subject->has(uniqid('non-existing-key')), 'Wrong determined not having');
+            $this->assertTrue($subject->has($key1), 'Wrong determined having');
+            $this->assertFalse($subject->has($key2), 'Wrong determined not having');
         }
     }
 }
