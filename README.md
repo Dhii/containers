@@ -115,7 +115,7 @@ echo $config->get('live_db_host'); // Print 'db.myserver.com'
 echo $config->get('production/db/host'); // That value is still accessible by the original full path
 
 // Isolate production DB configuration, but without the 'password' key - perhaps to be passed to the UI, or another untrusted party
-$productionConfig = new MaskingContainer($config->get('production/db'), true, ['password' => 'false']);
+$productionConfig = new MaskingContainer($config->get('production/db'), true, ['password' => false]);
 echo $productionConfig->get('password'); // NotFoundException: This key does not exist for this container
 ```
 
