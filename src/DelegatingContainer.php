@@ -39,48 +39,25 @@ class DelegatingContainer implements ContainerInterface
      */
     public function get($id)
     {
-        $provider = $this->provider;
-        $services = $provider->getFactories();
+        static $stack = [];
 
-        if (!array_key_exists($id, $services)) {
-            throw new NotFoundException(
-                $this->__('Service not found for key "%1$s"', [$id]),
+        if (array_key_exists($id, $stack)) {
+            $trace = implode(' -> ', array_keys($stack)) . ' -> ' . $id;
+
+            throw new ContainerException(
+                $this->__("Circular dependency detected:\n%s", [$trace]),
                 0,
                 null
             );
         }
 
-        $service = $services[$id];
+        $stack[$id] = true;
 
         try {
-            $service = $this->_invokeFactory($service);
-        } catch (UnexpectedValueException $e) {
-            throw new ContainerException(
-                $this->__('Could not create service "%1$s"', [$id]),
-                0,
-                $e
-            );
+            return $this->_createService($id);
+        } finally {
+            unset($stack[$id]);
         }
-
-        $extensions = $provider->getExtensions();
-
-        if (!array_key_exists($id, $extensions)) {
-            return $service;
-        }
-
-        $extension = $extensions[$id];
-
-        try {
-            $service = $this->_invokeExtension($extension, $service);
-        } catch (UnexpectedValueException $e) {
-            throw new ContainerException(
-                $this->__('Could not extend service "%1$s"', [$id]),
-                0,
-                $e
-            );
-        }
-
-        return $service;
     }
 
     /**
@@ -91,6 +68,64 @@ class DelegatingContainer implements ContainerInterface
         $services = $this->provider->getFactories();
 
         return array_key_exists($id, $services);
+    }
+
+    /**
+     * Creates a service, using the factory that corresponds to a specific key.
+     *
+     * @since [*next-version*]
+     *
+     * @param string $key The key of the service to be created.
+     *
+     * @return mixed The created service.
+     *
+     * @throws NotFoundException If no factory corresponds to the given $key.
+     * @throws ContainerException If an error occurred while creating the service.
+     */
+    protected function _createService(string $key)
+    {
+        $provider = $this->provider;
+        $services = $provider->getFactories();
+
+        if (!array_key_exists($key, $services)) {
+            throw new NotFoundException(
+                $this->__('Service not found for key "%1$s"', [$key]),
+                0,
+                null
+            );
+        }
+
+        $service = $services[$key];
+
+        try {
+            $service = $this->_invokeFactory($service);
+        } catch (UnexpectedValueException $e) {
+            throw new ContainerException(
+                $this->__('Could not create service "%1$s"', [$key]),
+                0,
+                $e
+            );
+        }
+
+        $extensions = $provider->getExtensions();
+
+        if (!array_key_exists($key, $extensions)) {
+            return $service;
+        }
+
+        $extension = $extensions[$key];
+
+        try {
+            $service = $this->_invokeExtension($extension, $service);
+        } catch (UnexpectedValueException $e) {
+            throw new ContainerException(
+                $this->__('Could not extend service "%1$s"', [$key]),
+                0,
+                $e
+            );
+        }
+
+        return $service;
     }
 
     /**
