@@ -1,6 +1,6 @@
 # Dhii - Containers
 
-[![Build Status](https://travis-ci.org/Dhii/containers.svg?branch=master)](https://travis-ci.org/Dhii/containers)
+[![Build Status](https://travis-ci.com/Dhii/containers.svg?branch=develop)](https://travis-ci.com/Dhii/containers)
 [![Code Climate](https://codeclimate.com/github/Dhii/containers/badges/gpa.svg)](https://codeclimate.com/github/Dhii/containers)
 [![Test Coverage](https://codeclimate.com/github/Dhii/containers/badges/coverage.svg)](https://codeclimate.com/github/Dhii/containers/coverage)
 
