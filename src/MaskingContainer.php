@@ -45,7 +45,7 @@ class MaskingContainer implements ContainerInterface
      * @param bool[]                $mask        A mapping of keys to booleans, such that `true` exposes the mapped key
      *                                           and `false` hides the mapped key.
      */
-    public function __construct(PsrContainerInterface $inner, $defaultMask, array $mask)
+    public function __construct(PsrContainerInterface $inner, bool $defaultMask, array $mask)
     {
         $this->inner = $inner;
         $this->defMask = $defaultMask;
