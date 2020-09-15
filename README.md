@@ -110,7 +110,7 @@ echo $config->get('production/db/password'); // Print 'DN(Q(u3dgh3q87g3'
 echo $config->get('dev/db/password'); // Print '': all of the old configuration is available on this new container
 
 // Make production host also available as 'live_db_host' - maybe something requires it to be at that key, and not in a path
-$config = new AilasingContainer($config, ['live_db_host' => 'production/db/host']);
+$config = new AliasingContainer($config, ['live_db_host' => 'production/db/host']);
 echo $config->get('live_db_host'); // Print 'db.myserver.com'
 echo $config->get('production/db/host'); // That value is still accessible by the original full path
 
