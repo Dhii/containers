@@ -21,7 +21,8 @@ script:
   - vendor/bin/phpunit
 
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter format-coverage test/coverage/clover.xml --input-type clover
+  - ./cc-test-reporter upload-coverage
 
 cache:
   directories:
