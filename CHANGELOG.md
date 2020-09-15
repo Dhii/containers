@@ -6,5 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [[*next-version*]] - YYYY-MM-DD
 
+## [0.1.1-alpha1] - 2020-09-14
+### Fixed
+- Missing parameter type in `MaskingContainer`'s constructor (#11).
+
 ## [0.1.0-alpha1] - 2020-09-14
 Initial release.
