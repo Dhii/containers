@@ -20,6 +20,7 @@ A selection of [PSR-11][] containers for utility, simplicity, and ease.
 - [`SegmentingContainer`][] - A decorator that allows access to a container with delimiter-separated path-like keys as if it were a hierarchy of containers. Useful isolating a segment of configuration when using a path-like naming convention for keys (such as namespacing). The opposite of `PathContainer`.
 - [`HierarchyContainer`][] - A container that allows access to a arbitrary hierarchy of arrays as if it was a hierarchy of containers. Creates containers in place, and caches them for future re-use.
 - [`Dictionary`][] - Allows access to an array via a container interface, without sacrificing iterability. [`DataStructureBasedFactory`][] allows this to be recursive for an array hierarchy of an arbitrary depth. Useful for transforming an array into a container, especially with other decorators.
+- [`SimpleCacheContainer`][] - A decorator that presents a PSR-16 cache as a mutable, clearable container with fixed TTL.
 
 ### DI
 - [`ServiceProvider`][] - A super-simple implementation that allows quick creation of  [service providers][Service Provider] from known maps of factories and extensions.
@@ -141,5 +142,6 @@ echo $productionConfig->get('password'); // NotFoundException: This key does not
 [`HierarchyContainer`]: https://github.com/Dhii/containers/blob/develop/src/HierarchyContainer.php
 [`Dictionary`]: https://github.com/Dhii/containers/blob/develop/src/Dictionary.php
 [`DataStructureBasedFactory`]: https://github.com/Dhii/containers/blob/develop/src/DataStructureBasedFactory.php
+[`SimpleCacheContainer`]: https://github.com/Dhii/containers/blob/develop/src/SimpleCacheContainer.php
 
 [DDL]: https://thecodingmachine.io/psr-11-an-in-depth-view-at-the-delegate-lookup-feature
