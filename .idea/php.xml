@@ -47,6 +47,10 @@
       <path value="$PROJECT_DIR$/vendor/dhii/factory-interface" />
       <path value="$PROJECT_DIR$/vendor/dhii/stringable-interface" />
       <path value="$PROJECT_DIR$/vendor/dhii/data-container-interface" />
+      <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/vendor/wildwolf/psr-cache-common" />
+      <path value="$PROJECT_DIR$/vendor/wildwolf/psr-memory-cache" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
