@@ -92,7 +92,7 @@ class FlashContainer implements
     public function set(string $key, $value): void
     {
         $this->flashData[$key] = $value;
-        $this->persist();
+        $this->persist($this->flashData);
     }
 
     /**
@@ -107,7 +107,7 @@ class FlashContainer implements
         }
 
         unset($this->flashData[$key]);
-        $this->persist();
+        $this->persist($this->flashData);
     }
 
     /**
@@ -118,14 +118,16 @@ class FlashContainer implements
     public function clear(): void
     {
         $this->flashData = [];
-        $this->persist();
+        $this->persist($this->flashData);
     }
 
     /**
      * Persist this instance's data from memory into storage.
+     *
+     * @param array $data The data to persist.
      */
-    protected function persist(): void
+    protected function persist(array $data): void
     {
-        $this->data->set($this->dataKey, $this->flashData);
+        $this->data->set($this->dataKey, $data);
     }
 }
