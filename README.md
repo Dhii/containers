@@ -22,6 +22,7 @@ A selection of [PSR-11][] containers for utility, simplicity, and ease.
 - [`Dictionary`][] - Allows access to an array via a container interface, without sacrificing iterability.
 - [`DataStructureBasedFactory`][] allows this to be recursive for an array hierarchy of an arbitrary depth. Useful for transforming an array into a container, especially with other decorators.
 - [`SimpleCacheContainer`][] - A decorator that presents a PSR-16 cache as a mutable, clearable container with fixed TTL.
+- [`FlashContainer`][] - A decorator that presents a value from an inner storage container as another container, copying that value into memory, then clearing it from storage.
 
 ### DI
 - [`ServiceProvider`][] - A super-simple implementation that allows quick creation of  [service providers][Service Provider] from known maps of factories and extensions.
@@ -144,5 +145,6 @@ echo $productionConfig->get('password'); // NotFoundException: This key does not
 [`Dictionary`]: https://github.com/Dhii/containers/blob/develop/src/Dictionary.php
 [`DataStructureBasedFactory`]: https://github.com/Dhii/containers/blob/develop/src/DataStructureBasedFactory.php
 [`SimpleCacheContainer`]: https://github.com/Dhii/containers/blob/develop/src/SimpleCacheContainer.php
+[`FlashContainer`]: https://github.com/Dhii/containers/blob/develop/src/FlashContainer.php
 
 [DDL]: https://thecodingmachine.io/psr-11-an-in-depth-view-at-the-delegate-lookup-feature
