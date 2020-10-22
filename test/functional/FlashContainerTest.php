@@ -113,6 +113,7 @@ class FlashContainerTest extends TestCase
             // Clearing
             $subject->clear();
             $this->assertFalse($subject->has($key2), 'Flash data was not cleared correctly');
+            $this->assertEquals([], $storage->get($storageKey), 'Flash data clearing not persisted correctly');
 
             // Isolation
             $this->assertEquals($otherStorageValue, $storage->get($otherStorageKey), 'Other storage values affected by flash data');

@@ -118,6 +118,7 @@ class FlashContainer implements
     public function clear(): void
     {
         $this->flashData = [];
+        $this->persist();
     }
 
     /**
