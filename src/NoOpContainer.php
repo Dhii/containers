@@ -13,6 +13,12 @@ use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use IteratorAggregate;
 
+/**
+ * A container that does nothing.
+ *
+ * This can be used if an actual implementation is not available,
+ * without extra checks or nullables - just as if it was a real one.
+ */
 class NoOpContainer implements
     MutableContainerInterface,
     IteratorAggregate,
@@ -51,26 +57,41 @@ class NoOpContainer implements
         throw new ContainerException('NoOp container cannot have values');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function clear(): void
     {
         // Do nothing
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withMappings(array $mappings): WritableContainerInterface
     {
         return clone $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withAddedMappings(array $mappings): WritableContainerInterface
     {
         return clone $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function withoutKeys(array $keys): WritableContainerInterface
     {
         return clone $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getIterator()
     {
         return new ArrayIterator([]);
