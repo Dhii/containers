@@ -23,6 +23,7 @@ A selection of [PSR-11][] containers for utility, simplicity, and ease.
 - [`DataStructureBasedFactory`][] allows this to be recursive for an array hierarchy of an arbitrary depth. Useful for transforming an array into a container, especially with other decorators.
 - [`SimpleCacheContainer`][] - A decorator that presents a PSR-16 cache as a mutable, clearable container with fixed TTL.
 - [`FlashContainer`][] - A decorator that presents a value from an inner storage container as another container, copying that value into memory, then clearing it from storage.
+- [`NoOpContainer`][] - A no-op writable mutable clearable map that does nothing, and cannot have any values.
 
 ### DI
 - [`ServiceProvider`][] - A super-simple implementation that allows quick creation of  [service providers][Service Provider] from known maps of factories and extensions.
@@ -128,23 +129,24 @@ echo $productionConfig->get('password'); // NotFoundException: This key does not
 [PSR-11]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md
 [SoC]: https://dev.to/xedinunknown/separation-of-concerns-3e7d
 
-[`ServiceProvider`]: https://github.com/Dhii/containers/blob/develop/src/ServiceProvider.php
-[`CompositeCachingServiceProvider`]: https://github.com/Dhii/containers/blob/develop/src/CompositeCachingServiceProvider.php
-[`DelegatingContainer`]: https://github.com/Dhii/containers/blob/develop/src/DelegatingContainer.php
-[`CachingContainer`]: https://github.com/Dhii/containers/blob/develop/src/CachingContainer.php
-[`CompositeContainer`]: https://github.com/Dhii/containers/blob/develop/src/CompositeContainer.php
-[`ProxyContainer`]: https://github.com/Dhii/containers/blob/develop/src/ProxyContainer.php
-[`AliasingContainer`]: https://github.com/Dhii/containers/blob/develop/src/AliasingContainer.php
-[`MappingContainer`]: https://github.com/Dhii/containers/blob/develop/src/MappingContainer.php
-[`PrefixingContainer`]: https://github.com/Dhii/containers/blob/develop/src/PrefixingContainer.php
-[`DeprefixingContainer`]: https://github.com/Dhii/containers/blob/develop/src/DeprefixingContainer.php
-[`MaskingContainer`]: https://github.com/Dhii/containers/blob/develop/src/MaskingContainer.php
-[`PathContainer`]: https://github.com/Dhii/containers/blob/develop/src/PathContainer.php
-[`SegmentingContainer`]: https://github.com/Dhii/containers/blob/develop/src/SegmentingContainer.php
-[`HierarchyContainer`]: https://github.com/Dhii/containers/blob/develop/src/HierarchyContainer.php
-[`Dictionary`]: https://github.com/Dhii/containers/blob/develop/src/Dictionary.php
-[`DataStructureBasedFactory`]: https://github.com/Dhii/containers/blob/develop/src/DataStructureBasedFactory.php
-[`SimpleCacheContainer`]: https://github.com/Dhii/containers/blob/develop/src/SimpleCacheContainer.php
-[`FlashContainer`]: https://github.com/Dhii/containers/blob/develop/src/FlashContainer.php
+[`ServiceProvider`]: src/ServiceProvider.php
+[`CompositeCachingServiceProvider`]: src/CompositeCachingServiceProvider.php
+[`DelegatingContainer`]: src/DelegatingContainer.php
+[`CachingContainer`]: src/CachingContainer.php
+[`CompositeContainer`]: src/CompositeContainer.php
+[`ProxyContainer`]: src/ProxyContainer.php
+[`AliasingContainer`]: src/AliasingContainer.php
+[`MappingContainer`]: src/MappingContainer.php
+[`PrefixingContainer`]: src/PrefixingContainer.php
+[`DeprefixingContainer`]: src/DeprefixingContainer.php
+[`MaskingContainer`]: src/MaskingContainer.php
+[`PathContainer`]: src/PathContainer.php
+[`SegmentingContainer`]: src/SegmentingContainer.php
+[`HierarchyContainer`]: src/HierarchyContainer.php
+[`Dictionary`]: src/Dictionary.php
+[`DataStructureBasedFactory`]: src/DataStructureBasedFactory.php
+[`SimpleCacheContainer`]: src/SimpleCacheContainer.php
+[`FlashContainer`]: src/FlashContainer.php
+[`NoOpContainer`]: src/NoOpContainer.php
 
 [DDL]: https://thecodingmachine.io/psr-11-an-in-depth-view-at-the-delegate-lookup-feature
