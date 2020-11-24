@@ -1,6 +1,6 @@
 <?php
 
-namespace Dhii\Container\FuncTest;
+namespace Dhii\Container\FuncTest\Dhii\Container\FuncTest;
 
 use Dhii\Container\CompositeContainer;
 use Dhii\Container\TestHelpers\ContainerMock;
