@@ -73,7 +73,7 @@ class CompositeCachingServiceProviderTest extends TestCase
             $this->assertArrayHasKey('three', $result);
 
             // Checking first (simple) extension
-            $this->assertInternalType('callable', $result['one']);
+            $this->assertIsCallable('callable', $result['one']);
             $this->assertEquals(
                 $prev1,
                 $result['one']($container, $prev1),
@@ -81,7 +81,7 @@ class CompositeCachingServiceProviderTest extends TestCase
             );
 
             // Checking second (compound) extension
-            $this->assertInternalType('callable', $result['two']);
+            $this->assertIsCallable('callable', $result['two']);
             $this->assertEquals(
                 $prev3,
                 $result['two']($container, $prev2),
@@ -89,7 +89,7 @@ class CompositeCachingServiceProviderTest extends TestCase
             );
 
             // Checking third (simple) extension
-            $this->assertInternalType('callable', $result['three']);
+            $this->assertIsCallable('callable', $result['three']);
             $this->assertEquals(
                 $prev4,
                 $result['three']($container, $prev4),
