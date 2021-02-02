@@ -41,7 +41,7 @@ class HierarchyContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var array
+     * @var mixed[]
      */
     protected $data;
 
@@ -50,7 +50,7 @@ class HierarchyContainer implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param array $data The hierarchical data for which to create the container tree.
+     * @param mixed[] $data The hierarchical data for which to create the container tree.
      */
     public function __construct(array $data)
     {

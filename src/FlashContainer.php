@@ -28,7 +28,7 @@ class FlashContainer implements
     protected $data;
     /** @var string */
     protected $dataKey;
-    /** @var array */
+    /** @var array<array-key, scalar> */
     protected $flashData = [];
 
     /**
@@ -126,7 +126,7 @@ class FlashContainer implements
     /**
      * Persist this instance's data from memory into storage.
      *
-     * @param array $data The data to persist.
+     * @param array<array-key, scalar> $data The data to persist.
      */
     protected function persist(array $data): void
     {

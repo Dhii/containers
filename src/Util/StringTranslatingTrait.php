@@ -11,7 +11,6 @@ namespace Dhii\Container\Util;
  */
 trait StringTranslatingTrait
 {
-
     /**
      * Translates a string, and replaces placeholders.
      *
@@ -19,9 +18,11 @@ trait StringTranslatingTrait
      *
      * @see sprintf()
      * @see _translate()
-     * @param string $string  The format string to translate.
-     * @param array  $args    Placeholder values to replace in the string.
-     * @param mixed  $context The context for translation.
+     *
+     * @param string       $string  The format string to translate.
+     * @param list<scalar> $args    Placeholder values to replace in the string.
+     * @param mixed        $context The context for translation.
+     *
      * @return string The translated string.
      */
     protected function __(string $string, array $args = array(), $context = null): string
@@ -37,11 +38,14 @@ trait StringTranslatingTrait
      * A no-op implementation.
      *
      * @since [*next-version*]
+     *
      * @param string $string The string to translate.
+     * @param string $context The context to translate the string in.
+     *
      * @return string The translated string.
      * phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
      */
-    protected function _translate(string $string, $context = null): string
+    protected function _translate(string $string, string $context = null): string
     {
         return $string;
     }

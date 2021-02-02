@@ -21,17 +21,13 @@ class CachingContainer implements ContainerInterface
 {
     use StringTranslatingTrait;
 
-/**
-     * @var array
-     */
-
-
+    /** @var array<array-key, mixed> */
     protected $cache;
-/**
-     * @var PsrContainerInterface
-     */
+
+    /** @var PsrContainerInterface */
     protected $container;
-/**
+
+    /**
      * @param PsrContainerInterface $container The container to cache entries from.
      */
     public function __construct(PsrContainerInterface $container)
@@ -54,7 +50,11 @@ class CachingContainer implements ContainerInterface
         } catch (NotFoundExceptionInterface $e) {
             throw new NotFoundException($this->__('Key "%1$s" not found in inner container', [$key]), 0, $e);
         } catch (Exception $e) {
-            throw new ContainerException($this->__('Could not retrieve value for key "%1$s from inner container', [$key]), 0, $e);
+            throw new ContainerException(
+                $this->__('Could not retrieve value for key "%1$s from inner container', [$key]),
+                0,
+                $e
+            );
         }
 
         return $value;
@@ -79,7 +79,11 @@ class CachingContainer implements ContainerInterface
                 return true;
             }
         } catch (Exception $e) {
-            throw new ContainerException($this->__('Could not check inner container for key "%1$s"', [$key]), 0, $e);
+            throw new ContainerException(
+                $this->__('Could not check inner container for key "%1$s"', [$key]),
+                0,
+                $e
+            );
         }
 
         return false;

@@ -20,9 +20,10 @@ class ContainerException extends Exception implements ContainerExceptionInterfac
      * @var ContainerInterface|null
      */
     protected $container;
-/**
-     * @param string $message The exception message.
-     * @param int $code The exception code.
+
+    /**
+     * @param string         $message  The exception message.
+     * @param int            $code     The exception code.
      * @param Throwable|null $previous The inner exception, if any.
      */
     public function __construct(string $message = "", int $code = 0, Throwable $previous = null)
