@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dhii\Container\Util;
 
@@ -26,7 +28,6 @@ trait StringTranslatingTrait
     {
         $string = $this->_translate($string, $context);
         array_unshift($args, $string);
-
         return call_user_func_array('sprintf', $args);
     }
 
@@ -43,5 +44,4 @@ trait StringTranslatingTrait
     {
         return $string;
     }
-
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dhii\Container;
 
@@ -19,16 +21,17 @@ class CachingContainer implements ContainerInterface
 {
     use StringTranslatingTrait;
 
-    /**
+/**
      * @var array
      */
+
+
     protected $cache;
-    /**
+/**
      * @var PsrContainerInterface
      */
     protected $container;
-
-    /**
+/**
      * @param PsrContainerInterface $container The container to cache entries from.
      */
     public function __construct(PsrContainerInterface $container)
@@ -43,23 +46,15 @@ class CachingContainer implements ContainerInterface
     public function get($key)
     {
         $key = (string) $key;
-
         try {
             $value = $this->_getCached($key, function () use ($key) {
+
                 return $this->container->get($key);
             });
         } catch (NotFoundExceptionInterface $e) {
-            throw new NotFoundException(
-                $this->__('Key "%1$s" not found in inner container', [$key]),
-                0,
-                $e
-            );
+            throw new NotFoundException($this->__('Key "%1$s" not found in inner container', [$key]), 0, $e);
         } catch (Exception $e) {
-            throw new ContainerException(
-                $this->__('Could not retrieve value for key "%1$s from inner container', [$key]),
-                0,
-                $e
-            );
+            throw new ContainerException($this->__('Could not retrieve value for key "%1$s from inner container', [$key]), 0, $e);
         }
 
         return $value;
@@ -71,17 +66,12 @@ class CachingContainer implements ContainerInterface
     public function has($key)
     {
         $key = (string) $key;
-
         try {
             if ($this->_hasCached($key)) {
                 return true;
             }
         } catch (Exception $e) {
-            throw new ContainerException(
-                $this->__('Could not check cache for key "%1$s"', [$key]),
-                0,
-                $e
-            );
+            throw new ContainerException($this->__('Could not check cache for key "%1$s"', [$key]), 0, $e);
         }
 
         try {
@@ -89,11 +79,7 @@ class CachingContainer implements ContainerInterface
                 return true;
             }
         } catch (Exception $e) {
-            throw new ContainerException(
-                $this->__('Could not check inner container for key "%1$s"', [$key]),
-                0,
-                $e
-            );
+            throw new ContainerException($this->__('Could not check inner container for key "%1$s"', [$key]), 0, $e);
         }
 
         return false;
@@ -128,7 +114,7 @@ class CachingContainer implements ContainerInterface
      *
      * @throws Exception If problem checking.
      */
-    protected function _hasCached(string $key)
+    protected function _hasCached(string $key): bool
     {
         return array_key_exists($key, $this->cache);
     }
@@ -145,7 +131,6 @@ class CachingContainer implements ContainerInterface
     protected function _invokeGenerator(callable $generator)
     {
         $result = $generator();
-
         return $result;
     }
 }

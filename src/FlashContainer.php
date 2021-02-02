@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ClearableContainerInterface;
@@ -52,14 +54,6 @@ class FlashContainer implements
             : [];
 
         $this->purgePersistentData();
-    }
-
-    /**
-     * Clear data from internal storage.
-     */
-    protected function purgePersistentData(): void
-    {
-        $this->data->set($this->dataKey, []);
     }
 
     /**
@@ -119,6 +113,14 @@ class FlashContainer implements
     {
         $this->flashData = [];
         $this->persist($this->flashData);
+    }
+
+    /**
+     * Clear data from internal storage.
+     */
+    protected function purgePersistentData(): void
+    {
+        $this->data->set($this->dataKey, []);
     }
 
     /**

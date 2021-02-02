@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
@@ -89,7 +91,7 @@ class DeprefixingContainer implements ContainerInterface
      *
      * @return string The inner key.
      */
-    protected function getInnerKey($key)
+    protected function getInnerKey(string $key): string
     {
         return $this->prefix . $key;
     }

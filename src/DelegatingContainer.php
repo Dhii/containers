@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
@@ -25,8 +27,6 @@ class DelegatingContainer implements ContainerInterface
     protected $parent;
 
     /**
-     * @param ServiceProviderInterface   $provider
-     * @param PsrContainerInterface|null $parent
      */
     public function __construct(ServiceProviderInterface $provider, PsrContainerInterface $parent = null)
     {
@@ -149,7 +149,7 @@ class DelegatingContainer implements ContainerInterface
      *
      * @return PsrContainerInterface The parent container, if set. Otherwise, this instance.
      */
-    protected function _getBaseContainer() : PsrContainerInterface
+    protected function _getBaseContainer(): PsrContainerInterface
     {
         return $this->parent instanceof PsrContainerInterface
             ? $this->parent

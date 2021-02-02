@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Interop\Container\ServiceProviderInterface;
@@ -28,7 +30,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
     /**
      * @param iterable|ServiceProviderInterface[] $providers
      */
-    public function __construct($providers)
+    public function __construct(iterable $providers)
     {
         $this->providers = $providers;
     }
@@ -64,7 +66,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      *
      * @param iterable|ServiceProviderInterface[] $providers The providers to index.
      */
-    protected function _indexProviderDefinitions($providers)
+    protected function _indexProviderDefinitions(iterable $providers): void
     {
         $factories = [];
         $extensions = [];

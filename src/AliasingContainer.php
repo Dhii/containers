@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
 use Dhii\Container\Util\StringTranslatingTrait;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
+
 use function array_key_exists;
 
 /**
@@ -73,7 +76,7 @@ class AliasingContainer implements ContainerInterface
      *
      * @return string The inner key.
      */
-    protected function getInnerKey($key)
+    protected function getInnerKey(string $key): string
     {
         if (array_key_exists($key, $this->aliases)) {
             return $this->aliases[$key];
