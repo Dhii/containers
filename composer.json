@@ -38,6 +38,7 @@
         "psr-4": {
             "Dhii\\Container\\UnitTest\\": "tests/unit",
             "Dhii\\Container\\FuncTest\\": "tests/functional",
+            "Dhii\\Container\\SysTest\\": "tests/system",
             "Dhii\\Container\\TestHelpers\\": "tests/helpers"
         }
     },

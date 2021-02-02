@@ -4,11 +4,11 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/functional" isTestSource="true" packagePrefix="Dhii\Container\FuncTest\" />
-      <sourceFolder url="file://$MODULE_DIR$/tests/helpers" isTestSource="true" packagePrefix="Dhii\Container\TestHelpers\" />
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Dhii\Container\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/unit" isTestSource="true" packagePrefix="Dhii\Container\UnitTest\" />
-      <sourceFolder url="file://$MODULE_DIR$/tests/system" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/system" isTestSource="true" packagePrefix="Dhii\Container\SysTest\" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Dhii\Container\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/helpers" isTestSource="true" packagePrefix="Dhii\Container\TestHelpers\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/container-interop/service-provider" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/dhii/collections-interface" />
