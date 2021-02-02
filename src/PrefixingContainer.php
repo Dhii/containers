@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
@@ -98,7 +100,7 @@ class PrefixingContainer implements ContainerInterface
      *
      * @return string The inner key.
      */
-    protected function unprefix($key)
+    protected function unprefix(string $key): string
     {
         return $this->isPrefixed($key)
             ? substr($key, strlen($this->prefix))
@@ -114,7 +116,7 @@ class PrefixingContainer implements ContainerInterface
      *
      * @return bool True if the key is prefixed, false if not.
      */
-    protected function isPrefixed($key)
+    protected function isPrefixed(string $key): bool
     {
         return strlen($this->prefix) > 0 && strpos($key, $this->prefix) === 0;
     }

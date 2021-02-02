@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use ArrayIterator;
@@ -19,11 +21,11 @@ class Dictionary implements
 {
     use StringTranslatingTrait;
 
-    /** @var array */
+    /** @var array<array-key, mixed> */
     protected $data;
 
     /**
-     * @param array $data The key-value map of data.
+     * @param array<array-key, mixed> $data The key-value map of data.
      */
     public function __construct(array $data)
     {

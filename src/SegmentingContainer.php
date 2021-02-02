@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
+
 use function array_filter;
 use function ltrim;
 
@@ -75,7 +78,7 @@ class SegmentingContainer implements ContainerInterface
      * @param PsrContainerInterface $inner     The container to decorate.
      * @param string                $delimiter The path delimiter.
      */
-    public function __construct($inner, $delimiter = '/')
+    public function __construct(PsrContainerInterface $inner, string $delimiter = '/')
     {
         $this->inner = $inner;
         $this->root = '';

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Dhii\Container;
@@ -15,10 +16,8 @@ class DataStructureBasedFactory implements DataStructureBasedFactoryInterface
      * @var WritableMapFactoryInterface
      */
     protected $containerFactory;
-
-    public function __construct(
-        WritableMapFactoryInterface $containerFactory
-    ) {
+    public function __construct(WritableMapFactoryInterface $containerFactory)
+    {
         $this->containerFactory = $containerFactory;
     }
 
@@ -37,7 +36,6 @@ class DataStructureBasedFactory implements DataStructureBasedFactoryInterface
         }
 
         $container = $this->containerFactory->createContainerFromArray($map);
-
         return $container;
     }
 }

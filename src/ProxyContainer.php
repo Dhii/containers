@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Dhii\Container;
@@ -17,12 +18,13 @@ class ProxyContainer implements BaseContainerInterface
 {
     use StringTranslatingTrait;
 
-    /**
+/**
      * @var BaseContainerInterface
      */
-    protected $innerContainer;
 
-    /**
+
+    protected $innerContainer;
+/**
      * @param BaseContainerInterface|null $innerContainer The inner container, if any.
      *                                                    May also be set later with {@see setInnerContainer()}.
      */
@@ -62,7 +64,7 @@ class ProxyContainer implements BaseContainerInterface
      *
      * @param BaseContainerInterface $innerContainer The inner container to proxy.
      */
-    public function setInnerContainer(BaseContainerInterface $innerContainer)
+    public function setInnerContainer(BaseContainerInterface $innerContainer): void
     {
         $this->innerContainer = $innerContainer;
     }

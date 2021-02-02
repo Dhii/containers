@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Dhii\Container;
-
 
 use ArrayIterator;
 use Dhii\Collection\ClearableContainerInterface;
