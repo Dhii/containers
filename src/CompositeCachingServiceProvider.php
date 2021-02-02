@@ -41,7 +41,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
     public function getFactories()
     {
         if (!is_array($this->factories)) {
-            $this->_indexProviderDefinitions($this->providers);
+            $this->indexProviderDefinitions($this->providers);
         }
 
         return $this->factories;
@@ -53,7 +53,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
     public function getExtensions()
     {
         if (!is_array($this->extensions)) {
-            $this->_indexProviderDefinitions($this->providers);
+            $this->indexProviderDefinitions($this->providers);
         }
 
         return $this->extensions;
@@ -66,14 +66,14 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      *
      * @param iterable|ServiceProviderInterface[] $providers The providers to index.
      */
-    protected function _indexProviderDefinitions(iterable $providers): void
+    protected function indexProviderDefinitions(iterable $providers): void
     {
         $factories = [];
         $extensions = [];
 
         foreach ($providers as $provider) {
-            $factories = $this->_mergeFactories($factories, $provider->getFactories());
-            $extensions = $this->_mergeExtensions($extensions, $provider->getExtensions());
+            $factories = $this->mergeFactories($factories, $provider->getFactories());
+            $extensions = $this->mergeExtensions($extensions, $provider->getExtensions());
         }
 
         $this->factories = $factories;
@@ -88,7 +88,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      *
      * @return callable[] The merged factories.
      */
-    protected function _mergeFactories(array $defaults, array $definitions): array
+    protected function mergeFactories(array $defaults, array $definitions): array
     {
         return array_merge($defaults, $definitions);
     }
@@ -101,7 +101,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      *
      * @return callable[] The merged extensions.
      */
-    protected function _mergeExtensions(array $defaults, array $extensions): array
+    protected function mergeExtensions(array $defaults, array $extensions): array
     {
         $merged = [];
 
@@ -125,7 +125,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
             }
         }
 
-        $merged = $this->_mergeFactories($defaults, $merged);
+        $merged = $this->mergeFactories($defaults, $merged);
 
         return $merged;
     }

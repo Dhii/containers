@@ -62,7 +62,7 @@ class CompositeCachingServiceProviderTest extends TestCase
         }
 
         {
-            $result = $_subject->_mergeExtensions($defaults, $extensions);
+            $result = $_subject->mergeExtensions($defaults, $extensions);
         }
 
         {

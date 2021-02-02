@@ -47,7 +47,7 @@ class CachingContainer implements ContainerInterface
     {
         $key = (string) $key;
         try {
-            $value = $this->_getCached($key, function () use ($key) {
+            $value = $this->getCached($key, function () use ($key) {
 
                 return $this->container->get($key);
             });
@@ -67,7 +67,7 @@ class CachingContainer implements ContainerInterface
     {
         $key = (string) $key;
         try {
-            if ($this->_hasCached($key)) {
+            if ($this->hasCached($key)) {
                 return true;
             }
         } catch (Exception $e) {
@@ -95,10 +95,10 @@ class CachingContainer implements ContainerInterface
      *
      * @throws Exception If problem caching.
      */
-    protected function _getCached(string $key, callable $generator)
+    protected function getCached(string $key, callable $generator)
     {
         if (!array_key_exists($key, $this->cache)) {
-            $value = $this->_invokeGenerator($generator);
+            $value = $this->invokeGenerator($generator);
             $this->cache[$key] = $value;
         }
 
@@ -114,7 +114,7 @@ class CachingContainer implements ContainerInterface
      *
      * @throws Exception If problem checking.
      */
-    protected function _hasCached(string $key): bool
+    protected function hasCached(string $key): bool
     {
         return array_key_exists($key, $this->cache);
     }
@@ -128,7 +128,7 @@ class CachingContainer implements ContainerInterface
      *
      * @throws Exception If problem generating.
      */
-    protected function _invokeGenerator(callable $generator)
+    protected function invokeGenerator(callable $generator)
     {
         $result = $generator();
         return $result;
