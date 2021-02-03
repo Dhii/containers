@@ -5,7 +5,14 @@ declare(strict_types=1);
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
+use Exception;
+use Iterator;
+use IteratorAggregate;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
+
+use Traversable;
+
+use UnexpectedValueException;
 
 use function array_filter;
 use function ltrim;
@@ -53,7 +60,7 @@ use function ltrim;
  * @since [*next-version*]
  * @see   PathContainer For an implementation that achieves the opposite effect.
  */
-class SegmentingContainer implements ContainerInterface
+class SegmentingContainer implements ContainerInterface, Iterator
 {
     /**
      * @var PsrContainerInterface
@@ -69,6 +76,11 @@ class SegmentingContainer implements ContainerInterface
      * @var string
      */
     protected $delimiter;
+
+    /**
+     * @var Iterator
+     */
+    protected $iterator;
 
     /**
      * Constructor.
@@ -115,5 +127,74 @@ class SegmentingContainer implements ContainerInterface
     public function has($key)
     {
         return $this->inner->has($key);
+    }
+
+    public function current()
+    {
+        return $this->iterator->current();
+    }
+
+    public function next()
+    {
+        $this->iterator->next();
+    }
+
+    public function key()
+    {
+        return $this->iterator->key();
+    }
+
+    public function valid()
+    {
+        return $this->startsWith($this->iterator->key(), $this->root);
+    }
+
+    public function rewind()
+    {
+        if (!($this->inner instanceof Traversable)) {
+            throw new UnexpectedValueException('Cannot rewind: inner container not an iterator');
+        }
+
+        $this->iterator = $this->normalizeIterator($this->inner);
+        $this->iterator->rewind();
+    }
+
+    /**
+     * Normalizes a traversable into an iterator.
+     *
+     * This is helpful because an `Iterator` can be iterated over by explicitly calling known methods,
+     * which include those that expose the current key.
+     *
+     * @param Traversable $traversable The traversable to normalize.
+     *
+     * @return Iterator The normalized iterator.
+     *
+     * @throws Exception If problem normalizing.
+     */
+    protected function normalizeIterator(Traversable $traversable): Iterator
+    {
+        if ($traversable instanceof Iterator) {
+            return $traversable;
+        }
+
+        // Any `Traversable` that is not an `Iterator` is an `IteratorAggregate`
+        assert($traversable instanceof IteratorAggregate);
+        $traversable = $traversable->getIterator();
+
+        return $this->normalizeIterator($traversable);
+    }
+
+    /**
+     * Determines whether the subject string has another string at the start.
+     *
+     * @param string $subject The subject to check.
+     * @param string $start   The start string to check for.
+     *
+     * @return bool True if subject starts with specified start string; false otherwise.
+     */
+    protected function startsWith(string $subject, string $start): bool
+    {
+        $length = strlen($start);
+        return substr($subject, 0, $length) === $start;
     }
 }
