@@ -9,9 +9,7 @@ use Exception;
 use Iterator;
 use IteratorAggregate;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
-
 use Traversable;
-
 use UnexpectedValueException;
 
 use function array_filter;
@@ -134,7 +132,7 @@ class SegmentingContainer implements ContainerInterface, Iterator
         return $this->iterator->current();
     }
 
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }
@@ -149,7 +147,7 @@ class SegmentingContainer implements ContainerInterface, Iterator
         return $this->startsWith($this->iterator->key(), $this->root);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         if (!($this->inner instanceof Traversable)) {
             throw new UnexpectedValueException('Cannot rewind: inner container not an iterator');
