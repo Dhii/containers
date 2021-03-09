@@ -1,8 +1,7 @@
 # Dhii - Containers
-
-[![Build Status](https://travis-ci.com/Dhii/containers.svg?branch=develop)](https://travis-ci.com/Dhii/containers)
-[![Code Climate](https://codeclimate.com/github/Dhii/containers/badges/gpa.svg)](https://codeclimate.com/github/Dhii/containers)
-[![Test Coverage](https://codeclimate.com/github/Dhii/containers/badges/coverage.svg)](https://codeclimate.com/github/Dhii/containers/coverage)
+[![Continuous Integration](https://github.com/Dhii/containers/actions/workflows/ci.yml/badge.svg)](https://github.com/Dhii/containers/actions/workflows/ci.yml)
+[![Latest Stable Version](https://poser.pugx.org/dhii/containers/v)](//packagist.org/packages/dhii/containers)
+[![Latest Unstable Version](https://poser.pugx.org/dhii/containers/v/unstable)](//packagist.org/packages/dhii/containers)
 
 ## Details
 A selection of [PSR-11][] containers for utility, simplicity, and ease.
