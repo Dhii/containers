@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4e00ced10f6b863885be251d0a63116",
+    "content-hash": "430d152670d6bbc5043b1cc80798438c",
     "packages": [
         {
             "name": "container-interop/service-provider",
@@ -47,12 +47,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dhii/collections-interface.git",
-                "reference": "7c7c4b4459dda9e6db406860d99916d0cee58ccf"
+                "reference": "c066a9b280bbc45fcad2fb8b3280d3d3b58cd990"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dhii/collections-interface/zipball/7c7c4b4459dda9e6db406860d99916d0cee58ccf",
-                "reference": "7c7c4b4459dda9e6db406860d99916d0cee58ccf",
+                "url": "https://api.github.com/repos/Dhii/collections-interface/zipball/c066a9b280bbc45fcad2fb8b3280d3d3b58cd990",
+                "reference": "c066a9b280bbc45fcad2fb8b3280d3d3b58cd990",
                 "shasum": ""
             },
             "require": {
@@ -93,9 +93,9 @@
             "description": "A highly ISP-compliant collection of interfaces that represent maps and lists.",
             "support": {
                 "issues": "https://github.com/Dhii/collections-interface/issues",
-                "source": "https://github.com/Dhii/collections-interface/tree/v0.3.0-alpha3"
+                "source": "https://github.com/Dhii/collections-interface/tree/develop"
             },
-            "time": "2021-01-14T17:33:46+00:00"
+            "time": "2021-03-09T17:34:40+00:00"
         },
         {
             "name": "psr/container",
