@@ -9,9 +9,6 @@
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
 
     <rule ref="PSR12"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
-        <type>warning</type>
-    </rule>
     <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
         <type>warning</type>
     </rule>
