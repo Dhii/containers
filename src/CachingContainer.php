@@ -98,6 +98,7 @@ class CachingContainer implements ContainerInterface
      * @return mixed The cached value.
      *
      * @throws Exception If problem caching.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     protected function getCached(string $key, callable $generator)
     {
@@ -131,6 +132,7 @@ class CachingContainer implements ContainerInterface
      * @return mixed The generated result.
      *
      * @throws Exception If problem generating.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     protected function invokeGenerator(callable $generator)
     {
