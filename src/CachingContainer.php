@@ -42,6 +42,7 @@ class CachingContainer implements ContainerInterface
     public function get($key)
     {
         /** @psalm-suppress RedundantCastGivenDocblockType
+         * @psalm-suppress RedundantCast
          * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
          */
         $key = (string) $key;
