@@ -90,7 +90,7 @@ class PathContainer implements ContainerInterface
         $path = array_filter(explode($this->delimiter, $tKey));
 
         if (empty($path)) {
-            throw new NotFoundException("The path is empty");
+            throw new NotFoundException('The path is empty');
         }
 
         $current = $this->inner;
@@ -99,7 +99,7 @@ class PathContainer implements ContainerInterface
         while (!empty($path)) {
             if (!($current instanceof PsrContainerInterface)) {
                 $tail = implode($this->delimiter, $path);
-                throw new NotFoundException("Key '{$head}' does not exist at path '{$tail}'", 0, null, $this, $head);
+                throw new NotFoundException(sprintf('Key "%1$s" does not exist at path "%2$s"', $head, $tail));
             }
 
             $head = array_shift($path);
