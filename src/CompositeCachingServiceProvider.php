@@ -115,7 +115,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      *
      * @return callable[] The merged extensions.
      */
-    protected function mergeExtensions(array $defaults, array $extensions): array
+    protected function mergeExtensions(array $defaults, iterable $extensions): array
     {
         $merged = [];
 

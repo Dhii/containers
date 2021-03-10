@@ -113,6 +113,7 @@ class Dictionary implements
         $dictionary = $this->cloneMe();
 
         foreach ($keys as $i => $key) {
+            /** @psalm-suppress DocblockTypeContradiction Still want to enforce string */
             if (!is_string($key)) {
                 throw new RangeException($this->__('Key at index %1$d is not a string', [$i]));
             }
