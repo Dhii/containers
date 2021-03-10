@@ -41,10 +41,22 @@ class CachingContainer implements ContainerInterface
      */
     public function get($key)
     {
+        /** @psalm-suppress RedundantCastGivenDocblockType
+         * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
+         */
         $key = (string) $key;
-        try {
-            $value = $this->getCached($key, function () use ($key) {
 
+        /**
+         * @psalm-suppress InvalidCatch
+         * The base interface does not extend Throwable, but in fact everything that is possible
+         * in theory to catch will be Throwable, and PSR-11 exceptions will implement this interface
+         */
+        try {
+            /**
+             * @psalm-suppress MissingClosureReturnType
+             * Unable to specify mixed before PHP 8.
+             */
+            $value = $this->getCached($key, function () use ($key) {
                 return $this->container->get($key);
             });
         } catch (NotFoundExceptionInterface $e) {
@@ -65,7 +77,16 @@ class CachingContainer implements ContainerInterface
      */
     public function has($key)
     {
+        /** @psalm-suppress RedundantCastGivenDocblockType
+         * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
+         */
         $key = (string) $key;
+
+        /**
+         * @psalm-suppress InvalidCatch
+         * The base interface does not extend Throwable, but in fact everything that is possible
+         * in theory to catch will be Throwable, and PSR-11 exceptions will implement this interface
+         */
         try {
             if ($this->hasCached($key)) {
                 return true;

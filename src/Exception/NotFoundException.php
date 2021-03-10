@@ -10,11 +10,6 @@ use Throwable;
 class NotFoundException extends ContainerException implements NotFoundExceptionInterface
 {
     /**
-     * @var string
-     */
-    protected $dataKey;
-
-    /**
      * @param string         $message  The error message.
      * @param int            $code     The error code.
      * @param Throwable|null $previous The inner error, if any.

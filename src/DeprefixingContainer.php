@@ -61,6 +61,11 @@ class DeprefixingContainer implements ContainerInterface
      */
     public function get($key)
     {
+        /**
+         * @psalm-suppress InvalidCatch
+         * The base interface does not extend Throwable, but in fact everything that is possible
+         * in theory to catch will be Throwable, and PSR-11 exceptions will implement this interface
+         */
         try {
             return $this->inner->get($this->getInnerKey($key));
         } catch (NotFoundExceptionInterface $nfException) {

@@ -68,28 +68,45 @@ class Dictionary implements
 
     /**
      * @inheritDoc
+     * @psalm-suppress MoreSpecificReturnType
+     * Psalm complains that the declared return type is more specific than inferred.
+     * This is not true, as it promises to return the interface.
      */
     public function withMappings(array $mappings): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();
         $dictionary->data = $mappings;
 
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         * Looks like this needs to be suppressed until able to hint return type `self`.
+         */
         return $dictionary;
     }
 
     /**
      * @inheritDoc
+     * @psalm-suppress MoreSpecificReturnType
+     * Psalm complains that the declared return type is more specific than inferred.
+     * This is not true, as it promises to return the interface.
      */
     public function withAddedMappings(array $mappings): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();
         $dictionary->data = $mappings + $this->data;
 
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         * Looks like this needs to be suppressed until able to hint return type `self`.
+         */
         return $dictionary;
     }
 
     /**
      * @inheritDoc
+     * @psalm-suppress MoreSpecificReturnType
+     * Psalm complains that the declared return type is more specific than inferred.
+     * This is not true, as it promises to return the interface.
      */
     public function withoutKeys(array $keys): WritableContainerInterface
     {
@@ -102,6 +119,10 @@ class Dictionary implements
             unset($dictionary->data[$key]);
         }
 
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         * Looks like this needs to be suppressed until able to hint return type `self`.
+         */
         return $dictionary;
     }
 

@@ -18,13 +18,12 @@ class ProxyContainer implements BaseContainerInterface
 {
     use StringTranslatingTrait;
 
-/**
-     * @var BaseContainerInterface
+    /**
+     * @var ?BaseContainerInterface
      */
-
-
     protected $innerContainer;
-/**
+
+    /**
      * @param BaseContainerInterface|null $innerContainer The inner container, if any.
      *                                                    May also be set later with {@see setInnerContainer()}.
      */

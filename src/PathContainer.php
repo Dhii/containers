@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
+use Dhii\Container\Exception\ContainerException;
 use Dhii\Container\Exception\NotFoundException;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -59,7 +60,7 @@ class PathContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var string
+     * @var non-empty-string
      */
     protected $delimiter;
 
@@ -69,7 +70,7 @@ class PathContainer implements ContainerInterface
      * @since [*next-version*]
      *
      * @param PsrContainerInterface $inner     The container instance to decorate.
-     * @param string                $delimiter The path delimiter to use.
+     * @param non-empty-string      $delimiter The path delimiter to use.
      */
     public function __construct(PsrContainerInterface $inner, string $delimiter = '/')
     {
@@ -87,6 +88,16 @@ class PathContainer implements ContainerInterface
         $tKey = (strpos($key, $this->delimiter) === 0)
             ? substr($key, strlen($this->delimiter))
             : $key;
+
+        $delimiter = $this->delimiter;
+        if (!strlen($delimiter)) {
+            throw new ContainerException('Cannot use empty delimiter');
+        }
+
+        /**
+         * @psalm-suppress PossiblyFalseArgument
+         * Result of explode() will never be false, because delimiter is never empty - see above.
+         */
         $path = array_filter(explode($this->delimiter, $tKey));
 
         if (empty($path)) {
@@ -116,6 +127,11 @@ class PathContainer implements ContainerInterface
      */
     public function has($key)
     {
+        /**
+         * @psalm-suppress InvalidCatch
+         * The base interface does not extend Throwable, but in fact everything that is possible
+         * in theory to catch will be Throwable, and PSR-11 exceptions will implement this interface
+         */
         try {
             $this->get($key);
 
