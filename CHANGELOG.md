@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [[*next-version*]] - YYYY-MM-DD
 
-## [0.1.4-alpha1] - 2021-03-10
+## [0.1.4-alpha2] - 2021-03-10
 ### Fixed
 - Using newer interop interfaces fixes bug with new `psr/container` (#22).
 - Many errors reported by Psalm, making code more resilient (#22).
