@@ -29,7 +29,7 @@ class AliasingContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var array<array-key, scalar>
+     * @var array<array-key, string>
      */
     protected $aliases;
 
@@ -39,7 +39,7 @@ class AliasingContainer implements ContainerInterface
      * @since [*next-version*]
      *
      * @param PsrContainerInterface    $inner   The container whose keys to alias.
-     * @param array<array-key, scalar> $aliases A mapping of aliases to their original container key counterparts.
+     * @param array<array-key, string> $aliases A mapping of aliases to their original container key counterparts.
      */
     public function __construct(PsrContainerInterface $inner, array $aliases)
     {

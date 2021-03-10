@@ -56,11 +56,11 @@ class MappingContainer implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param PsrContainerInterface|null $inner    The container instance to decorate.
-     * @param callable                   $callback The callback to invoke on get. It will be passed 3 parameters:
-     *                                             * The inner container's value for the key being fetched.
-     *                                             * The key being fetched.
-     *                                             * A reference to this container instance.
+     * @param PsrContainerInterface $inner    The container instance to decorate.
+     * @param callable              $callback The callback to invoke on get. It will be passed 3 parameters:
+     *                                         * The inner container's value for the key being fetched.
+     *                                         * The key being fetched.
+     *                                         * A reference to this container instance.
      */
     public function __construct(PsrContainerInterface $inner, callable $callback)
     {

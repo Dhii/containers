@@ -15,6 +15,8 @@ services:
       -  ${BASE_PATH}:${BUILD_ROOT_PATH}
 
   test:
+    extra_hosts:
+      - "host.docker.internal:${HOST_IP_ADDRESS}"
     build:
       context: ./
       dockerfile: docker/Dockerfile

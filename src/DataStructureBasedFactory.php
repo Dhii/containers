@@ -28,7 +28,11 @@ class DataStructureBasedFactory implements DataStructureBasedFactoryInterface
     {
         $map = [];
         foreach ($structure as $key => $value) {
-            if (is_array($value) || is_object($value)) {
+            if (is_object($value)) {
+                $value = get_object_vars($value);
+            }
+
+            if (is_array($value)) {
                 $value = $this->createContainerFromArray($value);
             }
 

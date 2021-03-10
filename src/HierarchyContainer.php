@@ -65,13 +65,17 @@ class HierarchyContainer implements ContainerInterface
     public function get($key)
     {
         if (!array_key_exists($key, $this->data)) {
-            throw new NotFoundException("Key '{$key}' does not exist", 0, null, $this, $key);
+            throw new NotFoundException("Key '{$key}' does not exist", 0, null);
         }
 
         $value = $this->data[$key];
 
-        if (is_array($value) || $value instanceof stdClass) {
-            $value = $this->data[$key] = new HierarchyContainer($value);
+        if ($value instanceof stdClass) {
+            $value = get_object_vars($value);
+        }
+
+        if (is_array($value)) {
+            $value = $this->data[$key] = new self($value);
         }
 
         return $value;

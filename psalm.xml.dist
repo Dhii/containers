@@ -148,6 +148,5 @@
         <MixedReturnStatement errorLevel="info"/>
         <MixedReturnTypeCoercion errorLevel="info"/>
         <MixedStringOffsetAssignment errorLevel="info"/>
-        <RedundantConditionGivenDocblockType errorLevel="info"/>
     </issueHandlers>
 </psalm>

@@ -33,4 +33,3 @@ jobs:
 
             -   name: Run Psalm
                 run: vendor/bin/psalm
-                continue-on-error: true

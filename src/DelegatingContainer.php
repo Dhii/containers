@@ -101,6 +101,7 @@ class DelegatingContainer implements ContainerInterface
      * @return mixed The service created by the factory.
      *
      * @throws UnexpectedValueException If factory could not be invoked.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     protected function invokeFactory(callable $factory)
     {
@@ -127,6 +128,7 @@ class DelegatingContainer implements ContainerInterface
      * @return mixed The extended service.
      *
      * @throws UnexpectedValueException If extension cannot be invoked.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     protected function invokeExtension(callable $extension, $service)
     {

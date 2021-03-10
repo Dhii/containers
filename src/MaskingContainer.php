@@ -66,9 +66,7 @@ class MaskingContainer implements ContainerInterface
             throw new NotFoundException(
                 $this->__('Inner key "%1$s" is not exposed', [$key]),
                 0,
-                null,
-                $this,
-                $key
+                null
             );
         }
 

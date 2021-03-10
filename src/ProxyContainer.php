@@ -18,13 +18,12 @@ class ProxyContainer implements BaseContainerInterface
 {
     use StringTranslatingTrait;
 
-/**
-     * @var BaseContainerInterface
+    /**
+     * @var ?BaseContainerInterface
      */
-
-
     protected $innerContainer;
-/**
+
+    /**
      * @param BaseContainerInterface|null $innerContainer The inner container, if any.
      *                                                    May also be set later with {@see setInnerContainer()}.
      */
@@ -51,6 +50,7 @@ class ProxyContainer implements BaseContainerInterface
     public function has($key)
     {
         if (!($this->innerContainer instanceof BaseContainerInterface)) {
+            /** @psalm-suppress MissingThrowsDocblock The exception class implements declared thrown interface */
             throw new ContainerException($this->__('Inner container not set'));
         }
 

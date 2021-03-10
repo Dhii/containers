@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [[*next-version*]] - YYYY-MM-DD
+### Fixed
+- Using newer interop interfaces fixes bug with new `psr/container` (#22).
+- Many errors reported by Psalm, making code more resilient (#22).
 
 ## [0.1.4-alpha1] - 2021-02-02
 ### Added
