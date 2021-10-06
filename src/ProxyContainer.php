@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Dhii\Container;
@@ -18,7 +19,7 @@ class ProxyContainer implements BaseContainerInterface
     use StringTranslatingTrait;
 
     /**
-     * @var BaseContainerInterface
+     * @var ?BaseContainerInterface
      */
     protected $innerContainer;
 
@@ -49,6 +50,7 @@ class ProxyContainer implements BaseContainerInterface
     public function has($key)
     {
         if (!($this->innerContainer instanceof BaseContainerInterface)) {
+            /** @psalm-suppress MissingThrowsDocblock The exception class implements declared thrown interface */
             throw new ContainerException($this->__('Inner container not set'));
         }
 
@@ -62,7 +64,7 @@ class ProxyContainer implements BaseContainerInterface
      *
      * @param BaseContainerInterface $innerContainer The inner container to proxy.
      */
-    public function setInnerContainer(BaseContainerInterface $innerContainer)
+    public function setInnerContainer(BaseContainerInterface $innerContainer): void
     {
         $this->innerContainer = $innerContainer;
     }

@@ -255,13 +255,4 @@ EOL;
     {
         return new Proxy($object);
     }
-
-    /**
-     * Requiring PHPUnit TestCase's method.
-     *
-     * @param string $className Name of the class to get a builder for.
-     *
-     * @return MockBuilder The mock builder.
-     */
-    abstract function getMockBuilder($className): MockBuilder;
 }

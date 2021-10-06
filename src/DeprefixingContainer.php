@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
@@ -59,6 +61,11 @@ class DeprefixingContainer implements ContainerInterface
      */
     public function get($key)
     {
+        /**
+         * @psalm-suppress InvalidCatch
+         * The base interface does not extend Throwable, but in fact everything that is possible
+         * in theory to catch will be Throwable, and PSR-11 exceptions will implement this interface
+         */
         try {
             return $this->inner->get($this->getInnerKey($key));
         } catch (NotFoundExceptionInterface $nfException) {
@@ -89,7 +96,7 @@ class DeprefixingContainer implements ContainerInterface
      *
      * @return string The inner key.
      */
-    protected function getInnerKey($key)
+    protected function getInnerKey(string $key): string
     {
         return $this->prefix . $key;
     }

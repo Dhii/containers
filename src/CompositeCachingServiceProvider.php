@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Interop\Container\ServiceProviderInterface;
@@ -11,49 +13,63 @@ use Psr\Container\ContainerInterface as PsrContainerInterface;
 class CompositeCachingServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @var iterable|callable[]
+     * @var iterable<ServiceProviderInterface>
      */
     protected $providers;
 
     /**
-     * @var iterable|callable[]
+     * @var ?iterable<callable>
      */
     protected $factories;
 
     /**
-     * @var iterable|callable[]
+     * @var ?iterable<callable>
      */
     protected $extensions;
 
     /**
-     * @param iterable|ServiceProviderInterface[] $providers
+     * @param iterable<ServiceProviderInterface> $providers
      */
-    public function __construct($providers)
+    public function __construct(iterable $providers)
     {
         $this->providers = $providers;
+        $this->factories = null;
+        $this->extensions = null;
     }
 
     /**
      * {@inheritDoc}
+     * @psalm-suppress InvalidNullableReturnType
+     * It isn't actually going to return null ever, because $factories will be filled during indexing.
      */
     public function getFactories()
     {
         if (!is_array($this->factories)) {
-            $this->_indexProviderDefinitions($this->providers);
+            $this->indexProviderDefinitions($this->providers);
         }
 
+        /**
+         * @psalm-suppress NullableReturnStatement
+         * Not going to be null because will be populated by indexing
+         */
         return $this->factories;
     }
 
     /**
      * {@inheritDoc}
+     * @psalm-suppress InvalidNullableReturnType
+     * It isn't actually going to return null ever, because $factories will be filled during indexing.
      */
     public function getExtensions()
     {
         if (!is_array($this->extensions)) {
-            $this->_indexProviderDefinitions($this->providers);
+            $this->indexProviderDefinitions($this->providers);
         }
 
+        /**
+         * @psalm-suppress NullableReturnStatement
+         * Not going to be null because will be populated by indexing
+         */
         return $this->extensions;
     }
 
@@ -64,14 +80,14 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      *
      * @param iterable|ServiceProviderInterface[] $providers The providers to index.
      */
-    protected function _indexProviderDefinitions($providers)
+    protected function indexProviderDefinitions(iterable $providers): void
     {
         $factories = [];
         $extensions = [];
 
         foreach ($providers as $provider) {
-            $factories = $this->_mergeFactories($factories, $provider->getFactories());
-            $extensions = $this->_mergeExtensions($extensions, $provider->getExtensions());
+            $factories = $this->mergeFactories($factories, $provider->getFactories());
+            $extensions = $this->mergeExtensions($extensions, $provider->getExtensions());
         }
 
         $this->factories = $factories;
@@ -86,7 +102,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      *
      * @return callable[] The merged factories.
      */
-    protected function _mergeFactories(array $defaults, array $definitions): array
+    protected function mergeFactories(array $defaults, array $definitions): array
     {
         return array_merge($defaults, $definitions);
     }
@@ -95,22 +111,23 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      * Merged service extensions.
      *
      * @param callable[] $defaults
-     * @param callable[] $extensions
+     * @param iterable<callable> $extensions
      *
      * @return callable[] The merged extensions.
      */
-    protected function _mergeExtensions(array $defaults, array $extensions): array
+    protected function mergeExtensions(array $defaults, iterable $extensions): array
     {
         $merged = [];
 
         foreach ($extensions as $key => $extension) {
-            assert(is_callable($extension));
-
             if (isset($defaults[$key])) {
                 $default = $defaults[$key];
+                /**
+                 * @psalm-suppress MissingClosureReturnType
+                 * @psalm-suppress MissingClosureParamType
+                 * Unable to specify mixed before PHP 8.
+                 */
                 $merged[$key] = function (PsrContainerInterface $c, $previous = null) use ($default, $extension) {
-                    assert(is_callable($default));
-
                     $result = $default($c, $previous);
                     $result = $extension($c, $result);
 
@@ -123,7 +140,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
             }
         }
 
-        $merged = $this->_mergeFactories($defaults, $merged);
+        $merged = $this->mergeFactories($defaults, $merged);
 
         return $merged;
     }

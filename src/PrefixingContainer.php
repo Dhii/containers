@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
@@ -61,9 +63,14 @@ class PrefixingContainer implements ContainerInterface
     public function get($key)
     {
         if (!$this->isPrefixed($key) && $this->strict) {
-            throw new NotFoundException(sprintf('Key "%s" does not exist', $key), 0, null, $this, $key);
+            throw new NotFoundException(sprintf('Key "%s" does not exist', $key));
         }
 
+        /**
+         * @psalm-suppress InvalidCatch
+         * The base interface does not extend Throwable, but in fact everything that is possible
+         * in theory to catch will be Throwable, and PSR-11 exceptions will implement this interface
+         */
         try {
             return $this->inner->get($this->unprefix($key));
         } catch (NotFoundExceptionInterface $nfException) {
@@ -98,7 +105,7 @@ class PrefixingContainer implements ContainerInterface
      *
      * @return string The inner key.
      */
-    protected function unprefix($key)
+    protected function unprefix(string $key): string
     {
         return $this->isPrefixed($key)
             ? substr($key, strlen($this->prefix))
@@ -114,7 +121,7 @@ class PrefixingContainer implements ContainerInterface
      *
      * @return bool True if the key is prefixed, false if not.
      */
-    protected function isPrefixed($key)
+    protected function isPrefixed(string $key): bool
     {
         return strlen($this->prefix) > 0 && strpos($key, $this->prefix) === 0;
     }

@@ -4,6 +4,7 @@ namespace Dhii\Container\TestHelpers;
 
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
+use PHPUnit\Framework\MockObject\Matcher\InvokedCount;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -61,11 +62,11 @@ class InvocableMock extends AbstractMockHelper
      *
      * @since [*next-version*]
      *
-     * @param Invocation $matcher
+     * @param Invocation|InvokedCount $matcher
      *
      * @return InvocationMocker
      */
-    public function expectCalled(Invocation $matcher) {
+    public function expectCalled($matcher) {
         return $this->mock->expects($matcher)->method('__invoke');
     }
 

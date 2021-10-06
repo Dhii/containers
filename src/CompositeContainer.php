@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
@@ -17,20 +19,15 @@ class CompositeContainer implements ContainerInterface
     use StringTranslatingTrait;
 
     /**
-     * @var array|PsrContainerInterface[]|Traversable
+     * @var iterable<PsrContainerInterface>
      */
     protected $containers;
 
     /**
-     * @param PsrContainerInterface[]|Traversable $containers The list of containers.
+     * @param iterable<PsrContainerInterface> $containers The list of containers.
      */
-    public function __construct($containers)
+    public function __construct(iterable $containers)
     {
-        if (!is_array($containers) && !($containers instanceof Traversable)) {
-            throw new UnexpectedValueException(
-                $this->__('The containers argument is not a valid list')
-            );
-        }
         $this->containers = $containers;
     }
 
@@ -39,9 +36,18 @@ class CompositeContainer implements ContainerInterface
      */
     public function get($key)
     {
+        /** @psalm-suppress RedundantCastGivenDocblockType
+         * @psalm-suppress RedundantCast
+         * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
+         */
         $key = (string) $key;
 
         foreach ($this->containers as $index => $container) {
+            /**
+             * @psalm-suppress InvalidCatch
+             * The base interface does not extend Throwable, but in fact everything that is possible
+             * in theory to catch will be Throwable, and PSR-11 exceptions will implement this interface
+             */
             try {
                 if ($container->has($key)) {
                     return $container->get($key);
@@ -73,6 +79,9 @@ class CompositeContainer implements ContainerInterface
      */
     public function has($key)
     {
+        /** @psalm-suppress RedundantCastGivenDocblockType
+         * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
+         */
         $key = (string) $key;
 
         foreach ($this->containers as $index => $container) {

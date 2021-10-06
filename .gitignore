@@ -1,7 +1,7 @@
 /vendor/
 /nbproject/private/
-/test/coverage/
-/test/log/
+/tests/coverage/
+/tests/log/
 /build/
 /.idea/dictionaries/
 /.idea/workspace.xml

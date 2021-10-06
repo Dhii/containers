@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Dhii\Container;
 
@@ -19,13 +21,10 @@ class CachingContainer implements ContainerInterface
 {
     use StringTranslatingTrait;
 
-    /**
-     * @var array
-     */
+    /** @var array<array-key, mixed> */
     protected $cache;
-    /**
-     * @var PsrContainerInterface
-     */
+
+    /** @var PsrContainerInterface */
     protected $container;
 
     /**
@@ -42,18 +41,27 @@ class CachingContainer implements ContainerInterface
      */
     public function get($key)
     {
+        /** @psalm-suppress RedundantCastGivenDocblockType
+         * @psalm-suppress RedundantCast
+         * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
+         */
         $key = (string) $key;
 
+        /**
+         * @psalm-suppress InvalidCatch
+         * The base interface does not extend Throwable, but in fact everything that is possible
+         * in theory to catch will be Throwable, and PSR-11 exceptions will implement this interface
+         */
         try {
-            $value = $this->_getCached($key, function () use ($key) {
+            /**
+             * @psalm-suppress MissingClosureReturnType
+             * Unable to specify mixed before PHP 8.
+             */
+            $value = $this->getCached($key, function () use ($key) {
                 return $this->container->get($key);
             });
         } catch (NotFoundExceptionInterface $e) {
-            throw new NotFoundException(
-                $this->__('Key "%1$s" not found in inner container', [$key]),
-                0,
-                $e
-            );
+            throw new NotFoundException($this->__('Key "%1$s" not found in inner container', [$key]), 0, $e);
         } catch (Exception $e) {
             throw new ContainerException(
                 $this->__('Could not retrieve value for key "%1$s from inner container', [$key]),
@@ -70,18 +78,22 @@ class CachingContainer implements ContainerInterface
      */
     public function has($key)
     {
+        /** @psalm-suppress RedundantCastGivenDocblockType
+         * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
+         */
         $key = (string) $key;
 
+        /**
+         * @psalm-suppress InvalidCatch
+         * The base interface does not extend Throwable, but in fact everything that is possible
+         * in theory to catch will be Throwable, and PSR-11 exceptions will implement this interface
+         */
         try {
-            if ($this->_hasCached($key)) {
+            if ($this->hasCached($key)) {
                 return true;
             }
         } catch (Exception $e) {
-            throw new ContainerException(
-                $this->__('Could not check cache for key "%1$s"', [$key]),
-                0,
-                $e
-            );
+            throw new ContainerException($this->__('Could not check cache for key "%1$s"', [$key]), 0, $e);
         }
 
         try {
@@ -108,11 +120,12 @@ class CachingContainer implements ContainerInterface
      * @return mixed The cached value.
      *
      * @throws Exception If problem caching.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    protected function _getCached(string $key, callable $generator)
+    protected function getCached(string $key, callable $generator)
     {
         if (!array_key_exists($key, $this->cache)) {
-            $value = $this->_invokeGenerator($generator);
+            $value = $this->invokeGenerator($generator);
             $this->cache[$key] = $value;
         }
 
@@ -128,7 +141,7 @@ class CachingContainer implements ContainerInterface
      *
      * @throws Exception If problem checking.
      */
-    protected function _hasCached(string $key)
+    protected function hasCached(string $key): bool
     {
         return array_key_exists($key, $this->cache);
     }
@@ -141,11 +154,11 @@ class CachingContainer implements ContainerInterface
      * @return mixed The generated result.
      *
      * @throws Exception If problem generating.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    protected function _invokeGenerator(callable $generator)
+    protected function invokeGenerator(callable $generator)
     {
         $result = $generator();
-
         return $result;
     }
 }

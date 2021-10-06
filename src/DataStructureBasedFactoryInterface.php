@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Dhii\Container;
@@ -16,7 +17,7 @@ interface DataStructureBasedFactoryInterface extends WritableMapFactoryInterface
     /**
      * Based on a traditional data structure, creates a container hierarchy.
      *
-     * @param array $structure The traditional data structure representation.
+     * @param mixed[] $structure The traditional data structure representation.
      *
      * @return WritableMapInterface A hierarchy of writable maps that reflects the data structure.
      *

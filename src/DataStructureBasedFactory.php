@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Dhii\Container;
@@ -15,10 +16,8 @@ class DataStructureBasedFactory implements DataStructureBasedFactoryInterface
      * @var WritableMapFactoryInterface
      */
     protected $containerFactory;
-
-    public function __construct(
-        WritableMapFactoryInterface $containerFactory
-    ) {
+    public function __construct(WritableMapFactoryInterface $containerFactory)
+    {
         $this->containerFactory = $containerFactory;
     }
 
@@ -29,7 +28,11 @@ class DataStructureBasedFactory implements DataStructureBasedFactoryInterface
     {
         $map = [];
         foreach ($structure as $key => $value) {
-            if (is_array($value) || is_object($value)) {
+            if (is_object($value)) {
+                $value = get_object_vars($value);
+            }
+
+            if (is_array($value)) {
                 $value = $this->createContainerFromArray($value);
             }
 
@@ -37,7 +40,6 @@ class DataStructureBasedFactory implements DataStructureBasedFactoryInterface
         }
 
         $container = $this->containerFactory->createContainerFromArray($map);
-
         return $container;
     }
 }

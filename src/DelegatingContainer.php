@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
@@ -25,8 +27,6 @@ class DelegatingContainer implements ContainerInterface
     protected $parent;
 
     /**
-     * @param ServiceProviderInterface   $provider
-     * @param PsrContainerInterface|null $parent
      */
     public function __construct(ServiceProviderInterface $provider, PsrContainerInterface $parent = null)
     {
@@ -53,7 +53,7 @@ class DelegatingContainer implements ContainerInterface
         $service = $services[$id];
 
         try {
-            $service = $this->_invokeFactory($service);
+            $service = $this->invokeFactory($service);
         } catch (UnexpectedValueException $e) {
             throw new ContainerException(
                 $this->__('Could not create service "%1$s"', [$id]),
@@ -71,7 +71,7 @@ class DelegatingContainer implements ContainerInterface
         $extension = $extensions[$id];
 
         try {
-            $service = $this->_invokeExtension($extension, $service);
+            $service = $this->invokeExtension($extension, $service);
         } catch (UnexpectedValueException $e) {
             throw new ContainerException(
                 $this->__('Could not extend service "%1$s"', [$id]),
@@ -101,8 +101,9 @@ class DelegatingContainer implements ContainerInterface
      * @return mixed The service created by the factory.
      *
      * @throws UnexpectedValueException If factory could not be invoked.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    protected function _invokeFactory(callable $factory)
+    protected function invokeFactory(callable $factory)
     {
         if (!is_callable($factory)) {
             throw new UnexpectedValueException(
@@ -112,7 +113,7 @@ class DelegatingContainer implements ContainerInterface
             );
         }
 
-        $baseContainer = $this->_getBaseContainer();
+        $baseContainer = $this->getBaseContainer();
         $service = $factory($baseContainer);
 
         return $service;
@@ -127,8 +128,9 @@ class DelegatingContainer implements ContainerInterface
      * @return mixed The extended service.
      *
      * @throws UnexpectedValueException If extension cannot be invoked.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    protected function _invokeExtension(callable $extension, $service)
+    protected function invokeExtension(callable $extension, $service)
     {
         if (!is_callable($extension)) {
             throw new UnexpectedValueException(
@@ -138,7 +140,7 @@ class DelegatingContainer implements ContainerInterface
             );
         }
 
-        $baseContainer = $this->_getBaseContainer();
+        $baseContainer = $this->getBaseContainer();
         $service = $extension($baseContainer, $service);
 
         return $service;
@@ -149,7 +151,7 @@ class DelegatingContainer implements ContainerInterface
      *
      * @return PsrContainerInterface The parent container, if set. Otherwise, this instance.
      */
-    protected function _getBaseContainer() : PsrContainerInterface
+    protected function getBaseContainer(): PsrContainerInterface
     {
         return $this->parent instanceof PsrContainerInterface
             ? $this->parent
