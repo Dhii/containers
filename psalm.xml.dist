@@ -147,5 +147,6 @@
         <MixedReturnStatement errorLevel="info"/>
         <MixedReturnTypeCoercion errorLevel="info"/>
         <MixedStringOffsetAssignment errorLevel="info"/>
+        <ParamNameMismatch errorLevel="info"/>
     </issueHandlers>
 </psalm>
