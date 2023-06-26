@@ -27,7 +27,7 @@
     </projectFiles>
 
     <extraFiles>
-        <ignoreFiles>
+        <ignoreFiles allowMissingFiles="true">
             <directory name="vendor/phpspec/prophecy"/>
         </ignoreFiles>
     </extraFiles>
