@@ -46,5 +46,10 @@
         "branch-alias": {
             "dev-develop": "0.1.x-dev"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
