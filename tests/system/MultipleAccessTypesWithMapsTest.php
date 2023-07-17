@@ -8,7 +8,7 @@ use Dhii\Container\DictionaryFactory;
 use Dhii\Container\SegmentingContainer;
 use PHPUnit\Framework\TestCase;
 
-class MultipleAccessTypesWithMaps__ extends TestCase
+class MultipleAccessTypesWithMaps extends TestCase
 {
     const DEV_DB_HOST = 'localhost';
     const STAGING_DB_HOST = '123.staging.myhost';
@@ -85,8 +85,6 @@ class MultipleAccessTypesWithMaps__ extends TestCase
         }
 
         {
-            $this->markTestIncomplete('This will fail, because the segmenting container is not iterable, ' .
-                                      'and will return instances of itself for keys that are not found.');
             $this->assertIsIterable($container->get('staging')->get('db'));
         }
     }
