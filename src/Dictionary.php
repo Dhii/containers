@@ -54,6 +54,8 @@ class Dictionary implements
      */
     public function has($key)
     {
+        $key = (string) $key;
+
         $isHas = array_key_exists($key, $this->data);
 
         return $isHas;
