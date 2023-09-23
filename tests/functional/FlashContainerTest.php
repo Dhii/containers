@@ -37,30 +37,28 @@ class FlashContainerTest extends TestCase
             ->setMethods(['has', 'get', 'set', 'unset'])
             ->getMockForAbstractClass();
 
-        $mock->data = $data;
-
         $mock->method('has')
             ->with($this->isType('string'))
-            ->will($this->returnCallback(function (string $key) use ($mock) {
-                return array_key_exists($key, $mock->data);
+            ->will($this->returnCallback(function (string $key) use (&$data) {
+                return array_key_exists($key, $data);
             }));
         $mock->method('get')
             ->with($this->isType('string'))
-            ->will($this->returnCallback(function (string $key) use ($mock) {
-                return array_key_exists($key, $mock->data)
-                    ? $mock->data[$key]
+            ->will($this->returnCallback(function (string $key) use (&$data) {
+                return array_key_exists($key, $data)
+                    ? $data[$key]
                     : null;
             }));
         $mock->method('set')
             ->with($this->isType('string'), $this->anything())
-            ->will($this->returnCallback(function (string $key, $value) use ($mock) {
-                $mock->data[$key] = $value;
+            ->will($this->returnCallback(function (string $key, $value) use (&$data) {
+                $data[$key] = $value;
             }));
         $mock->method('unset')
             ->with($this->isType('string'))
-            ->will($this->returnCallback(function (string $key) use ($mock) {
-                if (array_key_exists($key, $mock->data)) {
-                    unset($mock->data[$key]);
+            ->will($this->returnCallback(function (string $key) use (&$data) {
+                if (array_key_exists($key, $data)) {
+                    unset($data[$key]);
                 }
             }));
 

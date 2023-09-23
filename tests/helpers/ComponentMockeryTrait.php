@@ -4,6 +4,9 @@
 namespace Dhii\Container\TestHelpers;
 
 use Andrew\Proxy;
+use InvalidArgumentException;
+use PHPUnit\Framework\Constraint\Callback;
+use PHPUnit\Framework\Constraint\IsAnything;
 use Psr\Container\NotFoundExceptionInterface;
 use Exception;
 use Interop\Container\ServiceProviderInterface;
@@ -18,7 +21,7 @@ trait ComponentMockeryTrait
      * Creates a new instance of the test subject mock.
      *
      * @param string $className The name of the class to mock.
-     * @param array|null $methods The methods to mock.
+     * @param array<string> $methods The methods to mock.
      * Use `null` to not mock anything. Use empty array to mock everything.
      * @param array|null $dependencies The parameters for the subject constructor.
      * Use `null` to disable the original constructor.
@@ -31,7 +34,7 @@ trait ComponentMockeryTrait
     {
         $builder = $this->getMockBuilder($className);
 
-        $builder->setMethods($methods);
+        $builder->addMethods($methods);
 
         if ($dependencies !== null) {
             $builder->enableOriginalConstructor();
@@ -98,7 +101,7 @@ PHP;
                 0,
                 $previous,
             ]
-        )->getMock();
+        )->getMockForAbstractClass();
         $e->method('getContainer')
             ->willReturn($container);
         $e->method('getDataKey')
@@ -131,7 +134,7 @@ EOL;
         }
 
         $mock = $this->getMockBuilder($className)
-            ->setMethods(['__invoke'])
+            ->onlyMethods(['__invoke'])
             ->getMock();
 
         $mock->method('__invoke')
@@ -154,7 +157,7 @@ EOL;
     protected function createContainer(array $services = [])
     {
         $mock = $this->getMockBuilder(ContainerInterface::class)
-            ->setMethods(['has', 'get'])
+            ->onlyMethods(['has', 'get'])
             ->getMock();
         assert($mock instanceof ContainerInterface);
 
@@ -254,5 +257,54 @@ EOL;
     protected function proxy($object): Proxy
     {
         return new Proxy($object);
+    }
+
+    /**
+     * A `withConsecutive()` replacement constraint.
+     *
+     * @note    Full qualified name to appease to phpstorm inspection gods
+     * @example <code>->with(...consecutive([5, 'foo'], [6, 'bar']))</code>
+     * @see https://github.com/123inkt/phpunit-extensions/blob/master/src/Mock/consecutive.php
+     *
+     * @param array<mixed> $firstInvocationArguments A list of arguments for each invocation that will be asserted against.
+     *                                               Will fail on: too many invocations or if the argument doesn't match for each invocation.
+     * @param array<mixed> $secondInvocationArguments
+     * @param array<mixed> ...$expectedArgumentList
+     *
+     *  phpcs:ignore
+     * @return \PHPUnit\Framework\Constraint\Callback<mixed>[]
+     */
+    protected function consecutive(array $firstInvocationArguments, array $secondInvocationArguments, array ...$expectedArgumentList): array
+    {
+        array_unshift($expectedArgumentList, $secondInvocationArguments);
+        array_unshift($expectedArgumentList, $firstInvocationArguments);
+
+        // count arguments
+        $maxArguments = (int)max(array_map(static fn($args) => count($args), $expectedArgumentList));
+        if ($maxArguments === 0) {
+            throw new InvalidArgumentException('consecutive() is expecting at least 1 or more arguments for invocation');
+        }
+
+        // reorganize arguments per argument index
+        $argumentsByIndex = [];
+        foreach ($expectedArgumentList as $invocation => $expectedArguments) {
+            foreach ($expectedArguments as $index => $argument) {
+                $argumentsByIndex[$index][$invocation] = $argument;
+            }
+        }
+
+        $callbacks = [];
+        /** @var array<int, mixed> $arguments */
+        foreach ($argumentsByIndex as $arguments) {
+            for ($i = 0; $i < $maxArguments; $i++) {
+                if (isset($arguments[$i]) === false) {
+                    $arguments[$i] = new IsAnything();
+                }
+            }
+            $constraint  = new ConsecutiveParameters($arguments);
+            $callbacks[] = new Callback(static fn($actualArgument): bool => $constraint->evaluate($actualArgument));
+        }
+
+        return $callbacks;
     }
 }

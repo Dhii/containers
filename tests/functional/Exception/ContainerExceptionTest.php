@@ -21,11 +21,11 @@ class ContainerExceptionTest extends TestCase
      * Creates a new instance of the test subject.
      *
      * @param array $dependencies A list of constructor args.
-     * @param array|null $methods The names of methods to mock in the subject.
+     * @param array<string> $methods The names of methods to mock in the subject.
      * @return MockObject|TestSubject The new instance.
      * @throws Exception If problem creating.
      */
-    protected function createSubject(array $dependencies, $methods = null)
+    protected function createSubject(array $dependencies, array $methods = [])
     {
         return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
             ->getMock();
@@ -43,7 +43,7 @@ class ContainerExceptionTest extends TestCase
             $code = rand(1, 99);
             $prev = new Exception(uniqid('inner-message'));
 
-            $subject = $this->createSubject([$message, $code, $prev], null);
+            $subject = $this->createSubject([$message, $code, $prev]);
         }
 
         {

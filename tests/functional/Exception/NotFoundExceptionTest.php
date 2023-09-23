@@ -21,10 +21,11 @@ class NotFoundExceptionTest extends TestCase
      * Creates a new instance of the test subject.
      *
      * @param array $dependencies A list of constructor args.
+     * @param array<string> $methods The methods to mock.
      * @return MockObject|TestSubject The new instance.
      * @throws Exception If problem creating.
      */
-    protected function createSubject(array $dependencies, array $methods = null)
+    protected function createSubject(array $dependencies, array $methods = [])
     {
         return $this->createMockBuilder(TestSubject::class, $methods, $dependencies)
             ->getMock();
@@ -42,7 +43,7 @@ class NotFoundExceptionTest extends TestCase
             $code = rand(1, 99);
             $prev = new Exception(uniqid('inner-message'));
 
-            $subject = $this->createSubject([$message, $code, $prev], null);
+            $subject = $this->createSubject([$message, $code, $prev]);
         }
 
         {
