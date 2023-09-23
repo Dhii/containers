@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "slevomat/coding-standard": "^6.0",
-        "phpunit/phpunit": "^9.0 | ^10",
+        "phpunit/phpunit": "^9.0",
         "vimeo/psalm": "^5.0",
         "gmazzap/andrew": "^1.1",
         "psr/container": "^1.0",
