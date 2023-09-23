@@ -116,7 +116,7 @@ class ContainerMock extends AbstractMockHelper implements ContainerInterface
 
                        if ($arg !== $key) {
                            TestCase::fail(
-                               "Parameter 0 for invocation #${idx} ContainerInterface::get('{$arg}') does not match expected value '${key}'"
+                               "Parameter 0 for invocation #{$idx} ContainerInterface::get('{$arg}') does not match expected value '{$key}'"
                            );
 
                            return null;
@@ -142,7 +142,7 @@ class ContainerMock extends AbstractMockHelper implements ContainerInterface
 
                        if ($arg !== $key) {
                            TestCase::fail(
-                               "Parameter 0 for invocation #${idx} ContainerInterface::has('{$arg}') does not match expected value '${key}'"
+                               "Parameter 0 for invocation #{$idx} ContainerInterface::has('{$arg}') does not match expected value '{$key}'"
                            );
 
                            return null;
