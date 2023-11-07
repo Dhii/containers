@@ -27,9 +27,7 @@ class TaggingServiceProviderTest extends TestCase
                  */
                 fn (): string => 'A',
             'serviceB' =>
-                /**
-                 * @tag my_tag
-                 */
+                /** @tag my_tag */
                 function (): string {
                     return 'B';
                 },
