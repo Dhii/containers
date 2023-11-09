@@ -113,7 +113,7 @@ class TaggingServiceProvider implements ServiceProviderInterface
      */
     protected function getTagsFromDocBlock(string $docBlock): array
     {
-        $regex = '#(@tag\s*(?P<tags>[^\s]+))#';
+        $regex = '#^\s*/?\**\s*(@tag\s*(?P<tags>[^\s]+))#m';
         preg_match_all($regex, $docBlock, $matches);
 
         return $matches['tags'];
