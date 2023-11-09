@@ -21,6 +21,14 @@ class TaggingServiceProviderTest extends TestCase
         $factories = [
             'serviceX' =>
                 fn (): string => 'X',
+            'serviceY' =>
+                /**
+                 * This @tag my_tag is misplaced.
+                 */
+                fn (): string => 'Y',
+            'serviceZ' =>
+                /** This @tag my_tag is misplaced. */
+                fn (): string => 'Z',
             'serviceA' =>
                 /**
                  * @tag my_tag
@@ -52,5 +60,4 @@ class TaggingServiceProviderTest extends TestCase
         $result = $container->get('serviceD');
         $this->assertEquals('ABCD', $result);
     }
-
 }
