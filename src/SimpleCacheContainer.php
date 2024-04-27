@@ -110,7 +110,7 @@ class SimpleCacheContainer implements
         try {
             $storage->clear();
         } catch (Exception $e) {
-            throw new ContainerException(sprintf('Could not clear container'), 0, $e);
+            throw new ContainerException('Could not clear container', 0, $e);
         }
     }
 }

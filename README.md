@@ -27,6 +27,7 @@ A selection of [PSR-11][] containers for utility, simplicity, and ease.
 ### DI
 - [`ServiceProvider`][] - A super-simple implementation that allows quick creation of  [service providers][Service Provider] from known maps of factories and extensions.
 - [`CompositeCachingServiceProvider`][] - A service provider that aggregates factories and extensions of other service providers. The results of this aggregation will be cached, meaing that it is only performed at most once per instance - when retrieving said factories or extensions.
+- [`TaggingServiceProvider`][] - A service provider that aggregates tagged services into a service with the tag's name.
 - [`DelegatingContainer`][] - A container that will invoke the factories and extensions of its configured service provider before returning values. If a parent container is specified, it will be passed to the service definitions instead of this container. This allows [dependency lookup delegation][DDL], which is especially useful when composing a container out of other containers.
 
 ## Examples
@@ -54,6 +55,43 @@ Most modern applications use some kind of DI container setup. The below example 
     
     // Retrieve cached configuration aggregated from various modules and other sources, sucha as the database or a remote API
     $appContainer->get('my-service');
+```
+
+### Service Tagging
+You can tag your services into a collection. This adds a service with the same name as the tag,
+which will return a list of services tagged with it.
+
+Since a service name can theoretically be any legal string,
+while some limitations need to be set for it to remain a tag,
+the tag name can contain any character besides whitespace (anything that matches `\s`).
+
+```php
+[
+    'serviceA' =>
+        /** @tag letters */
+        fn (): string => 'A',
+    'serviceB' =>
+        /**
+         * @tag letters
+         */
+        function (): string {
+            return 'B';
+        },
+    'serviceC' => function (ContainerInterface $c): string {
+        var_dump($c->get('letters'));
+    },
+];
+```
+
+The above example results in the following `var_dump()`:
+
+```
+array(2) {
+  [0]=>
+  string(1) "A"
+  [1]=>
+  string(1) "B"
+}
 ```
 
 ### Fun Things With Maps
@@ -130,6 +168,7 @@ echo $productionConfig->get('password'); // NotFoundException: This key does not
 
 [`ServiceProvider`]: src/ServiceProvider.php
 [`CompositeCachingServiceProvider`]: src/CompositeCachingServiceProvider.php
+[`TaggingServiceProvider`]: src/TaggingServiceProvider.php
 [`DelegatingContainer`]: src/DelegatingContainer.php
 [`CachingContainer`]: src/CachingContainer.php
 [`CompositeContainer`]: src/CompositeContainer.php

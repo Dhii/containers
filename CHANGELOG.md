@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Missing return types causing warnings with PHP 8.1 and higher.
 - Static check issues.
 
+### Added
+- Service tagging capability (#28).
+
 ## [0.1.4] -2021-10-06
 Stable release.
 
