@@ -87,7 +87,7 @@ class SegmentingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function get(string  $key)
+    public function get(string $key)
     {
         $tKey = ltrim($key, $this->delimiter);
         $tRoot = rtrim($this->root, $this->delimiter);
