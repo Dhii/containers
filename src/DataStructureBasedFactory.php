@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Dhii\Container;
 
 use Dhii\Collection\WritableMapFactoryInterface;
-use Psr\Container\ContainerInterface;
+use Dhii\Collection\WritableMapInterface;
 
 /**
  * @inheritDoc
@@ -24,7 +24,7 @@ class DataStructureBasedFactory implements DataStructureBasedFactoryInterface
     /**
      * @inheritDoc
      */
-    public function createContainerFromArray(array $structure): ContainerInterface
+    public function createContainerFromArray(array $structure): WritableMapInterface
     {
         $map = [];
         foreach ($structure as $key => $value) {

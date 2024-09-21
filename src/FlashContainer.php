@@ -7,7 +7,6 @@ namespace Dhii\Container;
 use Dhii\Collection\ClearableContainerInterface;
 use Dhii\Collection\MutableContainerInterface;
 use Dhii\Container\Exception\NotFoundException;
-use Psr\Container\ContainerExceptionInterface;
 
 /**
  * A container for data that is accessible once per init.
@@ -59,10 +58,8 @@ class FlashContainer implements
     /**
      * @inheritDoc
      */
-    public function has($key)
+    public function has(string $key): bool
     {
-        $key = (string) $key;
-
         return array_key_exists($key, $this->flashData);
     }
 
@@ -71,7 +68,7 @@ class FlashContainer implements
      *
      * Retrieves the value for the specified key from memory.
      */
-    public function get($key)
+    public function get(string $key)
     {
         if (!array_key_exists($key, $this->flashData)) {
             throw new NotFoundException(sprintf('Flash data not found for key "%1$s"', $key));

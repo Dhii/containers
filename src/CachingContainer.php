@@ -39,14 +39,8 @@ class CachingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function get($key)
+    public function get(string $key)
     {
-        /** @psalm-suppress RedundantCastGivenDocblockType
-         * @psalm-suppress RedundantCast
-         * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
-         */
-        $key = (string) $key;
-
         /**
          * @psalm-suppress InvalidCatch
          * The base interface does not extend Throwable, but in fact everything that is possible
@@ -76,13 +70,8 @@ class CachingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function has($key)
+    public function has(string $key): bool
     {
-        /** @psalm-suppress RedundantCastGivenDocblockType
-         * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
-         */
-        $key = (string) $key;
-
         /**
          * @psalm-suppress InvalidCatch
          * The base interface does not extend Throwable, but in fact everything that is possible

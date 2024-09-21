@@ -56,10 +56,8 @@ class DeprefixingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
-     *
-     * @since [*next-version*]
      */
-    public function get($key)
+    public function get(string $key)
     {
         /**
          * @psalm-suppress InvalidCatch
@@ -79,12 +77,9 @@ class DeprefixingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
-     *
-     * @since [*next-version*]
      */
-    public function has($key)
+    public function has(string $key): bool
     {
-        $key = (string) $key;
         $realKey = $this->getInnerKey($key);
 
         return $this->inner->has($realKey) || (!$this->strict && $this->inner->has($key));
@@ -92,8 +87,6 @@ class DeprefixingContainer implements ContainerInterface
 
     /**
      * Retrieves the key to use for the inner container.
-     *
-     * @since [*next-version*]
      *
      * @param string $key The outer key.
      *

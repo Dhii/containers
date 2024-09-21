@@ -36,7 +36,7 @@ class ContainerMock extends AbstractMockHelper implements ContainerInterface
      *
      * @since [*next-version*]
      */
-    public function get($id)
+    public function get(string $id)
     {
         return $this->mock->get($id);
     }
@@ -46,7 +46,7 @@ class ContainerMock extends AbstractMockHelper implements ContainerInterface
      *
      * @since [*next-version*]
      */
-    public function has($id)
+    public function has(string $id): bool
     {
         return $this->mock->has($id);
     }
@@ -61,7 +61,7 @@ class ContainerMock extends AbstractMockHelper implements ContainerInterface
      *
      * @return static
      */
-    public function expectHasService($key, $value)
+    public function expectHasService(string $key, $value)
     {
         $this->mock->method('get')
                    ->with($key)
@@ -83,7 +83,7 @@ class ContainerMock extends AbstractMockHelper implements ContainerInterface
      *
      * @return static
      */
-    public function expectNotHasService($key)
+    public function expectNotHasService(string $key)
     {
         $this->mock->method('get')
                    ->with($key)

@@ -35,7 +35,7 @@ class ProxyContainer implements BaseContainerInterface
     /**
      * @inheritDoc
      */
-    public function get($key)
+    public function get(string $key)
     {
         if (!($this->innerContainer instanceof BaseContainerInterface)) {
             throw new ContainerException($this->__('Inner container not set'));
@@ -47,7 +47,7 @@ class ProxyContainer implements BaseContainerInterface
     /**
      * @inheritDoc
      */
-    public function has($key)
+    public function has(string $key): bool
     {
         if (!($this->innerContainer instanceof BaseContainerInterface)) {
             /** @psalm-suppress MissingThrowsDocblock The exception class implements declared thrown interface */
