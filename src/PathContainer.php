@@ -45,30 +45,17 @@ use Psr\Container\NotFoundExceptionInterface;
  * Note that this implementation DOES NOT create containers for hierarchical _values_. Each segment in a given path
  * must correspond to a child {@link ContainerInterface} instance.
  *
- * @since [*next-version*]
  * @see   SegmentingContainer For an implementation that achieves the opposite effect.
  */
 class PathContainer implements ContainerInterface
 {
-    /**
-     * @since [*next-version*]
-     *
-     * @var PsrContainerInterface
-     */
+    /** @var PsrContainerInterface */
     protected $inner;
 
-    /**
-     * @since [*next-version*]
-     *
-     * @var non-empty-string
-     */
+    /** @var non-empty-string */
     protected $delimiter;
 
     /**
-     * Constructor.
-     *
-     * @since [*next-version*]
-     *
      * @param PsrContainerInterface $inner     The container instance to decorate.
      * @param non-empty-string      $delimiter The path delimiter to use.
      */
@@ -80,10 +67,8 @@ class PathContainer implements ContainerInterface
 
     /**
      * @inheritDoc
-     *
-     * @since [*next-version*]
      */
-    public function get($key)
+    public function get(string $key)
     {
         $tKey = (strpos($key, $this->delimiter) === 0)
             ? substr($key, strlen($this->delimiter))
@@ -122,13 +107,9 @@ class PathContainer implements ContainerInterface
 
     /**
      * @inheritDoc
-     *
-     * @since [*next-version*]
      */
-    public function has($key)
+    public function has(string $key): bool
     {
-        $key = (string) $key;
-
         /**
          * @psalm-suppress InvalidCatch
          * The base interface does not extend Throwable, but in fact everything that is possible

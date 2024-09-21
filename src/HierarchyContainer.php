@@ -59,10 +59,8 @@ class HierarchyContainer implements ContainerInterface
 
     /**
      * @inheritDoc
-     *
-     * @since [*next-version*]
      */
-    public function get($key)
+    public function get(string $key)
     {
         if (!array_key_exists($key, $this->data)) {
             throw new NotFoundException("Key '{$key}' does not exist", 0, null);
@@ -83,13 +81,9 @@ class HierarchyContainer implements ContainerInterface
 
     /**
      * @inheritDoc
-     *
-     * @since [*next-version*]
      */
-    public function has($key)
+    public function has(string $key): bool
     {
-        $key = (string) $key;
-
         return array_key_exists($key, $this->data);
     }
 }

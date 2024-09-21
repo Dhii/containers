@@ -34,28 +34,15 @@ use Psr\Container\ContainerInterface as PsrContainerInterface;
  */
 class MappingContainer implements ContainerInterface
 {
-    /* @since [*next-version*] */
     use StringTranslatingTrait;
 
-    /**
-     * @since [*next-version*]
-     *
-     * @var callable
-     */
+    /** @var callable */
     protected $callback;
 
-    /**
-     * @since [*next-version*]
-     *
-     * @var PsrContainerInterface
-     */
+    /** @var PsrContainerInterface */
     protected $inner;
 
     /**
-     * Constructor.
-     *
-     * @since [*next-version*]
-     *
      * @param PsrContainerInterface $inner    The container instance to decorate.
      * @param callable              $callback The callback to invoke on get. It will be passed 3 parameters:
      *                                         * The inner container's value for the key being fetched.
@@ -70,8 +57,6 @@ class MappingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
-     *
-     * @since [*next-version*]
      */
     public function get($key)
     {
@@ -80,13 +65,9 @@ class MappingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
-     *
-     * @since [*next-version*]
      */
-    public function has($key)
+    public function has(string $key): bool
     {
-        $key = (string) $key;
-
         return $this->inner->has($key);
     }
 }
