@@ -50,7 +50,6 @@ use function ltrim;
  * $dbConfig->get("port"); // 3306
  * ```
  *
- * @since [*next-version*]
  * @see   PathContainer For an implementation that achieves the opposite effect.
  */
 class SegmentingContainer implements ContainerInterface
@@ -87,10 +86,8 @@ class SegmentingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
-     *
-     * @since [*next-version*]
      */
-    public function get($key)
+    public function get(string  $key)
     {
         $tKey = ltrim($key, $this->delimiter);
         $tRoot = rtrim($this->root, $this->delimiter);
@@ -109,10 +106,8 @@ class SegmentingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
-     *
-     * @since [*next-version*]
      */
-    public function has($key)
+    public function has(string $key): bool
     {
         $key = (string) $key;
 

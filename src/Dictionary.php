@@ -36,7 +36,7 @@ class Dictionary implements
     /**
      * {@inheritDoc}
      */
-    public function get($key)
+    public function get(string $key)
     {
         if (!array_key_exists($key, $this->data)) {
             throw new NotFoundException(
@@ -52,10 +52,8 @@ class Dictionary implements
     /**
      * {@inheritDoc}
      */
-    public function has($key)
+    public function has(string $key): bool
     {
-        $key = (string) $key;
-
         $isHas = array_key_exists($key, $this->data);
 
         return $isHas;
