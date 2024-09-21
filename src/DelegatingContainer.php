@@ -27,6 +27,12 @@ class DelegatingContainer implements ContainerInterface
     protected $parent;
 
     /**
+     * Keys represent the list of service names accessed recursively, in order of access
+     * @var array<string, true>
+     */
+    protected $stack = [];
+
+    /**
      */
     public function __construct(ServiceProviderInterface $provider, PsrContainerInterface $parent = null)
     {
@@ -39,10 +45,8 @@ class DelegatingContainer implements ContainerInterface
      */
     public function get($id)
     {
-        static $stack = [];
-
-        if (array_key_exists($id, $stack)) {
-            $trace = implode(' -> ', array_keys($stack)) . ' -> ' . $id;
+        if (array_key_exists($id, $this->stack)) {
+            $trace = implode(' -> ', array_keys($this->stack)) . ' -> ' . $id;
 
             throw new ContainerException(
                 $this->__("Circular dependency detected:\n%s", [$trace]),
@@ -51,12 +55,12 @@ class DelegatingContainer implements ContainerInterface
             );
         }
 
-        $stack[$id] = true;
+        $this->stack[$id] = true;
 
         try {
             return $this->createService($id);
         } finally {
-            unset($stack[$id]);
+            unset($this->stack[$id]);
         }
     }
 
