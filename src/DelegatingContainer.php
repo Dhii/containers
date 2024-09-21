@@ -43,7 +43,7 @@ class DelegatingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $id)
+    public function get($id)
     {
         if (array_key_exists($id, $this->stack)) {
             $trace = implode(' -> ', array_keys($this->stack)) . ' -> ' . $id;
@@ -67,9 +67,10 @@ class DelegatingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function has(string $id): bool
+    public function has($id)
     {
         $services = $this->provider->getFactories();
+        $id = (string) $id;
 
         return array_key_exists($id, $services);
     }

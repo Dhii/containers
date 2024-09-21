@@ -11,6 +11,8 @@ use Dhii\Container\Util\StringTranslatingTrait;
 use Exception;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Traversable;
+use UnexpectedValueException;
 
 class CompositeContainer implements ContainerInterface
 {
@@ -32,8 +34,14 @@ class CompositeContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $key)
+    public function get($key)
     {
+        /** @psalm-suppress RedundantCastGivenDocblockType
+         * @psalm-suppress RedundantCast
+         * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
+         */
+        $key = (string) $key;
+
         foreach ($this->containers as $index => $container) {
             /**
              * @psalm-suppress InvalidCatch
@@ -69,8 +77,13 @@ class CompositeContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function has(string $key): bool
+    public function has($key)
     {
+        /** @psalm-suppress RedundantCastGivenDocblockType
+         * Will remove when switching to PHP 7.2 and new PSR-11 interfaces
+         */
+        $key = (string) $key;
+
         foreach ($this->containers as $index => $container) {
             try {
                 if ($container->has($key)) {

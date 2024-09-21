@@ -49,17 +49,23 @@ class AliasingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
+     *
+     * @since [*next-version*]
      */
-    public function get(string $key)
+    public function get($key)
     {
         return $this->inner->get($this->getInnerKey($key));
     }
 
     /**
      * @inheritdoc
+     *
+     * @since [*next-version*]
      */
-    public function has(string $key): bool
+    public function has($key)
     {
+        $key = (string) $key;
+
         return $this->inner->has($this->getInnerKey($key));
     }
 

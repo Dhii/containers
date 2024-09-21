@@ -7,6 +7,7 @@ namespace Dhii\Container;
 use Dhii\Collection\WritableMapFactoryInterface;
 use Dhii\Collection\WritableMapInterface;
 use Exception;
+use Psr\Container\ContainerInterface as BaseContainerInterface;
 
 /**
  * Creates a container hierarchy based on a traditional data structure.
@@ -22,5 +23,5 @@ interface DataStructureBasedFactoryInterface extends WritableMapFactoryInterface
      *
      * @throws Exception If problem creating.
      */
-    public function createContainerFromArray(array $structure): WritableMapInterface;
+    public function createContainerFromArray(array $structure): BaseContainerInterface;
 }

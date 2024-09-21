@@ -13,9 +13,12 @@ use function array_key_exists;
 
 /**
  * An implementation of a container that wraps around another to selectively expose or mask certain keys.
+ *
+ * @since [*next-version*]
  */
 class MaskingContainer implements ContainerInterface
 {
+    /* @since [*next-version*] */
     use StringTranslatingTrait;
 
     /**
@@ -36,6 +39,8 @@ class MaskingContainer implements ContainerInterface
     /**
      * Constructor.
      *
+     * @since [*next-version*]
+     *
      * @param PsrContainerInterface $inner       The container whose entries to mask.
      * @param bool                  $defaultMask The default mask. If true, all inner keys are exposed. If false, all
      *                                           inner keys are hidden. Any keys specified in the $mask parameter will
@@ -52,8 +57,10 @@ class MaskingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
+     *
+     * @since [*next-version*]
      */
-    public function get(string $key)
+    public function get($key)
     {
         if (!$this->isExposed($key)) {
             throw new NotFoundException(
@@ -68,14 +75,20 @@ class MaskingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
+     *
+     * @since [*next-version*]
      */
-    public function has(string $key): bool
+    public function has($key)
     {
+        $key = (string) $key;
+
         return $this->isExposed($key) && $this->inner->has($key);
     }
 
     /**
      * Checks if a key is exposed through the mask.
+     *
+     * @since [*next-version*]
      *
      * @param string $key The key to check.
      *

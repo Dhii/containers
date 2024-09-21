@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Dhii\Container;
 
 use Dhii\Collection\WritableMapFactoryInterface;
-use Dhii\Collection\WritableMapInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @inheritDoc
@@ -15,7 +15,7 @@ class DictionaryFactory implements WritableMapFactoryInterface
     /**
      * @inheritDoc
      */
-    public function createContainerFromArray(array $data): WritableMapInterface
+    public function createContainerFromArray(array $data): ContainerInterface
     {
         return new Dictionary($data);
     }

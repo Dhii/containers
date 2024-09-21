@@ -15,19 +15,37 @@ use RuntimeException;
 /**
  * A container implementation that wraps around an inner container and prefixes its keys, requiring consumers to
  * include them when fetching or looking up data.
+ *
+ * @since [*next-version*]
  */
 class PrefixingContainer implements ContainerInterface
 {
-    /** @var PsrContainerInterface */
+    /**
+     * @since [*next-version*]
+     *
+     * @var PsrContainerInterface
+     */
     protected $inner;
 
-    /** @var string */
+    /**
+     * @since [*next-version*]
+     *
+     * @var string
+     */
     protected $prefix;
 
-    /** @var bool */
+    /**
+     * @since [*next-version*]
+     *
+     * @var bool
+     */
     protected $strict;
 
     /**
+     * Constructor.
+     *
+     * @since [*next-version*]
+     *
      * @param PsrContainerInterface $container The container whose keys to prefix.
      * @param string                $prefix    The prefix to apply to the container's keys.
      * @param bool                  $strict    Whether or not to fallback to un-prefixed keys if a prefixed key does not
@@ -42,8 +60,10 @@ class PrefixingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
+     *
+     * @since [*next-version*]
      */
-    public function get(string $key)
+    public function get($key)
     {
         if (!$this->isPrefixed($key) && $this->strict) {
             throw new NotFoundException(sprintf('Key "%s" does not exist', $key));
@@ -67,9 +87,12 @@ class PrefixingContainer implements ContainerInterface
 
     /**
      * @inheritdoc
+     *
+     * @since [*next-version*]
      */
-    public function has(string $key): bool
+    public function has($key)
     {
+        $key = (string) $key;
         if (!$this->isPrefixed($key) && $this->strict) {
             return false;
         }
@@ -86,6 +109,8 @@ class PrefixingContainer implements ContainerInterface
     /**
      * Retrieves the key to use for the inner container.
      *
+     * @since [*next-version*]
+     *
      * @param string $key The outer key.
      *
      * @return string The inner key.
@@ -99,6 +124,8 @@ class PrefixingContainer implements ContainerInterface
 
     /**
      * Checks if the key is prefixed.
+     *
+     * @since [*next-version*]
      *
      * @param string $key The key to check.
      *

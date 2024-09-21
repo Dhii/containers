@@ -33,7 +33,7 @@ class SimpleCacheContainer implements
     /**
      * @inheritDoc
      */
-    public function get(string $id)
+    public function get($id)
     {
         $storage = $this->storage;
 
@@ -53,8 +53,9 @@ class SimpleCacheContainer implements
     /**
      * @inheritDoc
      */
-    public function has(string $id): bool
+    public function has($id)
     {
+        $id = (string) $id;
         $storage = $this->storage;
 
         try {
