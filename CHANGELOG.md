@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Recursion detection (#13).
 
 ### Changed
-- Dropped support for `psr/container` v1 in favour of v2.
+- Dropped support for `psr/container` v1 in favour of v2 (#29).
+- Switched underlying Dhii standards (#29).
 
 ## [0.1.5] - 2024-04-27
 ### Fixed
