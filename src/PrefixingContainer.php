@@ -151,7 +151,7 @@ class PrefixingContainer implements ContainerInterface
      */
     protected function substring(string $string, int $offset = 0, ?int $length = null): string
     {
-        $length = $length ?: strlen($string) - $offset;
+        $length = $length ?? strlen($string) - $offset;
         $substring = substr($string, $offset, $length);
         if ($substring === false) {
             throw new RuntimeException(

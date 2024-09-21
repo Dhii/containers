@@ -19,6 +19,7 @@
         throwExceptionOnError="false"
         hideExternalErrors="true"
         allowFileIncludes="true"
+        errorBaseline="psalm-baseline.xml"
 >
     <projectFiles>
         <directory name="src"/>
