@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [[*next-version*]] - YYYY-MM-DD
 ### Added
 - Recursion detection (#13).
+- Support for `psr/container` v2.
+
+### Removed
+- Support for `psr/container` v1.
 
 ## [0.1.5] - 2024-04-27
 ### Fixed
