@@ -8,6 +8,7 @@ use Dhii\Container\TestHelpers\InvocableMock;
 use Dhii\Container\TestHelpers\ServiceProviderMock;
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
 class DelegatingContainerTest extends TestCase
@@ -85,6 +86,37 @@ class DelegatingContainerTest extends TestCase
 
         {
             $this->assertFalse($result, 'Wrongly determined not having');
+        }
+    }
+
+    public function testRecursiveDetection()
+    {
+        {
+            $provider = ServiceProviderMock::create($this, [
+                'a' => function (ContainerInterface $c) {
+                    return $c->get('b');
+                },
+                'b' => function (ContainerInterface $c) {
+                    return $c->get('c');
+                },
+                'c' => function (ContainerInterface $c) {
+                    return $c->get('a');
+                },
+            ]);
+
+            $subject = new DelegatingContainer($provider);
+        }
+        {
+            try {
+                $subject->get('a');
+                $this->fail('Expected exception to be thrown');
+            } catch (ContainerExceptionInterface $exception) {
+                $this->assertStringContainsString(
+                    'a -> b -> c -> a',
+                    $exception->getMessage(),
+                    'Exception message does not properly report circular dependency'
+                );
+            }
         }
     }
 }

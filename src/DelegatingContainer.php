@@ -27,6 +27,12 @@ class DelegatingContainer implements ContainerInterface
     protected $parent;
 
     /**
+     * Keys represent the list of service names accessed recursively, in order of access
+     * @var array<string, true>
+     */
+    protected $stack = [];
+
+    /**
      */
     public function __construct(ServiceProviderInterface $provider, PsrContainerInterface $parent = null)
     {
@@ -39,48 +45,23 @@ class DelegatingContainer implements ContainerInterface
      */
     public function get($id)
     {
-        $provider = $this->provider;
-        $services = $provider->getFactories();
+        if (array_key_exists($id, $this->stack)) {
+            $trace = implode(' -> ', array_keys($this->stack)) . ' -> ' . $id;
 
-        if (!array_key_exists($id, $services)) {
-            throw new NotFoundException(
-                $this->__('Service not found for key "%1$s"', [$id]),
+            throw new ContainerException(
+                $this->__("Circular dependency detected:\n%s", [$trace]),
                 0,
                 null
             );
         }
 
-        $service = $services[$id];
+        $this->stack[$id] = true;
 
         try {
-            $service = $this->invokeFactory($service);
-        } catch (UnexpectedValueException $e) {
-            throw new ContainerException(
-                $this->__('Could not create service "%1$s"', [$id]),
-                0,
-                $e
-            );
+            return $this->createService($id);
+        } finally {
+            unset($this->stack[$id]);
         }
-
-        $extensions = $provider->getExtensions();
-
-        if (!array_key_exists($id, $extensions)) {
-            return $service;
-        }
-
-        $extension = $extensions[$id];
-
-        try {
-            $service = $this->invokeExtension($extension, $service);
-        } catch (UnexpectedValueException $e) {
-            throw new ContainerException(
-                $this->__('Could not extend service "%1$s"', [$id]),
-                0,
-                $e
-            );
-        }
-
-        return $service;
     }
 
     /**
@@ -92,6 +73,64 @@ class DelegatingContainer implements ContainerInterface
         $id = (string) $id;
 
         return array_key_exists($id, $services);
+    }
+
+    /**
+     * Creates a service, using the factory that corresponds to a specific key.
+     *
+     * @since [*next-version*]
+     *
+     * @param string $key The key of the service to be created.
+     *
+     * @return mixed The created service.
+     *
+     * @throws NotFoundException If no factory corresponds to the given $key.
+     * @throws ContainerException If an error occurred while creating the service.
+     */
+    protected function createService(string $key)
+    {
+        $provider = $this->provider;
+        $services = $provider->getFactories();
+
+        if (!array_key_exists($key, $services)) {
+            throw new NotFoundException(
+                $this->__('Service not found for key "%1$s"', [$key]),
+                0,
+                null
+            );
+        }
+
+        $service = $services[$key];
+
+        try {
+            $service = $this->invokeFactory($service);
+        } catch (UnexpectedValueException $e) {
+            throw new ContainerException(
+                $this->__('Could not create service "%1$s"', [$key]),
+                0,
+                $e
+            );
+        }
+
+        $extensions = $provider->getExtensions();
+
+        if (!array_key_exists($key, $extensions)) {
+            return $service;
+        }
+
+        $extension = $extensions[$key];
+
+        try {
+            $service = $this->invokeExtension($extension, $service);
+        } catch (UnexpectedValueException $e) {
+            throw new ContainerException(
+                $this->__('Could not extend service "%1$s"', [$key]),
+                0,
+                $e
+            );
+        }
+
+        return $service;
     }
 
     /**
