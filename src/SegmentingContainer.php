@@ -109,8 +109,6 @@ class SegmentingContainer implements ContainerInterface
      */
     public function has(string $key): bool
     {
-        $key = (string) $key;
-
         return $this->inner->has($key);
     }
 }
