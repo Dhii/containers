@@ -1,8 +1,7 @@
 # Dhii - Containers
-
-[![Build Status](https://travis-ci.com/Dhii/containers.svg?branch=develop)](https://travis-ci.com/Dhii/containers)
-[![Code Climate](https://codeclimate.com/github/Dhii/containers/badges/gpa.svg)](https://codeclimate.com/github/Dhii/containers)
-[![Test Coverage](https://codeclimate.com/github/Dhii/containers/badges/coverage.svg)](https://codeclimate.com/github/Dhii/containers/coverage)
+[![Continuous Integration](https://github.com/Dhii/containers/actions/workflows/ci.yml/badge.svg)](https://github.com/Dhii/containers/actions/workflows/ci.yml)
+[![Latest Stable Version](https://poser.pugx.org/dhii/containers/v)](//packagist.org/packages/dhii/containers)
+[![Latest Unstable Version](https://poser.pugx.org/dhii/containers/v/unstable)](//packagist.org/packages/dhii/containers)
 
 ## Details
 A selection of [PSR-11][] containers for utility, simplicity, and ease.
@@ -19,11 +18,16 @@ A selection of [PSR-11][] containers for utility, simplicity, and ease.
 - [`PathContainer`][] - A decorator that allows access to a hierarchy of nested container via path-like keys. Useful when accessing configuration merged from multiple sources.
 - [`SegmentingContainer`][] - A decorator that allows access to a container with delimiter-separated path-like keys as if it were a hierarchy of containers. Useful isolating a segment of configuration when using a path-like naming convention for keys (such as namespacing). The opposite of `PathContainer`.
 - [`HierarchyContainer`][] - A container that allows access to a arbitrary hierarchy of arrays as if it was a hierarchy of containers. Creates containers in place, and caches them for future re-use.
-- [`Dictionary`][] - Allows access to an array via a container interface, without sacrificing iterability. [`DataStructureBasedFactory`][] allows this to be recursive for an array hierarchy of an arbitrary depth. Useful for transforming an array into a container, especially with other decorators.
+- [`Dictionary`][] - Allows access to an array via a container interface, without sacrificing iterability.
+- [`DataStructureBasedFactory`][] allows this to be recursive for an array hierarchy of an arbitrary depth. Useful for transforming an array into a container, especially with other decorators.
+- [`SimpleCacheContainer`][] - A decorator that presents a PSR-16 cache as a mutable, clearable container with fixed TTL.
+- [`FlashContainer`][] - A decorator that presents a value from an inner storage container as another container, copying that value into memory, then clearing it from storage.
+- [`NoOpContainer`][] - A no-op writable mutable clearable map that does nothing, and cannot have any values.
 
 ### DI
 - [`ServiceProvider`][] - A super-simple implementation that allows quick creation of  [service providers][Service Provider] from known maps of factories and extensions.
 - [`CompositeCachingServiceProvider`][] - A service provider that aggregates factories and extensions of other service providers. The results of this aggregation will be cached, meaing that it is only performed at most once per instance - when retrieving said factories or extensions.
+- [`TaggingServiceProvider`][] - A service provider that aggregates tagged services into a service with the tag's name.
 - [`DelegatingContainer`][] - A container that will invoke the factories and extensions of its configured service provider before returning values. If a parent container is specified, it will be passed to the service definitions instead of this container. This allows [dependency lookup delegation][DDL], which is especially useful when composing a container out of other containers.
 
 ## Examples
@@ -51,6 +55,43 @@ Most modern applications use some kind of DI container setup. The below example 
     
     // Retrieve cached configuration aggregated from various modules and other sources, sucha as the database or a remote API
     $appContainer->get('my-service');
+```
+
+### Service Tagging
+You can tag your services into a collection. This adds a service with the same name as the tag,
+which will return a list of services tagged with it.
+
+Since a service name can theoretically be any legal string,
+while some limitations need to be set for it to remain a tag,
+the tag name can contain any character besides whitespace (anything that matches `\s`).
+
+```php
+[
+    'serviceA' =>
+        /** @tag letters */
+        fn (): string => 'A',
+    'serviceB' =>
+        /**
+         * @tag letters
+         */
+        function (): string {
+            return 'B';
+        },
+    'serviceC' => function (ContainerInterface $c): string {
+        var_dump($c->get('letters'));
+    },
+];
+```
+
+The above example results in the following `var_dump()`:
+
+```
+array(2) {
+  [0]=>
+  string(1) "A"
+  [1]=>
+  string(1) "B"
+}
 ```
 
 ### Fun Things With Maps
@@ -125,21 +166,25 @@ echo $productionConfig->get('password'); // NotFoundException: This key does not
 [PSR-11]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md
 [SoC]: https://dev.to/xedinunknown/separation-of-concerns-3e7d
 
-[`ServiceProvider`]: https://github.com/Dhii/containers/blob/develop/src/ServiceProvider.php
-[`CompositeCachingServiceProvider`]: https://github.com/Dhii/containers/blob/develop/src/CompositeCachingServiceProvider.php
-[`DelegatingContainer`]: https://github.com/Dhii/containers/blob/develop/src/DelegatingContainer.php
-[`CachingContainer`]: https://github.com/Dhii/containers/blob/develop/src/CachingContainer.php
-[`CompositeContainer`]: https://github.com/Dhii/containers/blob/develop/src/CompositeContainer.php
-[`ProxyContainer`]: https://github.com/Dhii/containers/blob/develop/src/ProxyContainer.php
-[`AliasingContainer`]: https://github.com/Dhii/containers/blob/develop/src/AliasingContainer.php
-[`MappingContainer`]: https://github.com/Dhii/containers/blob/develop/src/MappingContainer.php
-[`PrefixingContainer`]: https://github.com/Dhii/containers/blob/develop/src/PrefixingContainer.php
-[`DeprefixingContainer`]: https://github.com/Dhii/containers/blob/develop/src/DeprefixingContainer.php
-[`MaskingContainer`]: https://github.com/Dhii/containers/blob/develop/src/MaskingContainer.php
-[`PathContainer`]: https://github.com/Dhii/containers/blob/develop/src/PathContainer.php
-[`SegmentingContainer`]: https://github.com/Dhii/containers/blob/develop/src/SegmentingContainer.php
-[`HierarchyContainer`]: https://github.com/Dhii/containers/blob/develop/src/HierarchyContainer.php
-[`Dictionary`]: https://github.com/Dhii/containers/blob/develop/src/Dictionary.php
-[`DataStructureBasedFactory`]: https://github.com/Dhii/containers/blob/develop/src/DataStructureBasedFactory.php
+[`ServiceProvider`]: src/ServiceProvider.php
+[`CompositeCachingServiceProvider`]: src/CompositeCachingServiceProvider.php
+[`TaggingServiceProvider`]: src/TaggingServiceProvider.php
+[`DelegatingContainer`]: src/DelegatingContainer.php
+[`CachingContainer`]: src/CachingContainer.php
+[`CompositeContainer`]: src/CompositeContainer.php
+[`ProxyContainer`]: src/ProxyContainer.php
+[`AliasingContainer`]: src/AliasingContainer.php
+[`MappingContainer`]: src/MappingContainer.php
+[`PrefixingContainer`]: src/PrefixingContainer.php
+[`DeprefixingContainer`]: src/DeprefixingContainer.php
+[`MaskingContainer`]: src/MaskingContainer.php
+[`PathContainer`]: src/PathContainer.php
+[`SegmentingContainer`]: src/SegmentingContainer.php
+[`HierarchyContainer`]: src/HierarchyContainer.php
+[`Dictionary`]: src/Dictionary.php
+[`DataStructureBasedFactory`]: src/DataStructureBasedFactory.php
+[`SimpleCacheContainer`]: src/SimpleCacheContainer.php
+[`FlashContainer`]: src/FlashContainer.php
+[`NoOpContainer`]: src/NoOpContainer.php
 
 [DDL]: https://thecodingmachine.io/psr-11-an-in-depth-view-at-the-delegate-lookup-feature

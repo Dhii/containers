@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="5.x-dev@7d6c88e88a55cf04af4d6932cfb906d15ac2fe23">
+  <file src="src/CompositeCachingServiceProvider.php">
+    <InvalidReturnStatement>
+      <code><![CDATA[$this->extensions]]></code>
+      <code><![CDATA[$this->factories]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[getExtensions]]></code>
+      <code><![CDATA[getFactories]]></code>
+    </InvalidReturnType>
+  </file>
+  <file src="src/TaggingServiceProvider.php">
+    <InvalidArgument>
+      <code><![CDATA[$factory]]></code>
+    </InvalidArgument>
+    <MissingClosureReturnType>
+      <code><![CDATA[fn (string $serviceName) => $c->get($serviceName)]]></code>
+    </MissingClosureReturnType>
+    <PossiblyInvalidArgument>
+      <code><![CDATA[$factory]]></code>
+    </PossiblyInvalidArgument>
+    <TypeDoesNotContainType>
+      <code><![CDATA[!is_array($tags[$tag])]]></code>
+      <code><![CDATA[get_class($factory) === 'Closure']]></code>
+    </TypeDoesNotContainType>
+  </file>
+</files>

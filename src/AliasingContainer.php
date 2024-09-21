@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use Dhii\Collection\ContainerInterface;
 use Dhii\Container\Util\StringTranslatingTrait;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
+
 use function array_key_exists;
 
 /**
@@ -26,7 +29,7 @@ class AliasingContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var array
+     * @var array<array-key, string>
      */
     protected $aliases;
 
@@ -35,8 +38,8 @@ class AliasingContainer implements ContainerInterface
      *
      * @since [*next-version*]
      *
-     * @param PsrContainerInterface $inner   The container whose keys to alias.
-     * @param array                 $aliases A mapping of aliases to their original container key counterparts.
+     * @param PsrContainerInterface    $inner   The container whose keys to alias.
+     * @param array<array-key, string> $aliases A mapping of aliases to their original container key counterparts.
      */
     public function __construct(PsrContainerInterface $inner, array $aliases)
     {
@@ -61,6 +64,8 @@ class AliasingContainer implements ContainerInterface
      */
     public function has($key)
     {
+        $key = (string) $key;
+
         return $this->inner->has($this->getInnerKey($key));
     }
 
@@ -73,7 +78,7 @@ class AliasingContainer implements ContainerInterface
      *
      * @return string The inner key.
      */
-    protected function getInnerKey($key)
+    protected function getInnerKey(string $key): string
     {
         if (array_key_exists($key, $this->aliases)) {
             return $this->aliases[$key];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container;
 
 use ArrayIterator;
@@ -9,6 +11,7 @@ use Dhii\Container\Exception\NotFoundException;
 use Dhii\Container\Util\StringTranslatingTrait;
 use IteratorAggregate;
 use RangeException;
+use Traversable;
 
 /**
  * A simple mutable dictionary, i.e. an enumerable key-value map.
@@ -19,11 +22,11 @@ class Dictionary implements
 {
     use StringTranslatingTrait;
 
-    /** @var array */
+    /** @var array<array-key, mixed> */
     protected $data;
 
     /**
-     * @param array $data The key-value map of data.
+     * @param array<array-key, mixed> $data The key-value map of data.
      */
     public function __construct(array $data)
     {
@@ -51,6 +54,8 @@ class Dictionary implements
      */
     public function has($key)
     {
+        $key = (string) $key;
+
         $isHas = array_key_exists($key, $this->data);
 
         return $isHas;
@@ -59,47 +64,69 @@ class Dictionary implements
     /**
      * {@inheritDoc}
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->data);
     }
 
     /**
      * @inheritDoc
+     * @psalm-suppress MoreSpecificReturnType
+     * Psalm complains that the declared return type is more specific than inferred.
+     * This is not true, as it promises to return the interface.
      */
     public function withMappings(array $mappings): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();
         $dictionary->data = $mappings;
 
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         * Looks like this needs to be suppressed until able to hint return type `self`.
+         */
         return $dictionary;
     }
 
     /**
      * @inheritDoc
+     * @psalm-suppress MoreSpecificReturnType
+     * Psalm complains that the declared return type is more specific than inferred.
+     * This is not true, as it promises to return the interface.
      */
     public function withAddedMappings(array $mappings): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();
         $dictionary->data = $mappings + $this->data;
 
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         * Looks like this needs to be suppressed until able to hint return type `self`.
+         */
         return $dictionary;
     }
 
     /**
      * @inheritDoc
+     * @psalm-suppress MoreSpecificReturnType
+     * Psalm complains that the declared return type is more specific than inferred.
+     * This is not true, as it promises to return the interface.
      */
     public function withoutKeys(array $keys): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();
 
         foreach ($keys as $i => $key) {
+            /** @psalm-suppress DocblockTypeContradiction Still want to enforce string */
             if (!is_string($key)) {
                 throw new RangeException($this->__('Key at index %1$d is not a string', [$i]));
             }
             unset($dictionary->data[$key]);
         }
 
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         * Looks like this needs to be suppressed until able to hint return type `self`.
+         */
         return $dictionary;
     }
 

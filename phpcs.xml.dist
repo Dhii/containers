@@ -1,43 +1,49 @@
 <?xml version="1.0"?>
-<ruleset name="wp-jobadder">
-    <file>./main.php</file>
+<ruleset name="plugin"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+
     <file>./src</file>
-    <file>./includes</file>
 
-    <rule ref="vendor/consistence/coding-standard/Consistence/ruleset.xml">
-        <!-- Use 4 spaces per indent -->
-        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
-        <rule ref="Generic.WhiteSpace.DisallowTabIndent" />
-        <rule ref="Generic.WhiteSpace.ScopeIndent">
-            <properties>
-                <property name="indent" value="4"/>
-                <property name="tabIndent" value="false"/>
-            </properties>
-        </rule>
 
-        <!-- We can use double quotes as templates -->
-        <exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar" />
+    <config name="installed_paths" value="../../slevomat/coding-standard"/>
+
+    <rule ref="PSR12"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <type>warning</type>
     </rule>
-
-    <rule ref="vendor/slevomat/coding-standard/SlevomatCodingStandard/ruleset.xml">
-        <!-- PSR-4 mapping already in Composer -->
-        <exclude name="SlevomatCodingStandard.Files.TypeNameMatchesFileName" />
-
-        <!-- There's no reason to have to specify FQNs everywhere if they can be imported -->
-        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword"/>
-        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName" />
-        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions.NonFullyQualifiedException" />
-        <exclude name="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces" />
-        <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
-        <!-- The fallback mechanism is safe enough, and can be good for mocking -->
-        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants" />
-        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions" />
-
-        <!-- Sometimes it's fine to work with a list of anything -->
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/>
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
-
-        <!-- Doc can be a work in progress -->
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment" />
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <properties>
+            <property name="newlinesCountBetweenOpenTagAndDeclare" value="2"/>
+            <property name="newlinesCountAfterDeclare" value="2"/>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
+        </properties>
     </rule>
+    <rule ref="SlevomatCodingStandard.Classes.ClassStructure">
+        <properties>
+            <property name="groups" type="array">
+                <element value="uses"/>
+
+                <!-- Public constants are first but you don't care about the order of protected or private constants -->
+                <element value="public constants"/>
+                <element value="constants"/>
+
+                <!-- You don't care about the order among the properties. The same can be done with "properties" shortcut -->
+                <element value="public properties, protected properties, private properties, properties"/>
+
+                <!-- Constructor is first, then all public methods, then protected/private methods and magic methods are last -->
+                <element value="constructor"/>
+                <element value="all public methods"/>
+                <element value="methods"/>
+                <element value="magic methods"/>
+            </property>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch"/>
+    <rule ref="SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator"/>
+    <rule ref="SlevomatCodingStandard.PHP.DisallowDirectMagicInvokeCall"/>
+    <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators"/>
+    <rule ref="SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator"/>
 </ruleset>

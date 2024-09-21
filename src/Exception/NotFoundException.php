@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Dhii\Container\Exception;
 
 use Psr\Container\NotFoundExceptionInterface;
@@ -8,13 +10,13 @@ use Throwable;
 class NotFoundException extends ContainerException implements NotFoundExceptionInterface
 {
     /**
-     * @var string
+     * @param string         $message  The error message.
+     * @param int            $code     The error code.
+     * @param Throwable|null $previous The inner error, if any.
      */
-    protected $dataKey;
-
     public function __construct(
-        $message = '',
-        $code = 0,
+        string $message = '',
+        int $code = 0,
         Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
