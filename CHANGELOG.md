@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [[*next-version*]] -YYYY-MM-DD
+## [[*next-version*]] - YYYY-MM-DD
+
+## [0.1.5] - 2024-04-27
 ### Fixed
 - Missing return types causing warnings with PHP 8.1 and higher (#25).
 - Static check issues (#26, #27).
