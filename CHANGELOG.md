@@ -6,8 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [[*next-version*]] -YYYY-MM-DD
 ### Fixed
-- Missing return types causing warnings with PHP 8.1 and higher.
-- Static check issues.
+- Missing return types causing warnings with PHP 8.1 and higher (#25).
+- Static check issues (#26, #27).
 
 ### Added
 - Service tagging capability (#28).
