@@ -54,7 +54,7 @@ class DelegatingContainer implements ContainerInterface
         $stack[$id] = true;
 
         try {
-            return $this->_createService($id);
+            return $this->createService($id);
         } finally {
             unset($stack[$id]);
         }
@@ -83,7 +83,7 @@ class DelegatingContainer implements ContainerInterface
      * @throws NotFoundException If no factory corresponds to the given $key.
      * @throws ContainerException If an error occurred while creating the service.
      */
-    protected function _createService(string $key)
+    protected function createService(string $key)
     {
         $provider = $this->provider;
         $services = $provider->getFactories();
