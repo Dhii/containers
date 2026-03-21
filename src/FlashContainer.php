@@ -24,11 +24,11 @@ class FlashContainer implements
     ClearableContainerInterface
 {
     /** @var MutableContainerInterface */
-    protected $data;
+    protected MutableContainerInterface $data;
     /** @var string */
-    protected $dataKey;
+    protected string $dataKey;
     /** @var array<array-key, scalar> */
-    protected $flashData = [];
+    protected array $flashData = [];
 
     /**
      * @param MutableContainerInterface $data The storage.
@@ -68,7 +68,7 @@ class FlashContainer implements
      *
      * Retrieves the value for the specified key from memory.
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         if (!array_key_exists($key, $this->flashData)) {
             throw new NotFoundException(sprintf('Flash data not found for key "%1$s"', $key));

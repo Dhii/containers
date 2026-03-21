@@ -3,13 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     colors="true"
     bootstrap="tests/bootstrap.php"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
 >
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">src</directory>
-        </include>
-    </coverage>
     <php>
         <ini name="display_errors" value="1"/>
         <ini name="display_startup_errors" value="1"/>
@@ -25,4 +20,9 @@
             <directory>tests/system</directory>
         </testsuite>
     </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </source>
 </phpunit>

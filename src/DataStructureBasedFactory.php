@@ -15,7 +15,7 @@ class DataStructureBasedFactory implements DataStructureBasedFactoryInterface
     /**
      * @var WritableMapFactoryInterface
      */
-    protected $containerFactory;
+    protected WritableMapFactoryInterface $containerFactory;
     public function __construct(WritableMapFactoryInterface $containerFactory)
     {
         $this->containerFactory = $containerFactory;

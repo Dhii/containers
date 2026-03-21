@@ -7,7 +7,7 @@
 
 
     <config name="installed_paths" value="../../slevomat/coding-standard"/>
-    <config name="php_version" value="7.4" />
+    <config name="php_version" value="8.1" />
 
     <rule ref="PSR12"/>
     <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
@@ -15,13 +15,7 @@
     </rule>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>
     <rule ref="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
-        <properties>
-            <property name="newlinesCountBetweenOpenTagAndDeclare" value="2"/>
-            <property name="newlinesCountAfterDeclare" value="2"/>
-            <property name="spacesCountAroundEqualsSign" value="0"/>
-        </properties>
-    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes"/>
     <rule ref="SlevomatCodingStandard.Classes.ClassStructure">
         <properties>
             <property name="groups" type="array">
@@ -30,6 +24,7 @@
                 <!-- Public constants are first but you don't care about the order of protected or private constants -->
                 <element value="public constants"/>
                 <element value="constants"/>
+                <element value="enum cases"/>
 
                 <!-- You don't care about the order among the properties. The same can be done with "properties" shortcut -->
                 <element value="public properties, protected properties, private properties, properties"/>

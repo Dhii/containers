@@ -19,13 +19,13 @@ use RuntimeException;
 class PrefixingContainer implements ContainerInterface
 {
     /** @var PsrContainerInterface */
-    protected $inner;
+    protected PsrContainerInterface $inner;
 
     /** @var string */
-    protected $prefix;
+    protected string $prefix;
 
     /** @var bool */
-    protected $strict;
+    protected bool $strict;
 
     /**
      * @param PsrContainerInterface $container The container whose keys to prefix.
@@ -43,7 +43,7 @@ class PrefixingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         if (!$this->isPrefixed($key) && $this->strict) {
             throw new NotFoundException(sprintf('Key "%s" does not exist', $key));

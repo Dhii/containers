@@ -18,11 +18,11 @@ class SimpleCacheContainer implements
     /**
      * @var CacheInterface
      */
-    protected $storage;
+    protected CacheInterface $storage;
     /**
      * @var int
      */
-    protected $ttl;
+    protected int $ttl;
 
     public function __construct(CacheInterface $storage, int $ttl)
     {
@@ -33,7 +33,7 @@ class SimpleCacheContainer implements
     /**
      * @inheritDoc
      */
-    public function get(string $id)
+    public function get(string $id): mixed
     {
         $storage = $this->storage;
 

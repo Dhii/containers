@@ -15,17 +15,17 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
     /**
      * @var iterable<ServiceProviderInterface>
      */
-    protected $providers;
+    protected iterable $providers;
 
     /**
      * @var ?iterable<callable>
      */
-    protected $factories;
+    protected ?iterable $factories;
 
     /**
      * @var ?iterable<callable>
      */
-    protected $extensions;
+    protected ?iterable $extensions;
 
     /**
      * @param iterable<ServiceProviderInterface> $providers
@@ -43,7 +43,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      * @psalm-suppress InvalidNullableReturnType
      * It isn't actually going to return null ever, because $factories will be filled during indexing.
      */
-    public function getFactories()
+    public function getFactories(): array
     {
         if (!is_array($this->factories)) {
             $this->indexProviderDefinitions($this->providers);
@@ -62,7 +62,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      * @psalm-suppress InvalidNullableReturnType
      * It isn't actually going to return null ever, because $factories will be filled during indexing.
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         if (!is_array($this->extensions)) {
             $this->indexProviderDefinitions($this->providers);

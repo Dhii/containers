@@ -57,17 +57,17 @@ class SegmentingContainer implements ContainerInterface
     /**
      * @var PsrContainerInterface
      */
-    protected $inner;
+    protected PsrContainerInterface $inner;
 
     /**
      * @var string
      */
-    protected $root;
+    protected string $root;
 
     /**
      * @var string
      */
-    protected $delimiter;
+    protected string $delimiter;
 
     /**
      * Constructor.
@@ -87,7 +87,7 @@ class SegmentingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         $tKey = ltrim($key, $this->delimiter);
         $tRoot = rtrim($this->root, $this->delimiter);

@@ -21,21 +21,21 @@ class DeprefixingContainer implements ContainerInterface
      *
      * @var PsrContainerInterface
      */
-    protected $inner;
+    protected PsrContainerInterface $inner;
 
     /**
      * @since [*next-version*]
      *
      * @var string
      */
-    protected $prefix;
+    protected string $prefix;
 
     /**
      * @since [*next-version*]
      *
      * @var bool
      */
-    protected $strict;
+    protected bool $strict;
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ class DeprefixingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         /**
          * @psalm-suppress InvalidCatch

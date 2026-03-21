@@ -19,18 +19,18 @@ class DelegatingContainer implements ContainerInterface
     /**
      * @var ServiceProviderInterface
      */
-    protected $provider;
+    protected ServiceProviderInterface $provider;
 
     /**
      * @var PsrContainerInterface|null
      */
-    protected $parent;
+    protected ?PsrContainerInterface $parent;
 
     /**
      * Keys represent the list of service names accessed recursively, in order of access
      * @var array<string, true>
      */
-    protected $stack = [];
+    protected array $stack = [];
 
     /**
      */
@@ -43,7 +43,7 @@ class DelegatingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $id)
+    public function get(string $id): mixed
     {
         if (array_key_exists($id, $this->stack)) {
             $trace = implode(' -> ', array_keys($this->stack)) . ' -> ' . $id;
@@ -86,7 +86,7 @@ class DelegatingContainer implements ContainerInterface
      * @throws NotFoundException If no factory corresponds to the given $key.
      * @throws ContainerException If an error occurred while creating the service.
      */
-    protected function createService(string $key)
+    protected function createService(string $key): mixed
     {
         $provider = $this->provider;
         $services = $provider->getFactories();
@@ -140,9 +140,8 @@ class DelegatingContainer implements ContainerInterface
      * @return mixed The service created by the factory.
      *
      * @throws UnexpectedValueException If factory could not be invoked.
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    protected function invokeFactory(callable $factory)
+    protected function invokeFactory(callable $factory): mixed
     {
         if (!is_callable($factory)) {
             throw new UnexpectedValueException(
@@ -167,9 +166,8 @@ class DelegatingContainer implements ContainerInterface
      * @return mixed The extended service.
      *
      * @throws UnexpectedValueException If extension cannot be invoked.
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    protected function invokeExtension(callable $extension, $service)
+    protected function invokeExtension(callable $extension, mixed $service): mixed
     {
         if (!is_callable($extension)) {
             throw new UnexpectedValueException(

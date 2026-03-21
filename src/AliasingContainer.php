@@ -24,14 +24,14 @@ class AliasingContainer implements ContainerInterface
      *
      * @var PsrContainerInterface
      */
-    protected $inner;
+    protected PsrContainerInterface $inner;
 
     /**
      * @since [*next-version*]
      *
      * @var array<array-key, string>
      */
-    protected $aliases;
+    protected array $aliases;
 
     /**
      * Constructor.
@@ -50,7 +50,7 @@ class AliasingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         return $this->inner->get($this->getInnerKey($key));
     }

@@ -4,6 +4,7 @@ namespace Dhii\Container\FuncTest;
 
 use Dhii\Container\DeprefixingContainer;
 use Dhii\Container\Exception\NotFoundException;
+use Dhii\Container\TestHelpers\ComponentMockeryTrait;
 use Dhii\Container\TestHelpers\ContainerMock;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -11,6 +12,7 @@ use function uniqid;
 
 class DeprefixingContainerTest extends TestCase
 {
+    use ComponentMockeryTrait;
     /**
      * Tests that the subject is able to delegate retrieval to the inner container with a prefixed key.
      *
@@ -48,8 +50,8 @@ class DeprefixingContainerTest extends TestCase
 
         $inner = ContainerMock::create($this);
         $inner->method('get')
-              ->withConsecutive([$prefix . $serviceKey], [$serviceKey])
-              ->willReturnCallback(function () use ($serviceVal) {
+              ->with(...$this->consecutive([$prefix . $serviceKey], [$serviceKey]))
+              ->willReturnCallback(function ($key) use ($serviceKey, $prefix, $serviceVal) {
                   static $count = 1;
 
                   // Throw the first time
@@ -128,7 +130,7 @@ class DeprefixingContainerTest extends TestCase
 
         $inner = ContainerMock::create($this);
         $inner->method('has')
-              ->withConsecutive([$prefix . $serviceKey], [$serviceKey])
+              ->with(...$this->consecutive([$prefix . $serviceKey], [$serviceKey]))
               ->willReturnCallback(function () {
                   static $count = 1;
 

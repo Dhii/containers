@@ -3,6 +3,7 @@
 namespace Dhii\Container\FuncTest;
 
 use Dhii\Container\SegmentingContainer;
+use Dhii\Container\TestHelpers\ComponentMockeryTrait;
 use Dhii\Container\TestHelpers\ContainerMock;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -11,6 +12,7 @@ use function uniqid;
 
 class SegmentingContainerTest extends TestCase
 {
+    use ComponentMockeryTrait;
     /**
      * Tests that the subject correctly returns intermediate containers when fetching non-existent keys.
      *
@@ -59,8 +61,10 @@ class SegmentingContainerTest extends TestCase
             $inner = ContainerMock::create($this);
             // Container only returns true for full path
             $inner->method('has')
-                  ->withConsecutive([$key1], [$key2], [$key3])
-                  ->willReturnOnConsecutiveCalls(false, false, true);
+                  ->with(...$this->consecutive([$key1], [$key2], [$key3]))
+                  ->willReturnCallback(function ($key) use ($key1, $key2, $key3) {
+                      return $key === $key3;
+                  });
             // Container returns value for full path
             $inner->method('get')->with($key3)->willReturn($value);
         }
@@ -103,8 +107,10 @@ class SegmentingContainerTest extends TestCase
             $inner = ContainerMock::create($this);
             // Container only returns true for full path
             $inner->method('has')
-                  ->withConsecutive([$key1], [$key2])
-                  ->willReturnOnConsecutiveCalls(false, true);
+                  ->with(...$this->consecutive([$key1], [$key2]))
+                  ->willReturnCallback(function ($key) use ($key1, $key2) {
+                      return $key === $key2;
+                  });
             // Container returns value for full path
             $inner->method('get')->with($key2)->willReturn($value);
         }

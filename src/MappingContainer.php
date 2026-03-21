@@ -40,7 +40,7 @@ class MappingContainer implements ContainerInterface
     protected $callback;
 
     /** @var PsrContainerInterface */
-    protected $inner;
+    protected PsrContainerInterface $inner;
 
     /**
      * @param PsrContainerInterface $inner    The container instance to decorate.
@@ -58,7 +58,7 @@ class MappingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function get($key)
+    public function get(string $key): mixed
     {
         return ($this->callback)($this->inner->get($key), $key, $this);
     }

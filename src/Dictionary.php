@@ -23,7 +23,7 @@ class Dictionary implements
     use StringTranslatingTrait;
 
     /** @var array<array-key, mixed> */
-    protected $data;
+    protected array $data;
 
     /**
      * @param array<array-key, mixed> $data The key-value map of data.
@@ -36,7 +36,7 @@ class Dictionary implements
     /**
      * {@inheritDoc}
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         if (!array_key_exists($key, $this->data)) {
             throw new NotFoundException(

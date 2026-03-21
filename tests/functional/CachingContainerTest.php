@@ -80,7 +80,10 @@ class CachingContainerTest extends TestCase
             $container = $this->createContainer([
                 $key1       => uniqid('value'),
             ]);
-            $container->method('has')->withConsecutive([$key1], [$key2])->willReturnOnConsecutiveCalls(true, false);
+            $container->method('has')->with(...$this->consecutive([$key1], [$key2]))
+                ->willReturnCallback(function ($key) use ($key1) {
+                    return $key === $key1;
+                });
 
             $subject = $this->createSubject([$container]);
         }

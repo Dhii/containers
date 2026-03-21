@@ -14,6 +14,8 @@ use Psr\Container\NotFoundExceptionInterface;
  */
 class ContainerMock extends AbstractMockHelper implements ContainerInterface
 {
+    use ComponentMockeryTrait;
+
     /**
      * Index of current expectation.
      *
@@ -104,9 +106,10 @@ class ContainerMock extends AbstractMockHelper implements ContainerInterface
         $args = array_map(function ($key) {
             return [$key];
         }, $keys);
+        $args = array_pad($args, 2, []); // Must be 2 or more for `consecutive()`
 
         $this->mock->method('get')
-                   ->withConsecutive(...$args)
+                   ->with(...$this->consecutive(...$args))
                    ->willReturnCallback(function ($arg) use ($keys, $values) {
                        static $idx = -1;
                        $idx++;
@@ -132,7 +135,7 @@ class ContainerMock extends AbstractMockHelper implements ContainerInterface
                    });
 
         $this->mock->method('has')
-                   ->withConsecutive(...$args)
+                   ->with(...$this->consecutive(...$args))
                    ->willReturnCallback(function ($arg) use ($keys, $values) {
                        static $idx = -1;
                        $idx++;

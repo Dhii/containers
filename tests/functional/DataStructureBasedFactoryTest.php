@@ -16,7 +16,7 @@ class DataStructureBasedFactoryTest extends TestCase
     public function createInstance(WritableMapFactoryInterface $mapFactory): TestSubject
     {
         $mock = $this->getMockBuilder(TestSubject::class)
-            ->setMethods(null)
+            ->onlyMethods([])
             ->setConstructorArgs([$mapFactory])
             ->getMock();
 
@@ -40,7 +40,7 @@ class DataStructureBasedFactoryTest extends TestCase
     public function createWritableMapFactory(): DictionaryFactory
     {
         $mock = $this->getMockBuilder(DictionaryFactory::class)
-            ->setMethods(null)
+            ->onlyMethods([])
             ->getMock();
 
         return $mock;

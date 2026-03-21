@@ -29,7 +29,7 @@ class NoOpContainer implements
     /**
      * @inheritDoc
      */
-    public function get(string $id)
+    public function get(string $id): mixed
     {
         throw new NotFoundException('NoOp container cannot have values');
     }

@@ -19,7 +19,7 @@ class ContainerException extends Exception implements ContainerExceptionInterfac
     /**
      * @var ContainerInterface|null
      */
-    protected $container;
+    protected ?ContainerInterface $container = null;
 
     /**
      * @param string         $message  The exception message.

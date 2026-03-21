@@ -43,7 +43,7 @@ class HierarchyContainer implements ContainerInterface
      *
      * @var mixed[]
      */
-    protected $data;
+    protected array $data;
 
     /**
      * Constructor.
@@ -60,7 +60,7 @@ class HierarchyContainer implements ContainerInterface
     /**
      * @inheritDoc
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         if (!array_key_exists($key, $this->data)) {
             throw new NotFoundException("Key '{$key}' does not exist", 0, null);

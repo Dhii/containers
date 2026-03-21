@@ -21,7 +21,7 @@ class ProxyContainer implements BaseContainerInterface
     /**
      * @var ?BaseContainerInterface
      */
-    protected $innerContainer;
+    protected ?BaseContainerInterface $innerContainer;
 
     /**
      * @param BaseContainerInterface|null $innerContainer The inner container, if any.
@@ -35,7 +35,7 @@ class ProxyContainer implements BaseContainerInterface
     /**
      * @inheritDoc
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         if (!($this->innerContainer instanceof BaseContainerInterface)) {
             throw new ContainerException($this->__('Inner container not set'));
