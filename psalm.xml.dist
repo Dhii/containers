@@ -19,7 +19,6 @@
         throwExceptionOnError="false"
         hideExternalErrors="true"
         allowFileIncludes="true"
-        errorBaseline="psalm-baseline.xml"
 >
     <projectFiles>
         <directory name="src"/>
@@ -136,7 +135,6 @@
         <MixedArrayTypeCoercion errorLevel="info"/>
         <MixedAssignment errorLevel="info"/>
         <MixedFunctionCall errorLevel="info"/>
-        <MixedInferredReturnType errorLevel="info"/>
         <MixedMethodCall errorLevel="info"/>
         <MixedOperand errorLevel="info"/>
         <MixedPropertyAssignment errorLevel="info"/>
@@ -146,5 +144,11 @@
         <MixedReturnTypeCoercion errorLevel="info"/>
         <MixedStringOffsetAssignment errorLevel="info"/>
         <ParamNameMismatch errorLevel="info"/>
+        <PossiblyUnusedParam errorLevel="info"/>
+        <PossiblyUnusedProperty errorLevel="info"/>
+
+        <UnusedClass errorLevel="suppress"/>
+        <ClassMustBeFinal errorLevel="suppress"/>
+        <PossiblyUnusedMethod errorLevel="suppress"/>
     </issueHandlers>
 </psalm>

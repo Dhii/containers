@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Dhii\Container;
 
+use Closure;
 use Interop\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
 use ReflectionException;
@@ -70,11 +71,12 @@ class TaggingServiceProvider implements ServiceProviderInterface
         $tags = [];
 
         foreach ($this->factories as $serviceName => $factory) {
-            if (is_string($factory)) {
+            // String and array callables may not have tags
+            if (is_string($factory) || is_array($factory)) {
                 continue;
             }
 
-            $reflection = is_object($factory) && get_class($factory) === 'Closure'
+            $reflection = get_class($factory) === Closure::class
                 ? new ReflectionFunction($factory)
                 : new ReflectionObject($factory);
             $docBlock = $reflection->getDocComment();
@@ -86,7 +88,7 @@ class TaggingServiceProvider implements ServiceProviderInterface
 
             $factoryTags = $this->getTagsFromDocBlock($docBlock);
             foreach ($factoryTags as $tag) {
-                if (!isset($tags[$tag]) || !is_array($tags[$tag])) {
+                if (!isset($tags[$tag])) {
                     $tags[$tag] = [];
                 }
                 $tags[$tag][] = $serviceName;
@@ -98,7 +100,7 @@ class TaggingServiceProvider implements ServiceProviderInterface
             $this->extensions[$tag] = function (ContainerInterface $c, array $prev) use ($taggedServiceNames): array {
                 return array_merge(
                     $prev,
-                    array_map(fn (string $serviceName) => $c->get($serviceName), $taggedServiceNames)
+                    array_map(fn (string $serviceName): mixed => $c->get($serviceName), $taggedServiceNames)
                 );
             };
         }
