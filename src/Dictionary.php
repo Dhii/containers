@@ -36,6 +36,7 @@ class Dictionary implements
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         if (!array_key_exists($key, $this->data)) {
@@ -52,6 +53,7 @@ class Dictionary implements
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function has(string $key): bool
     {
         $isHas = array_key_exists($key, $this->data);
@@ -62,6 +64,7 @@ class Dictionary implements
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->data);
@@ -73,6 +76,7 @@ class Dictionary implements
      * Psalm complains that the declared return type is more specific than inferred.
      * This is not true, as it promises to return the interface.
      */
+    #[\Override]
     public function withMappings(array $mappings): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();
@@ -91,6 +95,7 @@ class Dictionary implements
      * Psalm complains that the declared return type is more specific than inferred.
      * This is not true, as it promises to return the interface.
      */
+    #[\Override]
     public function withAddedMappings(array $mappings): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();
@@ -109,6 +114,7 @@ class Dictionary implements
      * Psalm complains that the declared return type is more specific than inferred.
      * This is not true, as it promises to return the interface.
      */
+    #[\Override]
     public function withoutKeys(array $keys): WritableContainerInterface
     {
         $dictionary = $this->cloneMe();

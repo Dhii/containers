@@ -45,6 +45,7 @@ class TaggingServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getFactories()
     {
         return $this->factories;
@@ -53,6 +54,7 @@ class TaggingServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getExtensions()
     {
         return $this->extensions;

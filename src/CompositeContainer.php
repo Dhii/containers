@@ -32,6 +32,7 @@ class CompositeContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         foreach ($this->containers as $index => $container) {
@@ -69,6 +70,7 @@ class CompositeContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function has(string $key): bool
     {
         foreach ($this->containers as $index => $container) {

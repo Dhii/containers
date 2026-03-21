@@ -35,6 +35,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getFactories(): array
     {
         return $this->factories;
@@ -43,6 +44,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function getExtensions(): array
     {
         return $this->extensions;

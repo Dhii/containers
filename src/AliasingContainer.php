@@ -50,6 +50,7 @@ class AliasingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         return $this->inner->get($this->getInnerKey($key));
@@ -58,6 +59,7 @@ class AliasingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         return $this->inner->has($this->getInnerKey($key));

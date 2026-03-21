@@ -22,5 +22,6 @@ interface DataStructureBasedFactoryInterface extends WritableMapFactoryInterface
      *
      * @throws Exception If problem creating.
      */
+    #[\Override]
     public function createContainerFromArray(array $structure): WritableMapInterface;
 }

@@ -43,6 +43,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      * @psalm-suppress InvalidNullableReturnType
      * It isn't actually going to return null ever, because $factories will be filled during indexing.
      */
+    #[\Override]
     public function getFactories(): array
     {
         if (!is_array($this->factories)) {
@@ -62,6 +63,7 @@ class CompositeCachingServiceProvider implements ServiceProviderInterface
      * @psalm-suppress InvalidNullableReturnType
      * It isn't actually going to return null ever, because $factories will be filled during indexing.
      */
+    #[\Override]
     public function getExtensions(): array
     {
         if (!is_array($this->extensions)) {

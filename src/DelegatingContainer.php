@@ -43,6 +43,7 @@ class DelegatingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function get(string $id): mixed
     {
         if (array_key_exists($id, $this->stack)) {
@@ -67,6 +68,7 @@ class DelegatingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function has(string $id): bool
     {
         $services = $this->provider->getFactories();

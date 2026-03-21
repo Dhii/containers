@@ -58,6 +58,7 @@ class FlashContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         return array_key_exists($key, $this->flashData);
@@ -68,6 +69,7 @@ class FlashContainer implements
      *
      * Retrieves the value for the specified key from memory.
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         if (!array_key_exists($key, $this->flashData)) {
@@ -82,6 +84,7 @@ class FlashContainer implements
      *
      * Assigns the given value to the specified key in memory, and persists this change in storage.
      */
+    #[\Override]
     public function set(string $key, $value): void
     {
         $this->flashData[$key] = $value;
@@ -93,6 +96,7 @@ class FlashContainer implements
      *
      * Removes the specified key from memory, and persists this change in storage.
      */
+    #[\Override]
     public function unset(string $key): void
     {
         if (!array_key_exists($key, $this->flashData)) {
@@ -108,6 +112,7 @@ class FlashContainer implements
      *
      * Clears all of this instance's data from memory.
      */
+    #[\Override]
     public function clear(): void
     {
         $this->flashData = [];

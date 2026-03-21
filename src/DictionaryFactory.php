@@ -15,6 +15,7 @@ class DictionaryFactory implements WritableMapFactoryInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function createContainerFromArray(array $data): WritableMapInterface
     {
         return new Dictionary($data);

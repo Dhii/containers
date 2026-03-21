@@ -53,6 +53,7 @@ class MaskingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         if (!$this->isExposed($key)) {
@@ -69,6 +70,7 @@ class MaskingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         return $this->isExposed($key) && $this->inner->has($key);

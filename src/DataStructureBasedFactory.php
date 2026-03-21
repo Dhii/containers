@@ -24,6 +24,7 @@ class DataStructureBasedFactory implements DataStructureBasedFactoryInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function createContainerFromArray(array $structure): WritableMapInterface
     {
         $map = [];

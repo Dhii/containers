@@ -29,6 +29,7 @@ class NoOpContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function get(string $id): mixed
     {
         throw new NotFoundException('NoOp container cannot have values');
@@ -37,6 +38,7 @@ class NoOpContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function has(string $id): bool
     {
         return false;
@@ -45,6 +47,7 @@ class NoOpContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function set(string $key, $value): void
     {
         // Do nothing
@@ -53,6 +56,7 @@ class NoOpContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function unset(string $key): void
     {
         throw new ContainerException('NoOp container cannot have values');
@@ -61,6 +65,7 @@ class NoOpContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function clear(): void
     {
         // Do nothing
@@ -69,6 +74,7 @@ class NoOpContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function withMappings(array $mappings): WritableContainerInterface
     {
         return clone $this;
@@ -77,6 +83,7 @@ class NoOpContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function withAddedMappings(array $mappings): WritableContainerInterface
     {
         return clone $this;
@@ -85,6 +92,7 @@ class NoOpContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function withoutKeys(array $keys): WritableContainerInterface
     {
         return clone $this;
@@ -93,6 +101,7 @@ class NoOpContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function getIterator(): Traversable
     {
         return new ArrayIterator([]);

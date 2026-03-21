@@ -68,6 +68,7 @@ class PathContainer implements ContainerInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         $tKey = (strpos($key, $this->delimiter) === 0)
@@ -108,6 +109,7 @@ class PathContainer implements ContainerInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         /**

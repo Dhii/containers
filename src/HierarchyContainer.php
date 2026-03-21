@@ -60,6 +60,7 @@ class HierarchyContainer implements ContainerInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         if (!array_key_exists($key, $this->data)) {
@@ -82,6 +83,7 @@ class HierarchyContainer implements ContainerInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         return array_key_exists($key, $this->data);

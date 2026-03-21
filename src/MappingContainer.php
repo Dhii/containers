@@ -58,6 +58,7 @@ class MappingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         return ($this->callback)($this->inner->get($key), $key, $this);
@@ -66,6 +67,7 @@ class MappingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         return $this->inner->has($key);

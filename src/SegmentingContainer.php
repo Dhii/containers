@@ -87,6 +87,7 @@ class SegmentingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         $tKey = ltrim($key, $this->delimiter);
@@ -107,6 +108,7 @@ class SegmentingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         return $this->inner->has($key);

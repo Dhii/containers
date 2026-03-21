@@ -35,6 +35,7 @@ class ProxyContainer implements BaseContainerInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         if (!($this->innerContainer instanceof BaseContainerInterface)) {
@@ -47,6 +48,7 @@ class ProxyContainer implements BaseContainerInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         if (!($this->innerContainer instanceof BaseContainerInterface)) {

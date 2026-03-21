@@ -57,6 +57,7 @@ class DeprefixingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         /**
@@ -78,6 +79,7 @@ class DeprefixingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         $realKey = $this->getInnerKey($key);

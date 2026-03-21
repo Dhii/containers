@@ -39,6 +39,7 @@ class CachingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         /**
@@ -70,6 +71,7 @@ class CachingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function has(string $key): bool
     {
         /**

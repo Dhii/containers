@@ -43,6 +43,7 @@ class PrefixingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function get(string $key): mixed
     {
         if (!$this->isPrefixed($key) && $this->strict) {
@@ -68,6 +69,7 @@ class PrefixingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         if (!$this->isPrefixed($key) && $this->strict) {
