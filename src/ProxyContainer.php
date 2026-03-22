@@ -18,9 +18,6 @@ class ProxyContainer implements BaseContainerInterface
 {
     use StringTranslatingTrait;
 
-    /**
-     * @var ?BaseContainerInterface
-     */
     protected ?BaseContainerInterface $innerContainer;
 
     /**

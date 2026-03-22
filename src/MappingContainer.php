@@ -39,7 +39,6 @@ class MappingContainer implements ContainerInterface
     /** @var callable */
     protected $callback;
 
-    /** @var PsrContainerInterface */
     protected PsrContainerInterface $inner;
 
     /**

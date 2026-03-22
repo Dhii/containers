@@ -54,19 +54,10 @@ use function ltrim;
  */
 class SegmentingContainer implements ContainerInterface
 {
-    /**
-     * @var PsrContainerInterface
-     */
     protected PsrContainerInterface $inner;
 
-    /**
-     * @var string
-     */
     protected string $root;
 
-    /**
-     * @var string
-     */
     protected string $delimiter;
 
     /**

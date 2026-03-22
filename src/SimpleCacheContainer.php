@@ -15,13 +15,7 @@ class SimpleCacheContainer implements
     MutableContainerInterface,
     ClearableContainerInterface
 {
-    /**
-     * @var CacheInterface
-     */
     protected CacheInterface $storage;
-    /**
-     * @var int
-     */
     protected int $ttl;
 
     public function __construct(CacheInterface $storage, int $ttl)

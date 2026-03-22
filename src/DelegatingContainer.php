@@ -16,14 +16,8 @@ class DelegatingContainer implements ContainerInterface
 {
     use StringTranslatingTrait;
 
-    /**
-     * @var ServiceProviderInterface
-     */
     protected ServiceProviderInterface $provider;
 
-    /**
-     * @var PsrContainerInterface|null
-     */
     protected ?PsrContainerInterface $parent;
 
     /**

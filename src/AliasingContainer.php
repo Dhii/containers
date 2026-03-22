@@ -22,7 +22,6 @@ class AliasingContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var PsrContainerInterface
      */
     protected PsrContainerInterface $inner;
 

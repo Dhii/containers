@@ -19,21 +19,18 @@ class DeprefixingContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var PsrContainerInterface
      */
     protected PsrContainerInterface $inner;
 
     /**
      * @since [*next-version*]
      *
-     * @var string
      */
     protected string $prefix;
 
     /**
      * @since [*next-version*]
      *
-     * @var bool
      */
     protected bool $strict;
 

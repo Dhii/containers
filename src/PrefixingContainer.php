@@ -18,13 +18,10 @@ use RuntimeException;
  */
 class PrefixingContainer implements ContainerInterface
 {
-    /** @var PsrContainerInterface */
     protected PsrContainerInterface $inner;
 
-    /** @var string */
     protected string $prefix;
 
-    /** @var bool */
     protected bool $strict;
 
     /**

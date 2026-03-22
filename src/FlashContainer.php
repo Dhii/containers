@@ -23,9 +23,7 @@ class FlashContainer implements
     MutableContainerInterface,
     ClearableContainerInterface
 {
-    /** @var MutableContainerInterface */
     protected MutableContainerInterface $data;
-    /** @var string */
     protected string $dataKey;
     /** @var array<array-key, scalar> */
     protected array $flashData = [];

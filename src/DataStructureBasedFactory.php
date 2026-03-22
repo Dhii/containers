@@ -12,9 +12,6 @@ use Dhii\Collection\WritableMapInterface;
  */
 class DataStructureBasedFactory implements DataStructureBasedFactoryInterface
 {
-    /**
-     * @var WritableMapFactoryInterface
-     */
     protected WritableMapFactoryInterface $containerFactory;
     public function __construct(WritableMapFactoryInterface $containerFactory)
     {

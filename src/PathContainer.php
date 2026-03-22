@@ -49,7 +49,6 @@ use Psr\Container\NotFoundExceptionInterface;
  */
 class PathContainer implements ContainerInterface
 {
-    /** @var PsrContainerInterface */
     protected PsrContainerInterface $inner;
 
     /** @var non-empty-string */

@@ -18,9 +18,6 @@ class MaskingContainer implements ContainerInterface
 {
     use StringTranslatingTrait;
 
-    /**
-     * @var PsrContainerInterface
-     */
     protected PsrContainerInterface $inner;
 
     /**
@@ -28,9 +25,6 @@ class MaskingContainer implements ContainerInterface
      */
     protected array $mask;
 
-    /**
-     * @var bool
-     */
     protected bool $defMask;
 
     /**

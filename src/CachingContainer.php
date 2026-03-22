@@ -24,7 +24,6 @@ class CachingContainer implements ContainerInterface
     /** @var array<array-key, mixed> */
     protected array $cache;
 
-    /** @var PsrContainerInterface */
     protected PsrContainerInterface $container;
 
     /**
