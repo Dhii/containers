@@ -46,7 +46,7 @@ trait StringTranslatingTrait
      * @return string The translated string.
      * phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
      */
-    protected function _translate(string $string, string $context = null): string
+    protected function _translate(string $string, string ?$context = null): string
     {
         return $string;
     }
