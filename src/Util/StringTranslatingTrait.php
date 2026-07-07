@@ -41,12 +41,12 @@ trait StringTranslatingTrait
      * @since [*next-version*]
      *
      * @param string $string The string to translate.
-     * @param string $context The context to translate the string in.
+     * @param ?string $context The context to translate the string in.
      *
      * @return string The translated string.
      * phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
      */
-    protected function _translate(string $string, string $context = null): string
+    protected function _translate(string $string, ?string $context = null): string
     {
         return $string;
     }
