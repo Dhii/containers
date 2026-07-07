@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Type inconsistencies reported by Psalm (#32),
 
+## [0.3.0-alpha1] - 2026-07-07
+### Fixed
+- PHP 8.4 warnings by adding nullability to types where necessary (#34, #36).
+
 ## [0.2.0-alpha1] - 2024-09-22
 ### Added
 - Recursion detection (#13).

@@ -21,12 +21,12 @@ class ContainerException extends Exception implements ContainerExceptionInterfac
     /**
      * @param string         $message  The exception message.
      * @param int            $code     The exception code.
-     * @param Throwable|null $previous The inner exception, if any.
+     * @param ?Throwable     $previous The inner exception, if any.
      */
     public function __construct(
         string $message = "",
         int $code = 0,
-        Throwable $previous = null,
+        ?Throwable $previous = null,
         ?ContainerInterface $container = null
     ) {
         parent::__construct($message, $code, $previous);
