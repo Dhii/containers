@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [[*next-version*]] - YYYY-MM-DD
+### Fixed
+- PHP 8.4 warnings by adding nullability to types where necessary (#34, #36).
 
 ## [0.2.0-alpha1] - 2024-09-22
 ### Added
