@@ -34,7 +34,7 @@ class DelegatingContainer implements ContainerInterface
 
     /**
      */
-    public function __construct(ServiceProviderInterface $provider, PsrContainerInterface $parent = null)
+    public function __construct(ServiceProviderInterface $provider, ?PsrContainerInterface $parent = null)
     {
         $this->provider = $provider;
         $this->parent = $parent;
