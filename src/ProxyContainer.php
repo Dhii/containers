@@ -24,10 +24,10 @@ class ProxyContainer implements BaseContainerInterface
     protected $innerContainer;
 
     /**
-     * @param BaseContainerInterface|null $innerContainer The inner container, if any.
-     *                                                    May also be set later with {@see setInnerContainer()}.
+     * @param ?BaseContainerInterface $innerContainer The inner container, if any.
+     *                                                May also be set later with {@see setInnerContainer()}.
      */
-    public function __construct(BaseContainerInterface $innerContainer = null)
+    public function __construct(?BaseContainerInterface $innerContainer = null)
     {
         $this->innerContainer = $innerContainer;
     }
