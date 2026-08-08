@@ -8,7 +8,7 @@ use Dhii\Container\DictionaryFactory;
 use Dhii\Container\SegmentingContainer;
 use PHPUnit\Framework\TestCase;
 
-class MultipleAccessTypesWithMaps__ extends TestCase
+class MultipleAccessTypesWithMapsTest extends TestCase
 {
     const DEV_DB_HOST = 'localhost';
     const STAGING_DB_HOST = '123.staging.myhost';

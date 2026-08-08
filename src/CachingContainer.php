@@ -22,10 +22,9 @@ class CachingContainer implements ContainerInterface
     use StringTranslatingTrait;
 
     /** @var array<array-key, mixed> */
-    protected $cache;
+    protected array $cache;
 
-    /** @var PsrContainerInterface */
-    protected $container;
+    protected PsrContainerInterface $container;
 
     /**
      * @param PsrContainerInterface $container The container to cache entries from.
@@ -39,7 +38,8 @@ class CachingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $key)
+    #[\Override]
+    public function get(string $key): mixed
     {
         /**
          * @psalm-suppress InvalidCatch
@@ -70,6 +70,7 @@ class CachingContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function has(string $key): bool
     {
         /**
@@ -109,9 +110,8 @@ class CachingContainer implements ContainerInterface
      * @return mixed The cached value.
      *
      * @throws Exception If problem caching.
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    protected function getCached(string $key, callable $generator)
+    protected function getCached(string $key, callable $generator): mixed
     {
         if (!array_key_exists($key, $this->cache)) {
             $value = $this->invokeGenerator($generator);
@@ -143,9 +143,8 @@ class CachingContainer implements ContainerInterface
      * @return mixed The generated result.
      *
      * @throws Exception If problem generating.
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
-    protected function invokeGenerator(callable $generator)
+    protected function invokeGenerator(callable $generator): mixed
     {
         $result = $generator();
         return $result;

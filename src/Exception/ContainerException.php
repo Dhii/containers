@@ -16,18 +16,21 @@ use Throwable;
  */
 class ContainerException extends Exception implements ContainerExceptionInterface
 {
-    /**
-     * @var ContainerInterface|null
-     */
-    protected $container;
+    protected ?ContainerInterface $container = null;
 
     /**
      * @param string         $message  The exception message.
      * @param int            $code     The exception code.
      * @param ?Throwable     $previous The inner exception, if any.
      */
-    public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
-    {
+    public function __construct(
+        string $message = "",
+        int $code = 0,
+        ?Throwable $previous = null,
+        ?ContainerInterface $container = null
+    ) {
         parent::__construct($message, $code, $previous);
+        // TODO: Implement getter
+        $this->container = $container;
     }
 }

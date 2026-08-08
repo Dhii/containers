@@ -19,23 +19,20 @@ class DeprefixingContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var PsrContainerInterface
      */
-    protected $inner;
+    protected PsrContainerInterface $inner;
 
     /**
      * @since [*next-version*]
      *
-     * @var string
      */
-    protected $prefix;
+    protected string $prefix;
 
     /**
      * @since [*next-version*]
      *
-     * @var bool
      */
-    protected $strict;
+    protected bool $strict;
 
     /**
      * Constructor.
@@ -57,7 +54,8 @@ class DeprefixingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function get(string $key)
+    #[\Override]
+    public function get(string $key): mixed
     {
         /**
          * @psalm-suppress InvalidCatch
@@ -78,6 +76,7 @@ class DeprefixingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         $realKey = $this->getInnerKey($key);

@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [[*next-version*]] - YYYY-MM-DD
+### Changed
+- **Dropped support for PHP < 8.1**  (#32).
+- Added type declarations throughout the codebase (#32).
+- `TaggingServiceProvider` now silently skips non-documentable values (#32).
+
+### Fixed
+- Type inconsistencies reported by Psalm (#32),
 
 ## [0.3.0-alpha1] - 2026-07-07
 ### Fixed

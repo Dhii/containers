@@ -11,3 +11,4 @@
 /.idea/misc.xml
 .phpunit.result.cache
 /.env
+/.phpunit.cache

@@ -45,6 +45,7 @@ trait StringTranslatingTrait
      *
      * @return string The translated string.
      * phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+     * @psalm-suppress PossiblyUnusedParam This implementation doesn't use context, and that's OK.
      */
     protected function _translate(string $string, ?string $context = null): string
     {

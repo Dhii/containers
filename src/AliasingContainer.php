@@ -22,16 +22,15 @@ class AliasingContainer implements ContainerInterface
     /**
      * @since [*next-version*]
      *
-     * @var PsrContainerInterface
      */
-    protected $inner;
+    protected PsrContainerInterface $inner;
 
     /**
      * @since [*next-version*]
      *
      * @var array<array-key, string>
      */
-    protected $aliases;
+    protected array $aliases;
 
     /**
      * Constructor.
@@ -50,7 +49,8 @@ class AliasingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function get(string $key)
+    #[\Override]
+    public function get(string $key): mixed
     {
         return $this->inner->get($this->getInnerKey($key));
     }
@@ -58,6 +58,7 @@ class AliasingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         return $this->inner->has($this->getInnerKey($key));

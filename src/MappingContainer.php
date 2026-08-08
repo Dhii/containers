@@ -39,8 +39,7 @@ class MappingContainer implements ContainerInterface
     /** @var callable */
     protected $callback;
 
-    /** @var PsrContainerInterface */
-    protected $inner;
+    protected PsrContainerInterface $inner;
 
     /**
      * @param PsrContainerInterface $inner    The container instance to decorate.
@@ -58,7 +57,8 @@ class MappingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function get($key)
+    #[\Override]
+    public function get(string $key): mixed
     {
         return ($this->callback)($this->inner->get($key), $key, $this);
     }
@@ -66,6 +66,7 @@ class MappingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         return $this->inner->has($key);

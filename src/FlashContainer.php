@@ -23,12 +23,10 @@ class FlashContainer implements
     MutableContainerInterface,
     ClearableContainerInterface
 {
-    /** @var MutableContainerInterface */
-    protected $data;
-    /** @var string */
-    protected $dataKey;
+    protected MutableContainerInterface $data;
+    protected string $dataKey;
     /** @var array<array-key, scalar> */
-    protected $flashData = [];
+    protected array $flashData = [];
 
     /**
      * @param MutableContainerInterface $data The storage.
@@ -58,6 +56,7 @@ class FlashContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         return array_key_exists($key, $this->flashData);
@@ -68,7 +67,8 @@ class FlashContainer implements
      *
      * Retrieves the value for the specified key from memory.
      */
-    public function get(string $key)
+    #[\Override]
+    public function get(string $key): mixed
     {
         if (!array_key_exists($key, $this->flashData)) {
             throw new NotFoundException(sprintf('Flash data not found for key "%1$s"', $key));
@@ -82,6 +82,7 @@ class FlashContainer implements
      *
      * Assigns the given value to the specified key in memory, and persists this change in storage.
      */
+    #[\Override]
     public function set(string $key, $value): void
     {
         $this->flashData[$key] = $value;
@@ -93,6 +94,7 @@ class FlashContainer implements
      *
      * Removes the specified key from memory, and persists this change in storage.
      */
+    #[\Override]
     public function unset(string $key): void
     {
         if (!array_key_exists($key, $this->flashData)) {
@@ -108,6 +110,7 @@ class FlashContainer implements
      *
      * Clears all of this instance's data from memory.
      */
+    #[\Override]
     public function clear(): void
     {
         $this->flashData = [];

@@ -49,11 +49,10 @@ use Psr\Container\NotFoundExceptionInterface;
  */
 class PathContainer implements ContainerInterface
 {
-    /** @var PsrContainerInterface */
-    protected $inner;
+    protected PsrContainerInterface $inner;
 
     /** @var non-empty-string */
-    protected $delimiter;
+    protected string $delimiter;
 
     /**
      * @param PsrContainerInterface $inner     The container instance to decorate.
@@ -68,7 +67,8 @@ class PathContainer implements ContainerInterface
     /**
      * @inheritDoc
      */
-    public function get(string $key)
+    #[\Override]
+    public function get(string $key): mixed
     {
         $tKey = (strpos($key, $this->delimiter) === 0)
             ? substr($key, strlen($this->delimiter))
@@ -108,6 +108,7 @@ class PathContainer implements ContainerInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         /**

@@ -15,14 +15,8 @@ class SimpleCacheContainer implements
     MutableContainerInterface,
     ClearableContainerInterface
 {
-    /**
-     * @var CacheInterface
-     */
-    protected $storage;
-    /**
-     * @var int
-     */
-    protected $ttl;
+    protected CacheInterface $storage;
+    protected int $ttl;
 
     public function __construct(CacheInterface $storage, int $ttl)
     {
@@ -33,7 +27,8 @@ class SimpleCacheContainer implements
     /**
      * @inheritDoc
      */
-    public function get(string $id)
+    #[\Override]
+    public function get(string $id): mixed
     {
         $storage = $this->storage;
 
@@ -53,6 +48,7 @@ class SimpleCacheContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function has(string $id): bool
     {
         $storage = $this->storage;
@@ -69,6 +65,7 @@ class SimpleCacheContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function set(string $key, $value): void
     {
         $storage = $this->storage;
@@ -88,6 +85,7 @@ class SimpleCacheContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function unset(string $key): void
     {
         $storage = $this->storage;
@@ -102,6 +100,7 @@ class SimpleCacheContainer implements
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function clear(): void
     {
         $storage = $this->storage;

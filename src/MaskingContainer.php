@@ -18,20 +18,14 @@ class MaskingContainer implements ContainerInterface
 {
     use StringTranslatingTrait;
 
-    /**
-     * @var PsrContainerInterface
-     */
-    protected $inner;
+    protected PsrContainerInterface $inner;
 
     /**
      * @var bool[]
      */
-    protected $mask;
+    protected array $mask;
 
-    /**
-     * @var bool
-     */
-    protected $defMask;
+    protected bool $defMask;
 
     /**
      * Constructor.
@@ -53,7 +47,8 @@ class MaskingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
-    public function get(string $key)
+    #[\Override]
+    public function get(string $key): mixed
     {
         if (!$this->isExposed($key)) {
             throw new NotFoundException(
@@ -69,6 +64,7 @@ class MaskingContainer implements ContainerInterface
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         return $this->isExposed($key) && $this->inner->has($key);

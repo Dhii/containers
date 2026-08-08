@@ -18,10 +18,7 @@ class ProxyContainer implements BaseContainerInterface
 {
     use StringTranslatingTrait;
 
-    /**
-     * @var ?BaseContainerInterface
-     */
-    protected $innerContainer;
+    protected ?BaseContainerInterface $innerContainer;
 
     /**
      * @param ?BaseContainerInterface $innerContainer The inner container, if any.
@@ -35,7 +32,8 @@ class ProxyContainer implements BaseContainerInterface
     /**
      * @inheritDoc
      */
-    public function get(string $key)
+    #[\Override]
+    public function get(string $key): mixed
     {
         if (!($this->innerContainer instanceof BaseContainerInterface)) {
             throw new ContainerException($this->__('Inner container not set'));
@@ -47,6 +45,7 @@ class ProxyContainer implements BaseContainerInterface
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function has(string $key): bool
     {
         if (!($this->innerContainer instanceof BaseContainerInterface)) {

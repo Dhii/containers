@@ -19,7 +19,7 @@ class ProxyContainerTest extends TestCase
     protected function createInstance(): TestSubject
     {
         $mock = $this->getMockBuilder(TestSubject::class)
-            ->setMethods(null)
+            ->onlyMethods([])
             ->getMock();
 
         return $mock;

@@ -34,8 +34,8 @@ class FlashContainerTest extends TestCase
     protected function createStorage(array $data): MutableContainerInterface
     {
         $mock = $this->getMockBuilder(MutableContainerInterface::class)
-            ->setMethods(['has', 'get', 'set', 'unset'])
-            ->getMockForAbstractClass();
+            ->onlyMethods(['has', 'get', 'set', 'unset'])
+            ->getMock();
 
         $mock->method('has')
             ->with($this->isType('string'))

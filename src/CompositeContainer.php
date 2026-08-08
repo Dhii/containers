@@ -19,7 +19,7 @@ class CompositeContainer implements ContainerInterface
     /**
      * @var iterable<PsrContainerInterface>
      */
-    protected $containers;
+    protected iterable $containers;
 
     /**
      * @param iterable<PsrContainerInterface> $containers The list of containers.
@@ -32,7 +32,8 @@ class CompositeContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
-    public function get(string $key)
+    #[\Override]
+    public function get(string $key): mixed
     {
         foreach ($this->containers as $index => $container) {
             /**
@@ -69,6 +70,7 @@ class CompositeContainer implements ContainerInterface
     /**
      * {@inheritDoc}
      */
+    #[\Override]
     public function has(string $key): bool
     {
         foreach ($this->containers as $index => $container) {
